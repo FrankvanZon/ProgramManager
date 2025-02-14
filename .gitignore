@@ -484,3 +484,4 @@ $RECYCLE.BIN/
 *.swp
 API/programmanager.db
 API/appsettings.json
+API/programmanager.db-wal
