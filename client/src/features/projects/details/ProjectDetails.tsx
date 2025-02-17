@@ -1,13 +1,20 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
+import { useProjects } from "../../../lib/hooks/useProjects";
 
 type Props = {
-    project: Project
+    selectedProject: Project
     cancelSelectProject : () => void;
     openForm : (id:string) => void;
 }
 
-export default function ProjectDetails({project, cancelSelectProject, openForm}: Props) {
-  return (
+export default function ProjectDetails({selectedProject, cancelSelectProject, openForm}: Props) {
+const {projects} = useProjects();
+const project = projects?.find(x => x.id === selectedProject.id);
+
+if (!project) return <Typography>Loading...</Typography>
+  
+  
+    return (
     <Card sx={{borderRadius:3, display: 'flex'}}>
         <CardMedia 
             component='img'

@@ -5,10 +5,9 @@ type Props = {
     projects: Project[]
     selectProject : (id: string) => void;
     openForm : (id:string) => void;
-    deleteProject: (id :string) => void;
 }
 
-export default function ProjectList({projects, selectProject, openForm, deleteProject}: Props) {
+export default function ProjectList({projects, selectProject, openForm}: Props) {
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>
         {projects.map(project => (
@@ -16,7 +15,6 @@ export default function ProjectList({projects, selectProject, openForm, deletePr
               project={project}
               selectProject={selectProject}
               openForm={openForm}
-              deleteProject={deleteProject}
               />
         ))}
     </Box>

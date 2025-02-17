@@ -1,15 +1,16 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { FormEvent } from "react";
+import { useProjects } from "../../../lib/hooks/useProjects";
 
 type Props = {
     project? : Project
     closeForm : () => void;
-    submitForm : (project: Project) => void;
 }
 
-export default function ProjectForm({project, closeForm, submitForm}: Props) {
+export default function ProjectForm({project, closeForm}: Props) {
+    const {updateProject, createProject} = useProjects();
     
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) =>{
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
         
         const formData = new FormData(event.currentTarget);
@@ -17,10 +18,16 @@ export default function ProjectForm({project, closeForm, submitForm}: Props) {
         const data: {[key:string]: FormDataEntryValue} = {}
         formData.forEach((value, key)=> {
             data[key] = value;
-        })
+        });
 
-        if(project) data.id = project.id;
-        submitForm(data as unknown as Project);
+        if(project) {
+            data.id = project.id;
+            await updateProject.mutateAsync(data as unknown as Project)
+            closeForm();
+        } else {
+            await createProject.mutateAsync(data as unknown as Project)
+            closeForm();
+        }
     }
    
   
@@ -39,11 +46,22 @@ export default function ProjectForm({project, closeForm, submitForm}: Props) {
                 <TextField name='startQuarter' defaultValue={project?.startQuarter} label='NPDL Start Quarter' />
                 <TextField name='launchQuarter' defaultValue={project?.launchQuarter} label='Launch Quarter' />
                 <TextField name='milestone' defaultValue={project?.milestone} label='Milestone' />
-                <TextField name='releaseDate' defaultValue={project?.releaseDate} label='Release Date' type="date" />
+                <TextField name='releaseDate' 
+                    defaultValue={project?.releaseDate
+                        ? new Date(project.releaseDate).toISOString().split('T')[0]
+                        : new Date().toISOString().split('T')[0]
+                    } 
+                    label='Release Date' type="date" 
+                />
+
 
                 <Box display="flex" justifyContent='end' gap={1}>
                     <Button onClick={closeForm} color="inherit">Cancel</Button>
-                    <Button type="submit" color="success">Submit</Button>
+                    <Button 
+                        type="submit" 
+                        color="success"
+                        disabled={updateProject.isPending || createProject.isPending}
+                        >Submit</Button>
                 </Box>
             </Box>
     </Paper>

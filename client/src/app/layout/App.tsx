@@ -1,23 +1,19 @@
-import { Box, Container, CssBaseline } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react"
+import { Box, Container, CssBaseline, Typography } from "@mui/material";
+import { useState } from "react"
 import NavBar from "./NavBar";
 import ProjectDashboard from "../../features/projects/dashboard/ProjectDashboard";
+import { useProjects } from "../../lib/hooks/useProjects";
 
 function App() {
-  const [projects, setProjects] = useState<Project[]>([]); //Store data
+  
   const [selectedProject, setSelectedProject] = useState<Project | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const {projects, isPending} = useProjects()
 
 
-  //load data using axios
-  useEffect(()=> {
-    axios.get<Project[]>('https://localhost:5001/api/projects')
-      .then(response => setProjects(response.data))
-  },[]) //Empty array alternative
 
   const handleSelectedProject = (id : string) => {
-    setSelectedProject(projects.find(x => x.id === id));
+    setSelectedProject(projects!.find(x => x.id === id));
   }
 
   const handleCancelSelectedProject = () =>{
@@ -34,29 +30,18 @@ function App() {
     setEditMode(false);
   }
 
-  const handleSubmitForm = (project: Project) =>{
-    if (project.id) {
-      setProjects(projects.map(x => x.id === project.id ? project : x))
-    } else {
-      const newProject = {...project, id:projects.length.toString()}
-      setSelectedProject(newProject);
-      setProjects([...projects, newProject])
-      } 
-      setEditMode(false);
-    }
-
-    const handleDelete = (id: string) => {
-      setProjects(projects.filter(x => x.id !== id))
-    }
-  
+ 
 
   return (
-    <Box sx={{bgcolor: '#eeeeee'}}>
+    <Box sx={{bgcolor: '#eeeeee', minHeight: '100vh'}}>
       <CssBaseline />
       <NavBar
         openForm={handleOpenForm}
       />
       <Container maxWidth='xl' sx={{ mt: 3 }}>
+        { !projects || isPending ? (
+          <Typography>Loading...</Typography>
+        ) : (
         <ProjectDashboard 
           projects={projects}
           selectProject={handleSelectedProject}
@@ -65,9 +50,8 @@ function App() {
           editMode={editMode}
           openForm={handleOpenForm}
           closeForm={handleCloseForm}
-          submitForm={handleSubmitForm}
-          deleteProject={handleDelete}
         />
+        )}
       </Container>
     </Box>
   )
