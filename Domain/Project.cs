@@ -14,5 +14,6 @@ public class Project
     public required string Team { get; set; }
     public double StartQuarter { get; set; }
     public double LaunchQuarter { get; set; }
+    public string Milestone { get; set; } = "<PI";
     
 }
