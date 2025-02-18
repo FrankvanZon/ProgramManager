@@ -1,13 +1,13 @@
 import { Box, Button, Card, CardActions, CardContent, Chip, Typography } from "@mui/material"
 import { useProjects } from "../../../lib/hooks/useProjects";
+import { useNavigate } from "react-router";
 
 type Props = {
     project: Project
-    selectProject : (id: string) => void;
-    openForm : (id:string) => void;
 }
 
-export default function ProjectCard({project, selectProject, openForm}: Props) {
+export default function ProjectCard({project}: Props) {
+  const navigate = useNavigate();
   const{deleteProject} = useProjects();
 
   return (
@@ -22,9 +22,9 @@ export default function ProjectCard({project, selectProject, openForm}: Props) {
           <CardActions sx={{ display:'flex', justifyContent: 'space-between'}}>
           <Chip label={project.milestone} variant="outlined" />
           <Box display='flex' gap={1}>
-            <Button onClick={() => selectProject(project.id)} size="medium" variant="contained">View</Button>
-            <Button onClick={() => openForm(project.id)} size="medium" variant="contained">Edit</Button>
-            <Button onClick={() => openForm(project.id)} size="medium" variant="contained">Team</Button>
+            <Button onClick={() => navigate(`/projects/${project.id}`)} size="medium" variant="contained">View</Button>
+            <Button onClick={() => navigate(`/manage/${project.id}`)} size="medium" variant="contained">Edit</Button>
+            <Button size="medium" variant="contained">Team</Button>
             <Button 
               onClick={() => deleteProject.mutate(project.id)}
               disabled={deleteProject.isPending} 

@@ -1,18 +1,15 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
+import { useNavigate, useParams } from "react-router";
 import { useProjects } from "../../../lib/hooks/useProjects";
 
-type Props = {
-    selectedProject: Project
-    cancelSelectProject : () => void;
-    openForm : (id:string) => void;
-}
+export default function ProjectDetails() {
+    const navigate = useNavigate();
+    const {id} = useParams();
+    const {project, isLoadingProject} = useProjects(id); 
 
-export default function ProjectDetails({selectedProject, cancelSelectProject, openForm}: Props) {
-const {projects} = useProjects();
-const project = projects?.find(x => x.id === selectedProject.id);
+    if (isLoadingProject) return <Typography>Loading...</Typography>
 
-if (!project) return <Typography>Loading...</Typography>
-  
+    if (!project) return <Typography>Project not found</Typography>
   
     return (
     <Card sx={{borderRadius:3, display: 'flex'}}>
@@ -28,8 +25,8 @@ if (!project) return <Typography>Loading...</Typography>
             <Typography variant="body1">{project.category} | {project.description}</Typography>
         </CardContent>
         <CardActions>
-            <Button onClick={() => openForm(project.id)} color="primary">Edit</Button>
-            <Button onClick={cancelSelectProject} color="inherit">Cancel</Button>
+            <Button onClick={() => navigate(`/manage/${project.id}`)} color="primary">Edit</Button>
+            <Button onClick={() => navigate('/projects')} color="inherit">Cancel</Button>
         </CardActions>
         </Box>
     </Card>

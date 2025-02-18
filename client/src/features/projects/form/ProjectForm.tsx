@@ -1,15 +1,13 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { FormEvent } from "react";
 import { useProjects } from "../../../lib/hooks/useProjects";
+import { useNavigate, useParams } from "react-router";
 
-type Props = {
-    project? : Project
-    closeForm : () => void;
-}
+export default function ProjectForm() {
+    const {id} = useParams();
+    const {updateProject, createProject, project, isLoadingProject} = useProjects(id);   
+    const navigate = useNavigate();
 
-export default function ProjectForm({project, closeForm}: Props) {
-    const {updateProject, createProject} = useProjects();
-    
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
         
@@ -23,28 +21,30 @@ export default function ProjectForm({project, closeForm}: Props) {
         if(project) {
             data.id = project.id;
             await updateProject.mutateAsync(data as unknown as Project)
-            closeForm();
+            navigate(`/projects/${project.id}`)
         } else {
-            await createProject.mutateAsync(data as unknown as Project)
-            closeForm();
+            createProject.mutate(data as unknown as Project,{
+                onSuccess: (id) => {
+                    navigate(`/projects/${id}`)
+                }
+            });
         }
     }
    
+    if (isLoadingProject) return <Typography>Loading...</Typography>
   
     return (
     <Paper sx={{borderRadius: 2, padding: 2}}>
         <Typography variant="h5" gutterBottom color="primary">
-            Create Project
+            {project ? 'Edit Project' : 'Create Project'}
         </Typography>
             <Box component='form' onSubmit={handleSubmit} display='flex' flexDirection='column' gap={3}>
                 <TextField name='name' defaultValue={project?.name} label='Name' />
                 <TextField name='description' defaultValue={project?.description} label='Description' multiline rows={3} />
                 <TextField name='cluster' defaultValue={project?.cluster} label='Cluster' />
                 <TextField name='category' defaultValue={project?.category} label='Category' />
+                
                 <TextField name='team' defaultValue={project?.team} label='Team' />
-
-                <TextField name='startQuarter' defaultValue={project?.startQuarter} label='NPDL Start Quarter' />
-                <TextField name='launchQuarter' defaultValue={project?.launchQuarter} label='Launch Quarter' />
                 <TextField name='milestone' defaultValue={project?.milestone} label='Milestone' />
                 <TextField name='releaseDate' 
                     defaultValue={project?.releaseDate
@@ -53,10 +53,8 @@ export default function ProjectForm({project, closeForm}: Props) {
                     } 
                     label='Release Date' type="date" 
                 />
-
-
                 <Box display="flex" justifyContent='end' gap={1}>
-                    <Button onClick={closeForm} color="inherit">Cancel</Button>
+                    <Button onClick={() => navigate('/projects')} color="inherit">Cancel</Button>
                     <Button 
                         type="submit" 
                         color="success"

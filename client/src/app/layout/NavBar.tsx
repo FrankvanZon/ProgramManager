@@ -1,42 +1,45 @@
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
-import { AppBar, Box, Button, Container, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Container, MenuItem, MenuList, Toolbar, Typography } from "@mui/material";
+import { NavLink } from 'react-router';
+import MenuItemLink from './shared/components/MenuItemLink';
 
-type Props = {
-  openForm: () => void;
-}
-
-export default function NavBar({openForm}:Props) {
+export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundImage: 'linear-gradient(135deg, #00E487 0%, #66EFB7 69%, #1432FF 89% )' }}>
         <Container maxWidth='xl'>
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
-              <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <MenuItem component={NavLink} to='/' sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <EmojiObjectsIcon fontSize='large'/>
                 <Typography variant="h4" fontWeight='bold'>Program Manager</Typography>
               </MenuItem>
             </Box>
             <Box sx={{ display: 'flex' }}>
-              <MenuItem sx={{ fontsize: '1.3rem', textTransform: 'uppercase', fontWeight: 'bold' }}>
-                Project List
-              </MenuItem>
-              <MenuItem sx={{ fontsize: '1.3rem', textTransform: 'uppercase', fontWeight: 'bold' }}>
-                Program View
-              </MenuItem>
-              <MenuItem sx={{ fontsize: '1.3rem', textTransform: 'uppercase', fontWeight: 'bold' }}>
-                Milestones
-              </MenuItem>
-              <MenuItem sx={{ fontsize: '1.3rem', textTransform: 'uppercase', fontWeight: 'bold' }}>
+              <MenuList>
+                <MenuItemLink to='/projects'>
+                  Projects
+                </MenuItemLink>
+                <MenuItemLink to='/program' >
+                  Program
+                </MenuItemLink>
+
+              </MenuList>
+
+              <MenuList>
+                <MenuItemLink to='/createProject' >
+                  Create Project
+                </MenuItemLink>
+                <MenuItemLink to='/milestones' >
+                  Milestones
+                </MenuItemLink>
+              </MenuList>
+
+              <MenuItemLink to='/launchCalendar' >
                 Launch Calendar
-              </MenuItem>
+              </MenuItemLink>
             </Box>
-            <Button 
-              size='large' 
-              variant="contained" 
-              color="warning"
-              onClick={openForm}
-              >Create Project</Button>
+              <MenuItem>User Menu</MenuItem>
           </Toolbar>
         </Container>
       </AppBar>

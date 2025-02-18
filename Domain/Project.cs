@@ -1,4 +1,7 @@
 namespace Domain;
+//To update the domain entity in the APP + Database, from main folder
+//dotnet ef migrations add "AddNewEntity" -P Persistence -s API
+//dotnet ef database update -P Persistence -s API
 
 public class Project
 {
@@ -11,7 +14,7 @@ public class Project
 
     // project details
     public required string Cluster { get; set; }
-    public required string Team { get; set; }
+    public string Team { get; set; } = "";
     public double StartQuarter { get; set; }
     public double LaunchQuarter { get; set; }
     public string Milestone { get; set; } = "<PI";
