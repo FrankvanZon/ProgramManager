@@ -1,36 +1,84 @@
-import { Box, Button, Card, CardActions, CardContent, Chip, Typography } from "@mui/material"
-import { useProjects } from "../../../lib/hooks/useProjects";
-import { useNavigate } from "react-router";
-
+import { CalendarMonth } from "@mui/icons-material";
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Divider, Grid2, Typography } from "@mui/material"
+import { Link, useNavigate } from "react-router";
+import { formatDate } from "../../../lib/util/util";
 type Props = {
     project: Project
 }
 
 export default function ProjectCard({project}: Props) {
   const navigate = useNavigate();
-  const{deleteProject} = useProjects();
+  const isCommitted = false;
+  const isProgrammed = false;
+  const isCancelled = false;
+  const color = isCommitted ? 'secondary' : 'default';
+  const label = isCommitted ? 'Commmited' : isProgrammed? 'Programmed' : 'Proposed';
+
 
   return (
-    <Card sx={{ borderRadius: 2 }}>
-      <CardContent>
-        <Typography variant="h5">{project.name}</Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1 }}> {project.launchQuarter} CR: {project.releaseDate}</Typography>
-        <Typography variant="subtitle1">{project.cluster} | {project.team}</Typography>
-        <Typography variant="body2">{project.category} | {project.description}</Typography>
-      </CardContent>
+    <Card elevation={3} sx={{ borderRadius: 2 }}>
+      <Grid2 container>
+        <Grid2 size={3}>
+        <CardMedia
+            component="img"
+            height="300"
+            image={`/images/clusterImages/${project.cluster}.jpg`}
+            alt={'office image'}
+        />
+        </Grid2>
 
-          <CardActions sx={{ display:'flex', justifyContent: 'space-between'}}>
-          <Chip label={project.milestone} variant="outlined" />
-          <Box display='flex' gap={1}>
-            <Button onClick={() => navigate(`/projects/${project.id}`)} size="medium" variant="contained">View</Button>
-            <Button onClick={() => navigate(`/manage/${project.id}`)} size="medium" variant="contained">Edit</Button>
-            <Button size="medium" variant="contained">Team</Button>
-            <Button 
-              onClick={() => deleteProject.mutate(project.id)}
-              disabled={deleteProject.isPending} 
-              size="medium" variant="contained" color="error">Delete</Button>
+        <Grid2 size={9} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box display='flex' alignItems='center' justifyContent='space-between'>
+            <CardHeader
+              avatar={<Avatar sx={{ height: 40, width: 40 }} />}
+              title={project.name}
+              titleTypographyProps={{
+                fontWeight: 'bold',
+                fontSize: 20
+              }}
+              subheader={
+                <>
+                  Managed by {' '} <Link to={'/profiles/bob'}></Link>
+                </>
+              } />
+
+            <Box display='flex' flexDirection='column' gap={0} mr={2} >
+              {(isCancelled) && <Chip label='Cancelled' color="error" sx={{ borderRadius: 2 }} />}
+              {(!isCancelled) && <Chip label={label} color={color} />}
+            </Box>
           </Box>
+
+          <Divider sx={{ mb: 1 }} />
+          <CardContent sx={{ p: 0 }} >
+            <Box display='flex' alignItems='center' justifyContent='space-between' >
+              <Box display={"flex"} alignContent={"center"} mb={1} px={2} >
+              <Box display={"flex"} alignItems={"center"} flexGrow={0} >
+                <CalendarMonth sx={{ mr: 1 }} />
+                <Typography>{formatDate(project.releaseDate)}</Typography>
+              </Box>
+              </Box>
+              <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle1">{project.milestone}</Typography>
+            </Box>
+            <Divider />
+            <Box display={"flex"} gap={2} alignContent={"center"} mb={1} px={2} sx={{ backgroundColor: 'grey.200' }}>
+              <Typography sx={{ mr: 1, ml: 1 }} variant="subtitle1">{project.cluster}</Typography>
+              <Typography sx={{ mr: 1, ml: 1 }} variant="subtitle1">{project.category}</Typography>
+              <Typography sx={{ mr: 1, ml: 1 }} variant="subtitle1">{project.team}</Typography>
+            </Box>
+            
+          </CardContent>
+          <Typography sx={{ mr: 2, ml: 3, mt:1 }} variant="body2">{project.description}</Typography>
+          
+          <CardActions sx={{ display: 'flex', justifyContent: 'flex-end', mt: 'auto' }}>  
+            <Box display='flex' gap={1} sx={{ mr: 1, ml: 1, mb: 1 }}>
+              <Button onClick={() => navigate(`/projects/${project.id}`)} size="small" variant="contained">View</Button>
+              <Button onClick={() => navigate(`/manage/${project.id}`)} size="small" variant="contained">Edit</Button>
+              <Button size="small" variant="contained">Team</Button>
+            </Box>
           </CardActions>
+        </Grid2>
+
+      </Grid2>
     </Card>
   )
 }
