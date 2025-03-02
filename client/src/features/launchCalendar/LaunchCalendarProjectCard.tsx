@@ -1,0 +1,70 @@
+import { Box, Card, CardContent, CardHeader, CardMedia, Grid2, Typography } from "@mui/material"
+import { useNavigate } from "react-router";
+
+
+type Props = {
+    project: Project
+}
+
+export default function LaunchCalendarProjectCard({ project }: Props) {
+    const navigate = useNavigate();
+    //const isCommitted = false;
+    //const isProgrammed = false;
+    //const isCancelled = false;
+    //const color = isCommitted ? 'secondary' : 'default';
+    //const label = isCommitted ? 'Commmited' : isProgrammed? 'Programmed' : 'Proposed';
+
+
+    return (
+        <Card elevation={3} sx={{ borderRadius: 2 }}>
+            <Grid2 container>
+                <Grid2 size={3} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CardMedia
+                        component="img"
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            aspectRatio: '1 / 1', // Ensures equal width and height
+                            objectFit: 'fill'  // Ensures the media covers the box
+                        }}
+                        image={`/images/clusterImages/${project.cluster}.jpg`}
+                        alt={'office image'}
+                    />
+                </Grid2>
+
+                <Grid2 size={9} sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box display='flex' alignItems='center' justifyContent='space-between'>
+                        <CardHeader
+                            title={
+                                <Typography
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        fontSize: 18,
+                                        '&:hover': {
+                                            color: '#00E478',
+                                            textDecoration: 'underline',
+                                            cursor: 'pointer'
+                                        }
+                                    }}
+                                    onClick={() => navigate(`/projects/${project.id}`)}
+                                >
+                                    {project.name}
+                                </Typography>
+                            }
+                        />
+                    </Box>
+                    <CardContent sx={{ p: 0 }}>
+                        <Box display='flex' alignItems='center' justifyContent='space-between'>
+                            <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
+                                {project.cluster}
+                            </Typography>
+                            <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
+                                {project.milestone}
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Grid2>
+            </Grid2>
+        </Card>
+    );
+}

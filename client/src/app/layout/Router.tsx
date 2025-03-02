@@ -7,6 +7,7 @@ import ProgramBoard from "../../features/program/ProgramBoard";
 import MilestoneBoard from "../../features/milestones/MilestoneBoard";
 import LaunchCalendar from "../../features/launchCalendar/LaunchCalendar";
 import ProjectDetailsPage from "../../features/projects/details/ProjectDetailsPage";
+import Counter from "../../features/counter/counter";
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
             {path: 'launchCalendar', element: <LaunchCalendar />},
             {path: 'createProject', element: <ProjectForm key='create'/>},
             {path: 'manage/:id', element: <ProjectForm />},
+            {path: 'counter', element: <Counter /> },
         ]
     }
 ])

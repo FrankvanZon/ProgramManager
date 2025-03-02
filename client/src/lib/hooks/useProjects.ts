@@ -1,8 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
+import { useLocation } from "react-router";
 
 export const useProjects = (id?: string) => {
     const queryCient = useQueryClient();
+    const location = useLocation();
+    const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
 
     //project list
     const { data: projects, isPending} = useQuery({
@@ -10,7 +13,8 @@ export const useProjects = (id?: string) => {
         queryFn: async () => {
             const response = await agent.get<Project[]>('/projects');
             return response.data;
-        }
+        },
+        enabled: !id && paths.includes(location.pathname)
     });
 
     //indiviual proejct
