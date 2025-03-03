@@ -1,16 +1,12 @@
 import { Box, Button, Grid2, Typography } from "@mui/material";
-import ProgramProjectPlanSliderAPC from "./ProgramProjectPlanAPC";
-import ProgramProjectPlanSliderNPDL from "./ProgramProjectPlanNPDL";
-import ProgramProjectPlanSliderVPC from "./ProgramProjectPlanVPC";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import ProgramProjectSelection from "../projectPlan/ProgramProjectPhaseSelection";
 import { useState } from "react";
-import ProgramProjectPlanSliderOverall from "./ProgramProjectPlanCombined";
+import ProgramProjectPlanSlider from "./ProgramProjectPlanSlider";
 
 type Props = {
     project: Project
 }
-
 
 export default function ProgramOfProject({ project }: Props) {
     const [expandPlan, setExpandPlan] = useState(false);
@@ -46,7 +42,7 @@ export default function ProgramOfProject({ project }: Props) {
 
                 <Grid2 size={10}>
                     <Box>
-                       <ProgramProjectPlanSliderOverall expandPlan={expandPlan}/>
+                       <ProgramProjectPlanSlider expandPlan={expandPlan} phase="Combined"/>
                     </Box>
                 </Grid2>
             </Grid2>
@@ -65,9 +61,9 @@ export default function ProgramOfProject({ project }: Props) {
                 </Grid2>
                 <Grid2 size={10}>
                     <Box>
-                        {(showVPC) && <ProgramProjectPlanSliderVPC />}
-                        {(showAPC) && <ProgramProjectPlanSliderAPC />}
-                        {(showNPDL) && <ProgramProjectPlanSliderNPDL />}
+                        {(showVPC) && <ProgramProjectPlanSlider expandPlan={expandPlan} phase="VPC" />}
+                        {(showAPC) && <ProgramProjectPlanSlider expandPlan={expandPlan} phase="APC" />}
+                        {(showNPDL) && <ProgramProjectPlanSlider expandPlan={expandPlan} phase="NPDL" />}
                     </Box>
                 </Grid2>
             </Grid2> }

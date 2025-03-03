@@ -31,7 +31,7 @@ export default function ProgramProjectSelection({
 
 
   return (
-    <ButtonGroup
+    <ButtonGroup size='small'
     >
       <Button value="VPC" aria-label="VPC" 
         color={showVPC ? 'error' : 'inherit'}

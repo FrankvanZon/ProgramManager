@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
+import { useStore } from "./useStore";
 
 export const useProjects = (id?: string) => {
-    const queryCient = useQueryClient();
+    const {projectStore} = useStore();
+    const queryClient = useQueryClient();
     const location = useLocation();
     const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
 
@@ -12,12 +14,13 @@ export const useProjects = (id?: string) => {
         queryKey: ['projects'],
         queryFn: async () => {
             const response = await agent.get<Project[]>('/projects');
+            projectStore.setProjects(response.data);
             return response.data;
         },
         enabled: !id && paths.includes(location.pathname)
     });
 
-    //indiviual proejct
+    //indiviual project
     const { data: project, isLoading: isLoadingProject } = useQuery({
         queryKey: ['projects', id],
         queryFn: async () => {
@@ -36,11 +39,14 @@ export const useProjects = (id?: string) => {
             return response.data;
         },
         onSuccess: async () => {
-            await queryCient.invalidateQueries({
+            await queryClient.invalidateQueries({
                 queryKey: ['projects'],
             })
         }
     })
+
+    
+
 
     //create
     const createProject = useMutation({
@@ -49,7 +55,7 @@ export const useProjects = (id?: string) => {
             return response.data;
         },
         onSuccess: async () => {
-            await queryCient.invalidateQueries({
+            await queryClient.invalidateQueries({
                 queryKey: ['projects'],
             })
         }
@@ -61,7 +67,7 @@ export const useProjects = (id?: string) => {
             await agent.delete(`/projects/${id}`)
         },
         onSuccess: async () => {
-            await queryCient.invalidateQueries({
+            await queryClient.invalidateQueries({
                 queryKey: ['projects'],
             })
         }

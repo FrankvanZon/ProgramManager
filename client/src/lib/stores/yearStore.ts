@@ -2,9 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 export default class YearStore{
     Year = 2025;
-    events: string[] = [
-        `Initial count is${this.Year}`
-    ]
+    quarters = [1, 2, 3, 4];
 
     constructor(){
         makeAutoObservable(this)
@@ -12,32 +10,36 @@ export default class YearStore{
 
     increment = (amount =1)=>{
         this.Year += amount
-        this.events.push(`Increment by ${amount} - count is now ${this.Year}`)
     }
 
     decrement = (amount=1)=>{
-        this.Year -= amount
-        this.events.push(`Decrement by ${amount} - count is now ${this.Year}`)
+        this.Year -= amount 
     }
 
     get Q1() {
-        return `${this.Year % 100}Q1`
+        return this.Year % 100 *100+1
     }
 
     get Q2() {
-        return `${this.Year % 100}Q2`
+        return this.Year % 100 *100+2
     }
 
     get Q3() {
-        return `${this.Year % 100}Q3`
+        return this.Year % 100 *100+3
     }
 
     get Q4() {
-        return `${this.Year % 100}Q4`
+        return this.Year % 100 *100+4
+    }
+
+    Quarter(value:  number) {
+        const year = this.Year %100*100 + Math.floor(value / 4);
+        const quarter = this.quarters[value % 4];
+        return year+quarter
     }
 
 
-    get eventCount(){
-        return this.events.length
-    }
+
+ 
+
 }

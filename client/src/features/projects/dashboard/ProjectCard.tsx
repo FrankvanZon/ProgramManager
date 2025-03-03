@@ -57,7 +57,7 @@ export default function ProjectCard({project}: Props) {
                 <Typography>{formatDate(project.releaseDate)}</Typography>
               </Box>
               </Box>
-              <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle1">{project.milestone}</Typography>
+              <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle1">{project.milestoneID}</Typography>
             </Box>
             <Divider />
             <Box display={"flex"} gap={2} alignContent={"center"} mb={1} px={2} sx={{ backgroundColor: 'grey.200' }}>

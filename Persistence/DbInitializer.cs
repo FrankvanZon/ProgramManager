@@ -20,6 +20,7 @@ public class DbInitializer
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
                 Milestone = "PS",
+                MilestoneID = 4,
             },
             new() {
                 Name = "Project 2",
@@ -31,6 +32,7 @@ public class DbInitializer
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
                 Milestone = "PS",
+                MilestoneID = 4,
             },
             new() {
                 Name = "Project 3",
@@ -42,6 +44,7 @@ public class DbInitializer
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
                 Milestone = "PS",
+                 MilestoneID = 4,
             },
             new() {
                 Name = "Project 4",
@@ -53,6 +56,7 @@ public class DbInitializer
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
                 Milestone = "PS",
+                 MilestoneID = 4,
             },
             new() {
                 Name = "Project 5",
@@ -64,6 +68,7 @@ public class DbInitializer
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
                 Milestone = "PS",
+                 MilestoneID = 4,
             },
             new() {
                 Name = "Project 6",
@@ -75,6 +80,7 @@ public class DbInitializer
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
                 Milestone = "PS",
+                 MilestoneID = 4,
             }
         };
 

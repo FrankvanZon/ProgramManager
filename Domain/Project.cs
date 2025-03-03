@@ -1,7 +1,8 @@
 namespace Domain;
 //To update the domain entity in the APP + Database, from main folder
-//dotnet ef migrations add "AddNewEntity" -P Persistence -s API
-//dotnet ef database update -P Persistence -s API
+//dotnet ef migrations add "AddMilestoneID" -p Persistence -s API
+//dotnet ef database update -p Persistence -s API
+//dotnet ef database drop -p Persistence -s API
 
 public class Project
 {
@@ -18,5 +19,7 @@ public class Project
     public double StartQuarter { get; set; }
     public double LaunchQuarter { get; set; }
     public string Milestone { get; set; } = "<PI";
+
+    public required double MilestoneID { get; set; } = 4;
     
 }

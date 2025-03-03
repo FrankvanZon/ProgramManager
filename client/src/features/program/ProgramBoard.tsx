@@ -1,10 +1,14 @@
-import { Grid2 } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import ProgramPlanner from "./ProgramPlanner";
-import ProgramFilter from "./ProgramFilter";
+import ProgramFilter from "./ProgramSideBar";
+import YearControlBar from "../common/controlBars/YearControlBar";
+import { observer } from "mobx-react-lite";
 
-export default function ProgramBoard() {
+const ProgramBoard = observer(function ProgramBoard() {
   return (
-    <Grid2 container spacing={3}>
+    <Box>
+    <YearControlBar/>
+    <Grid2 mt={2} container spacing={3}>
     <Grid2 size={8}>
         <ProgramPlanner />
     </Grid2>
@@ -12,6 +16,9 @@ export default function ProgramBoard() {
         <ProgramFilter />
     </Grid2>
     </Grid2>
+    </Box>
 
   )
-}
+})
+
+export default ProgramBoard

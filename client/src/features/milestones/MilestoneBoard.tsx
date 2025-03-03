@@ -1,87 +1,48 @@
-import { UncontrolledBoard, KanbanBoard } from '@caldwell619/react-kanban';
-import '@caldwell619/react-kanban/dist/styles.css' // import here for "builtin" styles
+import { Box, Card, Grid2, Typography } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../../lib/hooks/useStore";
+import { useProjects } from "../../lib/hooks/useProjects";
+import MilestoneControlBar from "../common/controlBars/MilestoneControlBar";
+import MilestoneProjectCard from "./MilestoneProjectCard";
 
+const MilestoneBoard = observer(function MilestoneBoard() {
+  
+  const { milestoneStore, projectStore } = useStore();
+  const { projects, isPending } = useProjects();
+  
 
-interface Card {
-  id: number;
-  title: string;
-  description: string;
-}
+  if (!projects || isPending) return <Typography>Loading...</Typography>;
 
-export default function MilestoneBoard() {
-  const board: KanbanBoard<Card> = {
-    columns: [
-      {
-        id: 1,
-        title: "Backlog",
-        
-        cards: [
-          {
-            id: 1,
-            title: "Card title 1",
-            description: "Card content"
-          },
-          {
-            id: 2,
-            title: "Card title 2",
-            description: "Card content"
-          },
-          {
-            id: 3,
-            title: "Card title 3",
-            description: "Card content"
-          }
-        ]
-      },
-      {
-        id: 2,
-        title: "Doing",
-        cards: [
-          {
-            id: 9,
-            title: "Card title 9",
-            description: "Card content"
-          }
-        ]
-      },
-      {
-        id: 3,
-        title: "Q&A",
-        cards: [
-          {
-            id: 10,
-            title: "Card title 10",
-            description: "Card content"
-          },
-          {
-            id: 11,
-            title: "Card title 11",
-            description: "Card content"
-          }
-        ]
-      },
-      {
-        id: 4,
-        title: "Production",
-        cards: [
-          {
-            id: 12,
-            title: "Card title 12",
-            description: "Card content"
-          },
-          {
-            id: 13,
-            title: "Card title 13",
-            description: "Card content"
-          }
-        ]
-      }
-    ]
-  };
 
   return (
-    <>
-      <UncontrolledBoard initialBoard={board} />
-    </>
+    <Box>
+      <MilestoneControlBar />
+      <Grid2 container gap={1.5} mt={2}>
+        {[0, 1, 2, 3].map(index => {
+          const milestoneFilter = projectStore.projects.filter(
+            project => project.milestoneID === (milestoneStore.id * 4 + index)
+          );
+
+          return (
+            <Grid2 size={2.925} key={index}>
+              <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
+                <Box mb={1} mt={1} display="flex" justifyContent="center">
+                  {milestoneStore.Milestone[milestoneStore.id * 4 + index]}
+                </Box>
+              </Card>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {milestoneFilter.map(project => (
+                  <MilestoneProjectCard 
+                    key={project.id} 
+                    project={project} />
+                ))}
+              </Box>
+            </Grid2>
+          );
+        })}
+      </Grid2>
+    </Box>
   );
-}
+});
+
+export default MilestoneBoard;

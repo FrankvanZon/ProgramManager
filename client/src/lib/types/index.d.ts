@@ -10,4 +10,5 @@ type Project = {
     startQuarter: number
     launchQuarter: number
     milestone: string
+    milestoneID: number
 }
