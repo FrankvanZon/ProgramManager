@@ -33,13 +33,18 @@ export default class YearStore{
     }
 
     Quarter(value:  number) {
-        const year = this.Year %100*100 + Math.floor(value / 4);
+        const year = (this.Year %100 + Math.floor(value / 4))*100;
         const quarter = this.quarters[value % 4];
         return year+quarter
     }
 
-
-
- 
+    InverseQuarter(combined: number) {
+        const year = Math.floor(combined/100) 
+        const yearIndex = (year - (this.Year-2000))*4
+        const quarter = combined - year*100
+        const quarterIndex = quarter -1
+        const value = yearIndex+quarterIndex;
+        return value;
+      }
 
 }

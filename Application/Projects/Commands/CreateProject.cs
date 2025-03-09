@@ -1,5 +1,9 @@
 using System;
+using Application.Core;
+using Application.Projects.DTOs;
+using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -7,19 +11,23 @@ namespace Application.Projects.Commands;
 
 public class CreateProject
 {
-    public class Command : IRequest<string>{
-        public required Project Project { get; set; }
+    public class Command : IRequest<Result<string>>{
+        public required CreateProjectDto ProjectDto { get; set; }
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command, string>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<string>>
     {
-        public async Task<string> Handle(Command request, CancellationToken cancellationToken)
-        {
-            context.Projects.Add(request.Project);
+        public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
+        {          
+            var project = mapper.Map<Project>(request.ProjectDto);
+            
+            context.Projects.Add(project);
 
-            await context.SaveChangesAsync(cancellationToken);
+            var result = await context.SaveChangesAsync(cancellationToken) >0;
 
-            return request.Project.Id;
+            if (!result) return Result<string>.Failure("Failed to create the project", 400);
+
+            return Result<string>.Success(project.Id);
         }
     }
 }

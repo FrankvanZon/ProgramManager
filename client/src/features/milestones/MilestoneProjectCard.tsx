@@ -6,13 +6,14 @@ import { useParams } from "react-router";
 // import { useStore } from "../../lib/hooks/useStore";
 
 type Props = {
-    project: Project
+    project: Project;
+    filterUpdate : ()=> void;
 }
 
 
 
 
-const MilestoneProjectCard = observer( function MilestoneProjectCard({ project }: Props) {
+const MilestoneProjectCard = observer( function MilestoneProjectCard({ project,filterUpdate }: Props) {
     //const {projectStore} = useStore()
     const {id} = useParams();
     const {updateProject} = useProjects(id);   
@@ -27,6 +28,7 @@ const MilestoneProjectCard = observer( function MilestoneProjectCard({ project }
         
         //projectStore.updateProject(project);
         updateProject.mutateAsync(data);
+        filterUpdate();
         
     };
 
@@ -38,6 +40,7 @@ const MilestoneProjectCard = observer( function MilestoneProjectCard({ project }
 
         //projectStore.updateProject(project)
         updateProject.mutateAsync(project)
+        filterUpdate();
         
     };
 

@@ -15,7 +15,7 @@ const{milestoneStore} = useStore()
                     onClick={() => milestoneStore.decrement()}><ArrowBack /></Button>
                 {milestoneStore.Phase[milestoneStore.id]}
                 <Button 
-                    disabled = {milestoneStore.id === 2}
+                    disabled = {milestoneStore.id === 8}
                     onClick={() => milestoneStore.increment()}><ArrowForward /></Button>
             </Box>
         </Card>

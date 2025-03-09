@@ -1,4 +1,5 @@
 using System;
+using Application.Projects.DTOs;
 using AutoMapper;
 using Domain;
 
@@ -9,5 +10,7 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<Project, Project>();
+        CreateMap<CreateProjectDto, Project>();
+        CreateMap<EditProjectDto, Project>();
     }
 }

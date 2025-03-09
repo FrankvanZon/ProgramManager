@@ -8,7 +8,7 @@ type Props = {
     project: Project
 }
 
-export default function ProgramOfProject({ project }: Props) {
+export default function ProgramProjectPlan({ project }: Props) {
     const [expandPlan, setExpandPlan] = useState(false);
     const [showVPC, setShowVPC] = useState(false);
     const [showAPC, setShowAPC] = useState(false);
@@ -42,7 +42,10 @@ export default function ProgramOfProject({ project }: Props) {
 
                 <Grid2 size={10}>
                     <Box>
-                       <ProgramProjectPlanSlider expandPlan={expandPlan} phase="Combined"/>
+                       <ProgramProjectPlanSlider 
+                        expandPlan={expandPlan} 
+                        phase="Combined"
+                        project={project}/>
                     </Box>
                 </Grid2>
             </Grid2>
@@ -61,9 +64,9 @@ export default function ProgramOfProject({ project }: Props) {
                 </Grid2>
                 <Grid2 size={10}>
                     <Box>
-                        {(showVPC) && <ProgramProjectPlanSlider expandPlan={expandPlan} phase="VPC" />}
-                        {(showAPC) && <ProgramProjectPlanSlider expandPlan={expandPlan} phase="APC" />}
-                        {(showNPDL) && <ProgramProjectPlanSlider expandPlan={expandPlan} phase="NPDL" />}
+                        {(showVPC) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="VPC" />}
+                        {(showAPC) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="APC" />}
+                        {(showNPDL) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="NPDL" />}
                     </Box>
                 </Grid2>
             </Grid2> }

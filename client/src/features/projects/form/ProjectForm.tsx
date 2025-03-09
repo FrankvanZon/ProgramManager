@@ -47,6 +47,7 @@ export default function ProjectForm() {
                 <TextField name='team' defaultValue={project?.team} label='Team' />
                 <TextField name='milestone' defaultValue={project?.milestone} label='Milestone' />
                 <TextField name='milestoneID' defaultValue={project?.milestoneID} label='MilestoneID' />
+                <TextField name='launchQuarter' defaultValue={project?.launchQuarter} label='Launch Quarter' />
                 <TextField name='releaseDate' 
                     defaultValue={project?.releaseDate
                         ? new Date(project.releaseDate).toISOString().split('T')[0]

@@ -18,6 +18,8 @@ public class Project
     public string Team { get; set; } = "";
     public double StartQuarter { get; set; }
     public double LaunchQuarter { get; set; }
+
+    //To be removed
     public string Milestone { get; set; } = "<PI";
 
     public required double MilestoneID { get; set; } = 4;
