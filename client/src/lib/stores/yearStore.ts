@@ -16,6 +16,11 @@ export default class YearStore{
         this.Year -= amount 
     }
 
+    YearQuarter(quarter: number){
+        return this.Year % 100 *100+ quarter
+    }
+
+
     get Q1() {
         return this.Year % 100 *100+1
     }

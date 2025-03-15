@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, CardHeader, CardMedia, Grid2, Typography } from "@mui/material"
 import { useNavigate } from "react-router";
 import { useStore } from "../../lib/hooks/useStore";
+import { formatDate } from "../../lib/util/util";
 
 
 type Props = {
@@ -18,7 +19,7 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
 
 
     return (
-        <Card elevation={3} sx={{ borderRadius: 2 }}>
+        <Card elevation={3} sx={{ borderRadius: 2, mb: 1 }}>
             <Grid2 container>
                 <Grid2 size={3} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <CardMedia
@@ -58,7 +59,7 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                     <CardContent sx={{ p: 0 }}>
                         <Box display='flex' alignItems='center' justifyContent='space-between'>
                             <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
-                                {project.cluster}
+                                {formatDate(project.releaseDate)}
                             </Typography>
                             <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
                                 {milestoneStore.Milestone[project.milestoneID]}

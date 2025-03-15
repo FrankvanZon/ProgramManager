@@ -12,11 +12,11 @@ const{milestoneStore} = useStore()
             <Box display='flex' alignItems='center' justifyContent='space-between' mb={1} mt={1} mr={1} ml={1}>
                 <Button 
                     disabled = {milestoneStore.id === 0}
-                    onClick={() => milestoneStore.decrement()}><ArrowBack /></Button>
+                    onClick={() => milestoneStore.decrement(2)}><ArrowBack /></Button>
                 {milestoneStore.Phase[milestoneStore.id]}
                 <Button 
                     disabled = {milestoneStore.id === 8}
-                    onClick={() => milestoneStore.increment()}><ArrowForward /></Button>
+                    onClick={() => milestoneStore.increment(2)}><ArrowForward /></Button>
             </Box>
         </Card>
     )

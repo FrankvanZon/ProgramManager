@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311202822_AddProjectPhases")]
+    partial class AddProjectPhases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
@@ -21,6 +24,9 @@ namespace Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("APC")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -47,18 +53,12 @@ namespace Persistence.Migrations
                     b.Property<double>("MilestoneID")
                         .HasColumnType("REAL");
 
+                    b.Property<bool>("NPDL")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("ProjectPhaseAPC")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("ProjectPhaseNPDL")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("ProjectPhaseVPC")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
@@ -69,6 +69,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Team")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("VPC")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

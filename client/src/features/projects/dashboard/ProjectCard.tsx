@@ -71,7 +71,9 @@ export default function ProjectCard({project}: Props) {
             </Box>
             
           </CardContent>
-          <Typography sx={{ mr: 2, ml: 3, mt:1 }} variant="body2">{project.description} & {project.launchQuarter}</Typography>
+          <Typography sx={{ mr: 2, ml: 3, mt: 1, whiteSpace: 'pre-line' }} variant="body2">
+            {project.description}
+            </Typography>
           
           <CardActions sx={{ display: 'flex', justifyContent: 'flex-end', mt: 'auto' }}>  
             <Box display='flex' gap={1} sx={{ mr: 1, ml: 1, mb: 1 }}>

@@ -39,7 +39,7 @@ const MilestoneProjectCard = observer( function MilestoneProjectCard({ project,f
         data.milestoneID = project.milestoneID-1;
 
         //projectStore.updateProject(project)
-        updateProject.mutateAsync(project)
+        updateProject.mutateAsync(data)
         filterUpdate();
         
     };

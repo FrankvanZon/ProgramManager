@@ -1,7 +1,7 @@
 type Project = {
     id: string
     name: string
-    releaseDate: string
+    releaseDate: date
     description: string
     category: string
     isCancelled: boolean
@@ -11,4 +11,8 @@ type Project = {
     launchQuarter: number
     milestone: string
     milestoneID: number
+    
+    projectPhaseNPDL: boolean
+    projectPhaseVPC: boolean
+    projectPhaseAPC: boolean
 }

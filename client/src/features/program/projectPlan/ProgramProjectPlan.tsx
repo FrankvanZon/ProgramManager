@@ -13,20 +13,23 @@ export default function ProgramProjectPlan({ project }: Props) {
     const [showVPC, setShowVPC] = useState(false);
     const [showAPC, setShowAPC] = useState(false);
     const [showNPDL, setShowNPDL] = useState(false);
-
+    const [showCIB, setShowCIB] = useState(false);
 
 
 
     const handleExpanPlan = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
         setExpandPlan(!expandPlan);
+        setShowVPC(project.projectPhaseVPC);
+        setShowAPC(project.projectPhaseAPC);
+        setShowNPDL(project.projectPhaseNPDL);
     };
 
     return (
         <>
             <Grid2 container>
-                <Grid2 size={2}>
-                    <Box display={"flex"} >
+                <Grid2 size={3}>
+                    <Box display={"flex"} width="100%" >
                     <Button 
                             size='small' value="show" aria-label="show" color='success'
                             onClick={handleExpanPlan}
@@ -40,7 +43,7 @@ export default function ProgramProjectPlan({ project }: Props) {
                     </Box>
                 </Grid2>
 
-                <Grid2 size={10}>
+                <Grid2 size={9}>
                     <Box>
                        <ProgramProjectPlanSlider 
                         expandPlan={expandPlan} 
@@ -53,20 +56,24 @@ export default function ProgramProjectPlan({ project }: Props) {
 
             { (expandPlan) &&
             <Grid2 container>
-                <Grid2 size={2}>
-                    <ProgramProjectSelection 
+                <Grid2 size={3} >
+                    <ProgramProjectSelection
                         showVPC={showVPC}
                         setShowVPC={setShowVPC}
                         showAPC={showAPC}
                         setShowAPC={setShowAPC}
                         showNPDL={showNPDL}
-                        setShowNPDL={setShowNPDL} />
+                        setShowNPDL={setShowNPDL}
+                        showCIB={showCIB}
+                        setShowCIB={setShowCIB}
+                        project={project} />
                 </Grid2>
-                <Grid2 size={10}>
+                <Grid2 size={9} alignContent={"center"}>
                     <Box>
                         {(showVPC) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="VPC" />}
                         {(showAPC) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="APC" />}
                         {(showNPDL) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="NPDL" />}
+                        {(showCIB) && <ProgramProjectPlanSlider project={project} expandPlan={expandPlan} phase="CIB" />}
                     </Box>
                 </Grid2>
             </Grid2> }

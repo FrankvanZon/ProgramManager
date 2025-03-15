@@ -11,105 +11,50 @@ import YearControlBar from "../common/controlBars/YearControlBar";
 const LaunchCalendar = observer(function LaunchCalendar() {
   const { yearStore } = useStore()
   const { projects, isPending } = useProjects()
+  //const FilterCommitted = true;
+  const FilterMinMilestoneID = 6;
 
   if (!projects || isPending) return
   <Typography>Loading...</Typography>
 
 
+
+
   return (
     <Box>
+
       <YearControlBar />
 
       <Grid2 container gap={1.5} mt={2}>
-        <Grid2 size={2.9}>
-          <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
-            <Box mb={1} mt={1}
-              display="flex"
-              justifyContent="center" >
-              {yearStore.Q1}
+        {[1, 2, 3, 4].map(index => (
+          <Grid2 key={index} size={2.9}>
+            <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
+              <Box mb={1} mt={1} display="flex" justifyContent="center">
+                {yearStore.YearQuarter(index)}
+              </Box>
+            </Card>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1}}>
+              {["Trunking", "Industry", "Office", "Retail"].map(cluster => {
+                const filteredProjects = projects.filter(project =>
+                  project.launchQuarter === yearStore.YearQuarter(index) &&
+                  project.milestoneID >= FilterMinMilestoneID &&
+                  project.cluster === cluster
+                );
+
+                return filteredProjects.length > 0 ? (
+                  <Box key={cluster} sx={{ mb: 2 }}>
+                    <Typography variant="subtitle1" >{cluster}</Typography>
+                    {filteredProjects.map(project => (
+                      <LaunchCalendarProjectCard key={project.id} project={project} />
+                    ))}
+                  </Box>
+                ) : null;
+              })}
             </Box>
-          </Card>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            {projects
-              .filter(project => project.launchQuarter === yearStore.Q1)
-              .map(project => (
-                <LaunchCalendarProjectCard
-                  key={project.id}
-                  project={project}
-                />
-              ))}
-          </Box>
-
-        </Grid2>
-
-        <Grid2 size={2.9}>
-          <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
-            <Box mb={1} mt={1}
-              display="flex"
-              justifyContent="center" >
-              {yearStore.Q2}
-            </Box>
-          </Card>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            {projects
-              .filter(project => project.launchQuarter === yearStore.Q2)
-              .map(project => (
-                <LaunchCalendarProjectCard
-                  key={project.id}
-                  project={project}
-                />
-              ))}
-          </Box>
-
-        </Grid2>
-
-        <Grid2 size={2.9}>
-          <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
-            <Box mb={1} mt={1}
-              display="flex"
-              justifyContent="center" >
-              {yearStore.Q3}
-            </Box>
-          </Card>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            {projects
-              .filter(project => project.launchQuarter === yearStore.Q3)
-              .map(project => (
-                <LaunchCalendarProjectCard
-                  key={project.id}
-                  project={project}
-                />
-              ))}
-          </Box>
-
-        </Grid2>
-
-        <Grid2 size={2.9}>
-          <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
-            <Box mb={1} mt={1}
-              display="flex"
-              justifyContent="center" >
-              {yearStore.Q4}
-            </Box>
-          </Card>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            {projects
-              .filter(project => project.launchQuarter === yearStore.Q4)
-              .map(project => (
-                <LaunchCalendarProjectCard
-                  key={project.id}
-                  project={project}
-                />
-              ))}
-          </Box>
-
-        </Grid2>
-
-
+          </Grid2>
+        ))}
       </Grid2>
     </Box>
   )
