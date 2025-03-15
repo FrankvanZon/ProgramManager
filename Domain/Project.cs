@@ -1,6 +1,6 @@
 namespace Domain;
 //To update the domain entity in the APP + Database, from main folder
-//dotnet ef migrations add "UpdateProjectPhases" -p Persistence -s API
+//dotnet ef migrations add "IdentityAdded" -p Persistence -s API
 //dotnet ef database update -p Persistence -s API
 
 //Update the DTO objects and index.d.ts object
