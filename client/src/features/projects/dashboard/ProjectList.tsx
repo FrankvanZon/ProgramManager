@@ -3,10 +3,13 @@ import ProjectCard from "./ProjectCard";
 import { useProjects } from "../../../lib/hooks/useProjects";
 
 export default function ProjectList() {
-  const {projects, isPending} = useProjects()
+  const {projects, isLoading} = useProjects()
 
-  if (!projects || isPending) return
+  if (isLoading) return
       <Typography>Loading...</Typography>
+
+  if(!projects) return 
+      <Typography>Projects not available</Typography>
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>

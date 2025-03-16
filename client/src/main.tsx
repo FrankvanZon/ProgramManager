@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from 'react-router';
-import { router } from './app/layout/Router.tsx';
+import { router } from './app/layout//router/Router.tsx';
 import { store, StoreContext } from './lib/stores/store.ts';
 import { ToastContainer } from 'react-toastify';
 import { LocalizationProvider } from '@mui/x-date-pickers';

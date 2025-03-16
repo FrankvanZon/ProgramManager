@@ -2,22 +2,24 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
 import { useStore } from "./useStore";
+import { useAccount } from "./useAccount";
 
 export const useProjects = (id?: string) => {
     const {projectStore} = useStore();
+    const {currentUser} = useAccount();
     const queryClient = useQueryClient();
     const location = useLocation();
     const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
 
     //project list
-    const { data: projects, isPending} = useQuery({
+    const { data: projects, isLoading} = useQuery({
         queryKey: ['projects'],
         queryFn: async () => {
             const response = await agent.get<Project[]>('/projects');
             projectStore.setProjects(response.data);
             return response.data;
         },
-        enabled: !id && paths.includes(location.pathname)
+        enabled: !id && paths.includes(location.pathname) && !!currentUser
     });
 
     //indiviual project
@@ -27,7 +29,7 @@ export const useProjects = (id?: string) => {
             const response = await agent.get<Project>(`/projects/${id}`);
             return response.data;
         },
-        enabled: !!id
+        enabled: !!id && !!currentUser
     });
 
 
@@ -78,7 +80,7 @@ export const useProjects = (id?: string) => {
 
     return {
         projects,
-        isPending,
+        isLoading,
         updateProject,
         createProject,
         deleteProject,

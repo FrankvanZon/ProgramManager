@@ -1,10 +1,11 @@
 import axios from "axios";
 import { store } from "../stores/store";
 import { toast } from "react-toastify";
-import { router } from "../../app/layout/Router";
+import { router } from "../../app/layout/router/Router";
 
 const agent = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL: import.meta.env.VITE_API_URL,
+    withCredentials: true
 });
 
  agent.interceptors.request.use(config =>{

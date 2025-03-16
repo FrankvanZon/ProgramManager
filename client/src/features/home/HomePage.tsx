@@ -2,7 +2,10 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { Link } from 'react-router';
 
+
 export default function HomePage() {
+
+  
   return (
     <Paper
       sx={{
@@ -27,7 +30,7 @@ export default function HomePage() {
           </Typography>
           <Button
             component={Link}
-            to= '/projects'
+            to='/projects'
             variant='contained'
             sx={{height:80, borderRadius: 2, fontSize: '1.4rem'}}
             >
