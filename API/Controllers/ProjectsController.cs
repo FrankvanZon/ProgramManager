@@ -12,12 +12,12 @@ namespace API.Controllers;
 public class ProjectsController : BaseApiController
 {
     [HttpGet]
-    public async Task<ActionResult<List<Project>>> GetProjects(){
+    public async Task<ActionResult<List<ProjectDto>>> GetProjects(){
         return await Mediator.Send(new GetProjectList.Query());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Project>> GetProjectDetails(string id){
+    public async Task<ActionResult<ProjectDto>> GetProjectDetails(string id){
         return HandleResult(await Mediator.Send(new GetProjectDetails.Query{Id = id}));
     }
 
@@ -26,13 +26,21 @@ public class ProjectsController : BaseApiController
         return HandleResult(await Mediator.Send(new CreateProject.Command{ProjectDto = projectDto}));
     }
 
-    [HttpPut]
-    public async Task<ActionResult> EditProject(EditProjectDto project){
+    [HttpPut("{id}")]
+    [Authorize(Policy = "IsProjectOwner")]
+    public async Task<ActionResult> EditProject(string id, EditProjectDto project){
+        project.Id = id;
         return HandleResult(await Mediator.Send(new EditProject.Command{ProjectDto = project}));
     }
 
     [HttpDelete("{id}")]
+    //[Authorize(Policy = "IsProjectOwner")]
     public async Task<ActionResult> DeleteProject(string id){
         return HandleResult(await Mediator.Send(new DeleteProject.Command{Id = id}));
+    }
+
+    [HttpPost("{id}/follow")]
+    public async Task<ActionResult> Follow(string id){
+        return HandleResult(await Mediator.Send(new UpdateFollowing.Command{Id = id}));
     }
 }

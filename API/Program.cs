@@ -1,9 +1,11 @@
 using API.Middleware;
 using Application.Core;
+using Application.Interfaces;
 using Application.Projects.Queries;
 using Application.Projects.Validators;
 using Domain;
 using FluentValidation;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -29,7 +31,8 @@ builder.Services.AddMediatR(x =>{
     x.RegisterServicesFromAssemblyContaining<GetProjectList.Handler>();
     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
-    
+
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
@@ -39,6 +42,14 @@ builder.Services.AddIdentityApiEndpoints<User>(opt =>
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("IsProjectOwner",policy =>{
+        policy.Requirements.Add(new IsOwnerRequirement());
+    });
+});
+builder.Services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler>();
+
 
 var app = builder.Build();
 

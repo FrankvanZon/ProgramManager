@@ -1,20 +1,20 @@
-namespace Domain;
-//To update the domain entity in the APP + Database, from main folder
-//dotnet ef migrations add "add projectID to projectphase" -p Persistence -s API
-//dotnet ef database update -p Persistence -s API
+using System;
+using Application.Profilies.DTOs;
+using Domain;
 
-//Update the DTO objects and index.d.ts object
+namespace Application.Projects.DTOs;
 
-//dotnet ef database drop -p Persistence -s API
-
-public class Project
+public class ProjectDto
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public required string Id { get; set; }
     public required string Name { get; set; }
     public DateTime ReleaseDate { get; set; }
     public required string Description { get; set; }
     public required string Category { get; set; }
     public bool IsCancelled { get; set; }
+ 
+    public required string OwnerDisplayName { get; set; }
+    public required string OwnerId { get; set; }
 
     // project details
     public required string Cluster { get; set; }
@@ -29,5 +29,5 @@ public class Project
 
     //navigation properties
     public ICollection<ProjectPhase> Phases { get; set; } = [];
-    public ICollection<ProjectFollowers> Followers { get; set; } = [];
+    public ICollection<UserProfile> Followers { get; set; } = [];
 }

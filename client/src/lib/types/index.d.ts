@@ -9,12 +9,19 @@ type Project = {
     team: string
     startQuarter: number
     launchQuarter: number
-    milestone: string
     milestoneID: number
     
     projectPhaseNPDL: boolean
     projectPhaseVPC: boolean
     projectPhaseAPC: boolean
+}
+
+type ProjectPhase = {
+    id: string
+    phase: string
+    required: boolean
+    startQuarter: number
+    finishQuarter: number
 }
 
 type User = {

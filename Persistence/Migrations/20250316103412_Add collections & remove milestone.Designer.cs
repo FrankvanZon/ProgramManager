@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250316103412_Add collections & remove milestone")]
+    partial class Addcollectionsremovemilestone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -71,24 +74,6 @@ namespace Persistence.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Domain.ProjectFollowers", b =>
-                {
-                    b.Property<string>("ProjectId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsOwner")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ProjectId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ProjectFollowers");
-                });
-
             modelBuilder.Entity("Domain.ProjectPhase", b =>
                 {
                     b.Property<string>("Id")
@@ -102,7 +87,6 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProjectId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Required")
@@ -115,7 +99,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectPhases");
+                    b.ToTable("ProjectPhase");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -319,32 +303,26 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.ProjectFollowers", b =>
+            modelBuilder.Entity("ProjectUser", b =>
                 {
-                    b.HasOne("Domain.Project", "Project")
-                        .WithMany("Followers")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("FollowingId")
+                        .HasColumnType("TEXT");
 
-                    b.HasOne("Domain.User", "User")
-                        .WithMany("Projects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("ProjectsId")
+                        .HasColumnType("TEXT");
 
-                    b.Navigation("Project");
+                    b.HasKey("FollowingId", "ProjectsId");
 
-                    b.Navigation("User");
+                    b.HasIndex("ProjectsId");
+
+                    b.ToTable("ProjectUser");
                 });
 
             modelBuilder.Entity("Domain.ProjectPhase", b =>
                 {
                     b.HasOne("Domain.Project", null)
                         .WithMany("Phases")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -398,16 +376,24 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Project", b =>
+            modelBuilder.Entity("ProjectUser", b =>
                 {
-                    b.Navigation("Followers");
+                    b.HasOne("Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Phases");
+                    b.HasOne("Domain.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.User", b =>
+            modelBuilder.Entity("Domain.Project", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("Phases");
                 });
 #pragma warning restore 612, 618
         }

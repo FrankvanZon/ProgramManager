@@ -15,7 +15,6 @@ public class BaseProjectDto
     public DateTime ReleaseDate { get; set; }
     public double StartQuarter { get; set; } =0;
     public double LaunchQuarter { get; set; } =0;
-    public string Milestone { get; set; } = "<PI";
     public double MilestoneID { get; set; } = 4;
     public bool ProjectPhaseVPC { get; set; } = false; 
     public bool ProjectPhaseAPC { get; set; } = false;

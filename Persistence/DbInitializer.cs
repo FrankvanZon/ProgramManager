@@ -8,6 +8,22 @@ public class DbInitializer
     public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
     {
 
+        if(!context.ProjectPhases.Any())
+        {
+            var projectPhases = new List<ProjectPhase>
+            {
+                new() {ProjectId= "2b28cbd6-461d-4efc-8112-0bc8b9fd0919", Phase = "NPDL", Required= true, StartQuarter=2501, FinishQuarter=2503},
+                new() {ProjectId= "34dc3449-a499-439f-9870-46628796432c", Phase = "NPDL", Required= true, StartQuarter=2501, FinishQuarter=2503},
+                new() {ProjectId= "39b632d6-df4a-4669-8acd-536b095dc236", Phase = "NPDL", Required= true, StartQuarter=2501, FinishQuarter=2503},
+                new() {ProjectId= "1cbc1dbc-4c5a-4c6f-98c9-36cece2cbc4c", Phase = "NPDL", Required= true, StartQuarter=2501, FinishQuarter=2503},
+
+            };
+
+            context.ProjectPhases.AddRange(projectPhases);
+            await context.SaveChangesAsync();
+        }
+        
+        
         if(!userManager.Users.Any())
         {
             var users = new List<User>
@@ -37,7 +53,6 @@ public class DbInitializer
                 Team = "Team 1",
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
-                Milestone = "PS",
                 MilestoneID = 4,
             },
             new() {
@@ -49,7 +64,6 @@ public class DbInitializer
                 Team = "Team 1",
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
-                Milestone = "PS",
                 MilestoneID = 4,
             },
             new() {
@@ -61,8 +75,7 @@ public class DbInitializer
                 Team = "Team 2",
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
-                Milestone = "PS",
-                 MilestoneID = 4,
+                MilestoneID = 4,
             },
             new() {
                 Name = "Project 4",
@@ -73,8 +86,7 @@ public class DbInitializer
                 Team = "Team 3",
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
-                Milestone = "PS",
-                 MilestoneID = 4,
+                MilestoneID = 4,
             },
             new() {
                 Name = "Project 5",
@@ -85,8 +97,7 @@ public class DbInitializer
                 Team = "Team 5",
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
-                Milestone = "PS",
-                 MilestoneID = 4,
+                MilestoneID = 4,
             },
             new() {
                 Name = "Project 6",
@@ -97,8 +108,7 @@ public class DbInitializer
                 Team = "Team 1",
                 StartQuarter = 2501,
                 LaunchQuarter = 2504,
-                Milestone = "PS",
-                 MilestoneID = 4,
+                MilestoneID = 4,
             }
         };
 
