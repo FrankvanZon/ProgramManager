@@ -22,7 +22,7 @@ export default function ProjectDetailsPage() {
 
             </Grid2>
             <Grid2 size={8}>
-                <ProjectDetailsSideBar />
+                <ProjectDetailsSideBar project={project}/>
                 <ProjectDetailsChat />  
             </Grid2>
         </Grid2>

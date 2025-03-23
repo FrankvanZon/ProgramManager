@@ -34,8 +34,7 @@ public class UpdateFollowing
 
             if (following!= null)
             {
-                if(isOwner) project.IsCancelled = !project.IsCancelled;
-                else project.Followers.Remove(following);
+                project.Followers.Remove(following);
             }
             else
             {

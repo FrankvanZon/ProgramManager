@@ -4,6 +4,7 @@ import ProgramProjectSelection from "../projectPlan/ProgramProjectPhaseSelection
 import { useState } from "react";
 import ProgramProjectPlanSlider from "./ProgramProjectPlanSlider";
 
+
 type Props = {
     project: Project
 }
@@ -15,16 +16,22 @@ export default function ProgramProjectPlan({ project }: Props) {
     const [showNPDL, setShowNPDL] = useState(false);
     const [showCIB, setShowCIB] = useState(false);
 
+    const checkPhaseRequired = (phaseName: string): boolean => {
+        const phase = project.phases.find(p => p.phase === phaseName);
+        return phase ? phase.required : false;
+    };
 
 
+   
     const handleExpanPlan = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
         setExpandPlan(!expandPlan);
-        setShowVPC(project.projectPhaseVPC);
-        setShowAPC(project.projectPhaseAPC);
-        setShowNPDL(project.projectPhaseNPDL);
+        setShowVPC(checkPhaseRequired("VPC"));
+        setShowAPC(checkPhaseRequired("APC"));
+        setShowNPDL(checkPhaseRequired("NPDL"));
+        setShowCIB(checkPhaseRequired("CIB"));
     };
-
+    
     return (
         <>
             <Grid2 container>
@@ -37,7 +44,7 @@ export default function ProgramProjectPlan({ project }: Props) {
                             {expandPlan ? <ArrowUpward/> : <ArrowDownward/>}
                     </Button>
 
-                        <Typography ml={1} mt={0.5} variant='subtitle2' >{project.name}</Typography>
+                        <Typography ml={1} mt={0.5} mb={1} variant='subtitle1' >{project.name}</Typography>
 
 
                     </Box>

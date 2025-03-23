@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, CardMedia, Grid2, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardHeader, CardMedia, Chip, Grid2, Typography } from "@mui/material"
 import { useNavigate } from "react-router";
 import { useStore } from "../../lib/hooks/useStore";
 import { formatDate } from "../../lib/util/util";
@@ -17,7 +17,8 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
     //const color = isCommitted ? 'secondary' : 'default';
     //const label = isCommitted ? 'Commmited' : isProgrammed? 'Programmed' : 'Proposed';
 
-
+    const isNPDL = project.phases.find(p => p.phase === "NPDL" && p.required)?.required ?? false;
+        
     return (
         <Card elevation={3} sx={{ borderRadius: 2, mb: 1 }}>
             <Grid2 container>
@@ -36,7 +37,8 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                 </Grid2>
 
                 <Grid2 size={9} sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Box display='flex' alignItems='center' justifyContent='space-between'>
+                    <Box display='flex' alignItems='top' justifyContent='space-between' >
+                        
                         <CardHeader
                             title={
                                 <Typography
@@ -55,6 +57,24 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                                 </Typography>
                             }
                         />
+
+                        {(isNPDL) && <Chip label="NPDL" 
+                        sx={{
+                            position: 'relative',
+                            backgroundColor: 'lightgreen',
+                            top: 0,
+                            right: 0,
+                            mr: 1,
+                            mt: 2
+                        }} />}
+                        {(!isNPDL) && <Chip label="CIB" sx={{
+                            position: 'relative',
+                            backgroundColor: '#D1C4E9',
+                            top: 0,
+                            right: 0,
+                            mr: 1,
+                            mt: 2
+                        }} />}
                     </Box>
                     <CardContent sx={{ p: 0 }}>
                         <Box display='flex' alignItems='center' justifyContent='space-between'>

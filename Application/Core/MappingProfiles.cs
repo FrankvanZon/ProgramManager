@@ -11,6 +11,7 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<Project, Project>();
+        CreateMap<ProjectPhase, ProjectPhase>();
         CreateMap<CreateProjectDto, Project>();
         CreateMap<EditProjectDto, Project>();
         CreateMap<Project, ProjectDto>()

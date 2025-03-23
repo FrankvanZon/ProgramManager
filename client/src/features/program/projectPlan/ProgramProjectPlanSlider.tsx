@@ -5,39 +5,45 @@ import { observer } from "mobx-react-lite";
 import { useParams } from "react-router";
 import { useProjects } from "../../../lib/hooks/useProjects";
 
-interface Props{
-  expandPlan : boolean;
+interface Props {
+  expandPlan: boolean;
   phase: 'NPDL' | 'APC' | 'VPC' | 'CIB' | 'Combined';
-  project : Project;
+  project: Project;
 }
 
-const ProgramProjectPlanSlider = observer( function ProgramProjectPlanSlider({expandPlan, phase, project} : Props) {
-  const {id} = useParams();
-  const {updateProject} = useProjects(id);
-  const {yearStore} = useStore();
+const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ expandPlan, phase, project }: Props) {
+  const { id } = useParams();
+  const { editProjectPhase } = useProjects(id);
+  const { yearStore } = useStore();
   const [value, setValue] = React.useState<number[]>([0, 7]);
- 
+
+  const getProjectPhase = (phaseName: string) => {
+    const phase = project.phases.find(p => p.phase === phaseName);
+    return phase;
+  };
+
+  const projectPhase: ProjectPhase = getProjectPhase(phase) as ProjectPhase
+
   const handleChange = (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       setValue(newValue);
-    }};
+    }
+  };
 
   const handleCommit = (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
-    let data: Project = { ...project }
-    data = project;
+
 
     //set to an actual quarter if it does not exist
     if (Array.isArray(newValue)) {
       setValue(newValue);
 
-      if (phase === 'NPDL') {
-        data.startQuarter = (project.startQuarter == 0 || yearStore.InverseQuarter(project.startQuarter) >= 0) ?
-          yearStore.Quarter(newValue[0]) : project.startQuarter;
-        data.launchQuarter = (project.launchQuarter == 0 || yearStore.InverseQuarter(project.launchQuarter) <= 7) ?
-          yearStore.Quarter(newValue[1]) : project.launchQuarter;
+      projectPhase.startQuarter = (projectPhase.startQuarter == 0 || yearStore.InverseQuarter(projectPhase.startQuarter) >= 0) ?
+        yearStore.Quarter(newValue[0]) : projectPhase.startQuarter;
+      projectPhase.finishQuarter = (projectPhase.finishQuarter == 0 || yearStore.InverseQuarter(projectPhase.finishQuarter) <= 7) ?
+        yearStore.Quarter(newValue[1]) : projectPhase.finishQuarter;
 
-        updateProject.mutate(data);
-      }
+      editProjectPhase.mutate(projectPhase);
+
     }
   };
 
@@ -45,19 +51,31 @@ const ProgramProjectPlanSlider = observer( function ProgramProjectPlanSlider({ex
 
   useEffect(() => {
     if (phase === 'Combined') {
-      const start = Math.max(0, yearStore.InverseQuarter(project.startQuarter))
-      const end = Math.min(7, yearStore.InverseQuarter(project.launchQuarter))
-      setValue([start, end]);
+      const { startQuarter, finishQuarter } = project.phases
+        .filter(phase => phase.required) // Filter phases where required is true
+        .reduce((acc, curr) => {
+          return {
+            startQuarter: Math.min(acc.startQuarter, curr.startQuarter),
+            finishQuarter: Math.max(acc.finishQuarter, curr.finishQuarter)
+          };
+        }, { startQuarter: 100000, finishQuarter: 0 });
 
-    } else if (phase === 'NPDL') {
-      const start = Math.max(0, yearStore.InverseQuarter(project.startQuarter))
-      const end = Math.min(7, yearStore.InverseQuarter(project.launchQuarter))
+      setValue([
+        startQuarter == 100000 ? 0 : yearStore.InverseQuarter(startQuarter),
+        yearStore.InverseQuarter(finishQuarter)]);
+    } else if (projectPhase) {
+      const start = Math.max(0, yearStore.InverseQuarter(projectPhase.startQuarter))
+      const end = Math.min(7, yearStore.InverseQuarter(projectPhase.finishQuarter))
+      setValue([start, end]);
+    } else {
+      const start = 0
+      const end = 0
       setValue([start, end]);
     }
-  }, [phase, project.startQuarter, project.launchQuarter, yearStore, yearStore.Year]);
+  }, [phase, project.phases, projectPhase, yearStore, yearStore.Year]);
 
 
-  const phaseColors: Record<Props['phase'], "success" | "warning" | "info" | "primary" | "error" | "secondary" > = {
+  const phaseColors: Record<Props['phase'], "success" | "warning" | "info" | "primary" | "error" | "secondary"> = {
     'NPDL': 'success',
     'APC': 'primary',
     'VPC': 'warning',
@@ -65,30 +83,30 @@ const ProgramProjectPlanSlider = observer( function ProgramProjectPlanSlider({ex
     'Combined': 'success'
   };
 
-    return (
-      <Box display={'flex'}>
-        <Box sx={{width: 50 }}>
-        </Box>
-        <Box sx={{width: 600 }}>
-          <Slider
-            getAriaLabel={() => 'Year-Quarter range'}
-            value={value}
-            onChange={handleChange}
-            onChangeCommitted={handleCommit}
-            disabled={phase === 'Combined'}
-            valueLabelDisplay="off"
-            min={0}
-            max={7}
-            color={phaseColors[phase]  || 'primary'}
-            marks={Array.from({ length: 8 }, (_, index) => ({
-              value: index,
-              label: (expandPlan && phase === 'Combined') ? yearStore.Quarter(index): '',
-            }))}
-          />
-        </Box>
+  return (
+    <Box display={'flex'}>
+      <Box sx={{ width: 50 }}>
       </Box>
-      );
-  })
+      <Box sx={{ width: 600 }}>
+        <Slider
+          getAriaLabel={() => 'Year-Quarter range'}
+          value={value}
+          onChange={handleChange}
+          onChangeCommitted={handleCommit}
+          disabled={phase === 'Combined'}
+          valueLabelDisplay="off"
+          min={0}
+          max={7}
+          color={phaseColors[phase] || 'primary'}
+          marks={Array.from({ length: 8 }, (_, index) => ({
+            value: index,
+            label: (expandPlan && phase === 'Combined') ? yearStore.Quarter(index) : '',
+          }))}
+        />
+      </Box>
+    </Box>
+  );
+})
 
-  
+
 export default ProgramProjectPlanSlider

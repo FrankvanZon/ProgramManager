@@ -1,10 +1,11 @@
 import { Box, Paper, Typography } from "@mui/material";
 
 import { useProjects } from "../../lib/hooks/useProjects";
-import ProgramOfProject from "./projectPlan/ProgramProjectPlan";
+
+import ProgramProjectPlan from "./projectPlan/ProgramProjectPlan";
 
 export default function ProgramPlanner() {
-  const { projects, isPending } = useProjects()
+  const { projects, isLoading } = useProjects()
   
     const getUniqueTeams = (projects: Project[]) => {
       const teams = projects.map(project => project.team);
@@ -15,7 +16,7 @@ export default function ProgramPlanner() {
   
   
   
-    if (!projects || isPending) return
+    if (!projects || isLoading) return
     <Typography>Loading...</Typography>
   
     const uniqueTeams = getUniqueTeams(projects);
@@ -36,7 +37,7 @@ export default function ProgramPlanner() {
             <Box key={team} sx={{ mb: 2 }}>
               <Typography variant="subtitle1" mt={2} ml={2}>{team}</Typography>
               {filteredProjects.map(project => (
-                <ProgramOfProject key={project.id} project={project} />
+                <ProgramProjectPlan key={project.id} project={project} />
               ))}
             </Box>
             </Paper>

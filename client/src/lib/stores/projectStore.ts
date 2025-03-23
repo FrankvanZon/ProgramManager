@@ -11,6 +11,8 @@ export default class ProjectStore {
     this.projects = projects;
   }
 
+}
+
   // updateProject(updatedProject: Project) {
   //   const index = this.projects.findIndex(project => project.id === updatedProject.id);
   //   if (index !== -1) {
@@ -28,4 +30,3 @@ export default class ProjectStore {
 //     )
 // }
 
-}

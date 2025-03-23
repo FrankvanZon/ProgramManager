@@ -23,44 +23,53 @@ export default function ProgramProjectSelection({
 } : Props) {
   
   const {id} = useParams();
-  const {updateProject} = useProjects(id);
+  const {setProjectPhase} = useProjects(id);
+
+  const getProjectPhase = (phaseName: string) => {
+    const phase = project.phases.find(p => p.phase === phaseName);
+    if (phase) {
+        return phase;
+    } else {
+        // Return a new ProjectPhase object with preset information
+        return {
+            projectId: project.id,
+            phase: phaseName,
+            required: false, 
+            startQuarter: 0, 
+            finishQuarter: 0
+        };
+    }
+};
+
 
   const handleVPC = () => {
-    let data: Project = { ...project }
-    data = project;
-    data.projectPhaseVPC = !project.projectPhaseVPC;
-    setShowVPC(data.projectPhaseVPC)
-    updateProject.mutate(data);
+    const data: ProjectPhase = getProjectPhase("VPC")
+    setShowVPC(!data.required)
+    setProjectPhase.mutate(data);
   };
 
   const handleAPC = () => {
-    let data: Project = { ...project }
-    data = project;
-    data.projectPhaseAPC = !project.projectPhaseAPC;
-    setShowAPC(data.projectPhaseAPC)
-    updateProject.mutate(data);
+    const data: ProjectPhase = getProjectPhase("APC")
+    setShowAPC(!data.required)
+    setProjectPhase.mutate(data);
   };
 
   const handleNPDL = () => {
-    let data: Project = { ...project }
-    data = project;
-    data.projectPhaseNPDL = !project.projectPhaseNPDL;
-    setShowNPDL(data.projectPhaseNPDL)
-    updateProject.mutate(data);
+    const data: ProjectPhase = getProjectPhase("NPDL")
+    setShowNPDL(!data.required)
+    setProjectPhase.mutate(data);
   };
 
   const handleCIB = () => {
-    //let data: Project = { ...project }
-    //data = project;
-    //data.projectPhaseNPDL = !project.projectPhaseNPDL;
-    setShowCIB(!showCIB)
-    //updateProject.mutate(data);
+    const data: ProjectPhase = getProjectPhase("CIB")
+    setShowCIB(!data.required)
+    setProjectPhase.mutate(data);
   };
 
 
 
   return (
-    <Box display="flex" justifyContent="center" width="100%" mb={1}>
+    <Box display="flex" justifyContent="center" width="100%" mb={2}>
     <ButtonGroup size='small'
     >
       <Button value="VPC" aria-label="VPC" 

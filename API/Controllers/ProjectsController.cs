@@ -27,7 +27,7 @@ public class ProjectsController : BaseApiController
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "IsProjectOwner")]
+    // [Authorize(Policy = "IsProjectOwner")]
     public async Task<ActionResult> EditProject(string id, EditProjectDto project){
         project.Id = id;
         return HandleResult(await Mediator.Send(new EditProject.Command{ProjectDto = project}));
@@ -43,4 +43,23 @@ public class ProjectsController : BaseApiController
     public async Task<ActionResult> Follow(string id){
         return HandleResult(await Mediator.Send(new UpdateFollowing.Command{Id = id}));
     }
+
+    [HttpPost("{id}/projectphase")]
+    public async Task<ActionResult> SetProjectPhase(ProjectPhase projectPhase){
+        return HandleResult(await Mediator.
+        Send(new EnableProjectPhase.Command{NewProjectPhase = projectPhase}));
+    }
+
+    [HttpPut("{id}/projectphase")]
+    public async Task<ActionResult> UpdateProjectPhase(ProjectPhase projectPhase){
+        return HandleResult(await Mediator.
+        Send(new UpdateProjectPhase.Command{ProjectPhase = projectPhase}));
+    }
+
+    [HttpPut("{id}/milestone")]
+    public async Task<ActionResult> SetProjectMilestone(MilestoneUpdateDTO milestoneUpdateDTO){
+        return HandleResult(await Mediator.
+        Send(new UpdateMilestone.Command{MilestoneUpdateDTO = milestoneUpdateDTO}));
+    }
+    
 }

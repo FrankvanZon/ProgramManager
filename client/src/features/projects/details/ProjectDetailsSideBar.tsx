@@ -1,8 +1,14 @@
-import { Paper, Typography, List, ListItem, Chip, ListItemAvatar, Avatar, ListItemText, Grid2 } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
+import ProgramProjectPlan from "../../program/projectPlan/ProgramProjectPlan";
+import YearControlBar from "../../common/controlBars/YearControlBar";
 
-export default function ProjectDetailsSidebar() {
-    const following = true;
-    const isHost = true;
+type Props = {
+    project: Project
+}
+
+
+export default function ProjectDetailsSidebar({project} : Props) {
+
     return (
         <>
             <Paper
@@ -14,43 +20,14 @@ export default function ProjectDetailsSidebar() {
                     p: 2,
                 }}
             >
-                <Typography variant="h6">
-                    Replace by programming
+                <Typography variant="h5">
+                    Project plan
                 </Typography>
             </Paper>
-            <Paper sx={{ padding: 2 }}>
-                <Grid2 container alignItems="center">
-                    <Grid2 size={8}>
-                        <List sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar
-                                        alt={'attendee name'}
-                                        src={'/assets/user.png'}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText>
-                                    <Typography variant="h6">Bob</Typography>
-                                </ListItemText>
-                            </ListItem>
-                        </List>
-                    </Grid2>
-                    <Grid2 size={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
-                        {isHost && (
-                            <Chip
-                                label="Host"
-                                color="warning"
-                                variant='filled'
-                                sx={{borderRadius: 2}}
-                            />
-                        )}
-                        {following && (
-                            <Typography variant="body2" color="orange">
-                                Following
-                            </Typography>
-                        )}
-                    </Grid2>
-                </Grid2>
+            <YearControlBar/>
+            <Paper sx={{mt:1, mb:2}} >
+            <Typography sx={{ml:2,p:1}} variant="subtitle2">{project.team}</Typography>
+            <ProgramProjectPlan project={project} />
             </Paper>
         </>
     );

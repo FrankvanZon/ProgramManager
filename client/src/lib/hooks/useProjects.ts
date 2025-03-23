@@ -5,21 +5,30 @@ import { useStore } from "./useStore";
 import { useAccount } from "./useAccount";
 
 export const useProjects = (id?: string) => {
-    const {projectStore} = useStore();
-    const {currentUser} = useAccount();
+    const { projectStore } = useStore();
+    const { currentUser } = useAccount();
     const queryClient = useQueryClient();
     const location = useLocation();
     const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
 
     //project list
-    const { data: projects, isLoading} = useQuery({
+    const { data: projects, isLoading } = useQuery({
         queryKey: ['projects'],
         queryFn: async () => {
             const response = await agent.get<Project[]>('/projects');
             projectStore.setProjects(response.data);
             return response.data;
         },
-        enabled: !id && paths.includes(location.pathname) && !!currentUser
+        enabled: !id && paths.includes(location.pathname) && !!currentUser,
+        select: data => {
+            return data.map(project => {
+                return {
+                    ...project,
+                    isFollowing: project?.followers.some(x => x.id === currentUser?.id),
+                    isOwner: project?.ownerId === currentUser?.id
+                }
+            })
+        }
     });
 
     //indiviual project
@@ -29,15 +38,21 @@ export const useProjects = (id?: string) => {
             const response = await agent.get<Project>(`/projects/${id}`);
             return response.data;
         },
-        enabled: !!id && !!currentUser
+        enabled: !!id && !!currentUser,
+        select: data => {
+            return {
+                ...data,
+                isFollowing: data?.followers.some(x => x.id === currentUser?.id),
+                isOwner: data?.ownerId === currentUser?.id
+            }
+        }
     });
-
 
 
     //edit
     const updateProject = useMutation({
         mutationFn: async (project: Project) => {
-            const response = await agent.put('/projects', project)
+            const response = await agent.put(`/projects/${project.id}`, project)
             return response.data;
         },
         onSuccess: async () => {
@@ -47,13 +62,50 @@ export const useProjects = (id?: string) => {
         }
     })
 
-    
+    //edit milestone
+    const updateProjectMilestone = useMutation({
+        mutationFn: async (milestoneUpdate: ProjectMilestoneUpdate) => {
+            const response = await agent.put(`/projects/${milestoneUpdate.id}/milestone`, milestoneUpdate)
+            return response.data;
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['projects'],
+            })
+        }
+    })
 
 
     //create
     const createProject = useMutation({
         mutationFn: async (project: Project) => {
             const response = await agent.post('/projects', project)
+            return response.data;
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['projects'],
+            })
+        }
+    })
+
+    //set or create a new project phase 
+    const setProjectPhase = useMutation({
+        mutationFn: async (projectPhase: ProjectPhase) => {
+            const response = await agent.post(`/projects/${projectPhase.projectId}/projectphase`, projectPhase)
+            return response.data;
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['projects'],
+            })
+        }
+    })
+
+    //set or create a new project phase 
+    const editProjectPhase = useMutation({
+        mutationFn: async (projectPhase: ProjectPhase) => {
+            const response = await agent.put(`/projects/${projectPhase.projectId}/projectphase`, projectPhase)
             return response.data;
         },
         onSuccess: async () => {
@@ -75,6 +127,48 @@ export const useProjects = (id?: string) => {
         }
     })
 
+    //set following of project
+    const updateFollowing = useMutation({
+        mutationFn: async (id:string) =>{
+            await agent.post(`/projects/${id}/follow`)
+        },
+        onMutate: async (projectId: string) => {
+            await queryClient.cancelQueries({
+                queryKey: ['projects', projectId]});
+            
+            const prevProject = queryClient.getQueryData<Project>(['projects',projectId])
+
+            queryClient.setQueryData<Project>(['projects',projectId], oldProject =>{
+                if (!oldProject || !currentUser){
+                    return oldProject
+                }
+
+                const isFollowing = oldProject.followers.some(x => x.id === currentUser.id);
+
+                return{
+                    ...oldProject,
+                    followers: 
+                        isFollowing
+                        ? oldProject.followers.filter(x => x.id !== currentUser.id )
+                        : [...oldProject.followers,{
+                            id: currentUser.id,
+                            displayName: currentUser.displayName,
+                            imageUrl: currentUser.imageUrl 
+                        }]
+            
+                }
+            });
+            
+            return {prevProject};
+            },
+            onError: (error,projectId, context) =>{
+                console.log(error)
+                if(context?.prevProject) {
+                    queryClient.setQueryData(['projects',projectId], context.prevProject)
+                }
+            }
+        })
+    
 
 
 
@@ -84,7 +178,11 @@ export const useProjects = (id?: string) => {
         updateProject,
         createProject,
         deleteProject,
+        updateProjectMilestone,
+        setProjectPhase,
+        editProjectPhase,
         project,
         isLoadingProject,
+        updateFollowing,
     }
 }

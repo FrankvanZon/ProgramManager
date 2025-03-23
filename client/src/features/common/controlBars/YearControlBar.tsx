@@ -8,7 +8,7 @@ const{yearStore} = useStore()
 
 
     return (
-        <Card elevation={2} sx={{ borderRadius: 2, gap: 1 }}>
+        <Card elevation={1} sx={{ mt:1,borderRadius: 1, gap: 1 }}>
             <Box display='flex' alignItems='center' justifyContent='space-between' mb={1} mt={1} mr={1} ml={1}>
                 <Button onClick={() => yearStore.decrement()}><ArrowBack /></Button>
                 {yearStore.Year}

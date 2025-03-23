@@ -10,38 +10,30 @@ type Props = {
     filterUpdate : ()=> void;
 }
 
-
-
-
 const MilestoneProjectCard = observer( function MilestoneProjectCard({ project,filterUpdate }: Props) {
     //const {projectStore} = useStore()
     const {id} = useParams();
-    const {updateProject} = useProjects(id);   
+    const {updateProjectMilestone} = useProjects(id);   
 
 
     const incrementMilestoneID = () => {
-        let data: Project = { ...project };
+        const data: ProjectMilestoneUpdate = {
+            id: project.id,
+            milestoneIncrease: 1
+        };
         
-        data = project;
-        data.milestoneID = project.milestoneID+1;
-        
-        
-        //projectStore.updateProject(project);
-        updateProject.mutateAsync(data);
-        filterUpdate();
-        
+        updateProjectMilestone.mutateAsync(data);
+        filterUpdate();  
     };
 
     const decrementMilestoneID = () => {
-        let data: Project = { ...project };
+        const data: ProjectMilestoneUpdate = {
+            id: project.id,
+            milestoneIncrease: -1
+        };
         
-        data = project;
-        data.milestoneID = project.milestoneID-1;
-
-        //projectStore.updateProject(project)
-        updateProject.mutateAsync(data)
+        updateProjectMilestone.mutateAsync(data);
         filterUpdate();
-        
     };
 
 

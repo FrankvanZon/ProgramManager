@@ -1,23 +1,45 @@
 type Project = {
     id: string
+    
     name: string
-    releaseDate: date
     description: string
     category: string
-    isCancelled: boolean
+    
     cluster: string
     team: string
-    startQuarter: number
-    launchQuarter: number
+
     milestoneID: number
     
+    //To be removed
+    releaseDate: date
+    startQuarter: number
+    launchQuarter: number
     projectPhaseNPDL: boolean
     projectPhaseVPC: boolean
     projectPhaseAPC: boolean
+
+    isCancelled: boolean
+    isOwner : boolean
+    ownerId : string
+    ownerDisplayName : string
+    
+    phases: ProjectPhase[]
+    followers : Profile[]
+
+    isFollowing : boolean
 }
 
-type ProjectPhase = {
+type Profile = {
     id: string
+    email?: string
+    displayName: string
+    imageUrl?: string
+}
+
+
+type ProjectPhase = {
+    id?: string
+    projectId : string
     phase: string
     required: boolean
     startQuarter: number
@@ -29,4 +51,9 @@ type User = {
     email: string
     displayName: string
     imageUrl?: string
+}
+
+type ProjectMilestoneUpdate = {
+    id: string
+    milestoneIncrease: number
 }

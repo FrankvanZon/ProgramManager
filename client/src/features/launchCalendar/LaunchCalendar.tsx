@@ -10,15 +10,15 @@ import YearControlBar from "../common/controlBars/YearControlBar";
 
 const LaunchCalendar = observer(function LaunchCalendar() {
   const { yearStore } = useStore()
-  const { projects, isPending } = useProjects()
+  const { projects, isLoading } = useProjects()
   //const FilterCommitted = true;
   const FilterMinMilestoneID = 6;
 
-  if (!projects || isPending) return
+  if (!projects || isLoading) return
   <Typography>Loading...</Typography>
 
 
-
+ 
 
   return (
     <Box>
@@ -37,7 +37,7 @@ const LaunchCalendar = observer(function LaunchCalendar() {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1}}>
               {["Trunking", "Industry", "Office", "Retail"].map(cluster => {
                 const filteredProjects = projects.filter(project =>
-                  project.launchQuarter === yearStore.YearQuarter(index) &&
+                  project.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter === yearStore.YearQuarter(index) &&
                   project.milestoneID >= FilterMinMilestoneID &&
                   project.cluster === cluster
                 );
