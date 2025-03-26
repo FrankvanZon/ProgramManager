@@ -1,5 +1,5 @@
 import { Box, Slider } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useStore } from "../../../lib/hooks/useStore";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router";
@@ -16,6 +16,7 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
   const { editProjectPhase } = useProjects(id);
   const { yearStore } = useStore();
   const [value, setValue] = React.useState<number[]>([0, 7]);
+  const [phases, setPhases] = useState(project.phases);
 
   const getProjectPhase = (phaseName: string) => {
     const phase = project.phases.find(p => p.phase === phaseName);
@@ -30,6 +31,8 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
     }
   };
 
+
+
   const handleCommit = (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
 
 
@@ -43,7 +46,7 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
         yearStore.Quarter(newValue[1]) : projectPhase.finishQuarter;
 
       editProjectPhase.mutate(projectPhase);
-
+      setPhases([...phases]); // Trigger re-render
     }
   };
 
@@ -51,7 +54,7 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
 
   useEffect(() => {
     if (phase === 'Combined') {
-      const { startQuarter, finishQuarter } = project.phases
+      const { startQuarter, finishQuarter } = phases
         .filter(phase => phase.required) // Filter phases where required is true
         .reduce((acc, curr) => {
           return {
@@ -59,7 +62,6 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
             finishQuarter: Math.max(acc.finishQuarter, curr.finishQuarter)
           };
         }, { startQuarter: 100000, finishQuarter: 0 });
-
       setValue([
         startQuarter == 100000 ? 0 : yearStore.InverseQuarter(startQuarter),
         yearStore.InverseQuarter(finishQuarter)]);
@@ -72,7 +74,7 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
       const end = 0
       setValue([start, end]);
     }
-  }, [phase, project.phases, projectPhase, yearStore, yearStore.Year]);
+  }, [phase, phases, projectPhase, yearStore, yearStore.Year, expandPlan]);
 
 
   const phaseColors: Record<Props['phase'], "success" | "warning" | "info" | "primary" | "error" | "secondary"> = {

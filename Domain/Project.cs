@@ -1,6 +1,7 @@
 namespace Domain;
 //To update the domain entity in the APP + Database, from main folder
-//dotnet ef migrations add "add projectID to projectphase" -p Persistence -s API
+//dotnet ef migrations add "add Photos with user" -p Persistence -s API
+//dotnet ef migrations remove -p Persistence -s API
 //dotnet ef database update -p Persistence -s API
 
 //Update the DTO objects and index.d.ts object
@@ -23,17 +24,14 @@ public class Project
     public required string Cluster { get; set; }
     public string Team { get; set; } = "";
     public required double MilestoneID { get; set; } = 4;
-
-
-    //can be removed
+    public string ProgramStatus { get; set; } ="New";
+    public string UpdatedBy { get; set; } = "";
+   
     public DateTime ReleaseDate { get; set; }
-    public double StartQuarter { get; set; }
-    public double LaunchQuarter { get; set; }
-    public bool ProjectPhaseVPC { get; set; } = false; 
-    public bool ProjectPhaseAPC { get; set; } = false;
-    public bool ProjectPhaseNPDL { get; set; } = true;
+    public double TargetLaunchQuarter { get; set; }
 
     //navigation properties
     public ICollection<ProjectPhase> Phases { get; set; } = [];
     public ICollection<ProjectFollowers> Followers { get; set; } = [];
+    public ICollection<Photo> Photos { get; set; } = [];
 }

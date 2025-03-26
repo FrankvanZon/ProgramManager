@@ -19,15 +19,13 @@ public class ProjectDto
     // project details
     public required string Cluster { get; set; }
     public string Team { get; set; } = "";
-    public double StartQuarter { get; set; }
-    public double LaunchQuarter { get; set; }
-
+    public double TargetLaunchQuarter { get; set; }
+    public string ProgramStatus { get; set; } ="New";
+    public string UpdatedBy { get; set; } = "";
     public required double MilestoneID { get; set; } = 4;
-    public bool ProjectPhaseVPC { get; set; } = false; 
-    public bool ProjectPhaseAPC { get; set; } = false;
-    public bool ProjectPhaseNPDL { get; set; } = true;
 
     //navigation properties
     public ICollection<ProjectPhase> Phases { get; set; } = [];
     public ICollection<UserProfile> Followers { get; set; } = [];
+    public ICollection<Photo> Photos { get; set; } = [];
 }

@@ -9,17 +9,17 @@ type Project = {
     team: string
 
     milestoneID: number
+    programStatus: string
+
     
     //To be removed
     releaseDate: date
-    startQuarter: number
-    launchQuarter: number
-    projectPhaseNPDL: boolean
-    projectPhaseVPC: boolean
-    projectPhaseAPC: boolean
+    targetlaunchQuarter: number
+
 
     isCancelled: boolean
     isOwner : boolean
+    updatedBy : string
     ownerId : string
     ownerDisplayName : string
     

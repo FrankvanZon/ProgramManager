@@ -9,6 +9,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public required DbSet<Project> Projects { get; set; }
     public required DbSet<ProjectPhase> ProjectPhases { get; set; }
     public required DbSet<ProjectFollowers> ProjectFollowers { get; set; }
+    public required DbSet<Photo> Photos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

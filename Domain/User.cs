@@ -11,4 +11,5 @@ public class User : IdentityUser
 
     //navigation properties
     public ICollection<ProjectFollowers> Projects { get; set; } = [];
+    public ICollection<Photo> Photos { get; set; } = [];
 }

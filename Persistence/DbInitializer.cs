@@ -51,8 +51,7 @@ public class DbInitializer
                 Category = "NPDL",
                 Cluster = "Office",
                 Team = "Team 1",
-                StartQuarter = 2501,
-                LaunchQuarter = 2504,
+                TargetLaunchQuarter = 2504,
                 MilestoneID = 4,
             },
             new() {
@@ -62,8 +61,7 @@ public class DbInitializer
                 Category = "NPDL",
                 Cluster = "Retail",
                 Team = "Team 1",
-                StartQuarter = 2501,
-                LaunchQuarter = 2504,
+                TargetLaunchQuarter = 2504,
                 MilestoneID = 4,
             },
             new() {
@@ -73,8 +71,7 @@ public class DbInitializer
                 Category = "NPDL",
                 Cluster = "Office",
                 Team = "Team 2",
-                StartQuarter = 2501,
-                LaunchQuarter = 2504,
+                TargetLaunchQuarter = 2504,
                 MilestoneID = 4,
             },
             new() {
@@ -84,8 +81,7 @@ public class DbInitializer
                 Category = "NPDL",
                 Cluster = "Industry",
                 Team = "Team 3",
-                StartQuarter = 2501,
-                LaunchQuarter = 2504,
+                TargetLaunchQuarter = 2504,
                 MilestoneID = 4,
             },
             new() {
@@ -95,8 +91,7 @@ public class DbInitializer
                 Category = "NPDL",
                 Cluster = "Trunking",
                 Team = "Team 5",
-                StartQuarter = 2501,
-                LaunchQuarter = 2504,
+                TargetLaunchQuarter = 2504,
                 MilestoneID = 4,
             },
             new() {
@@ -106,8 +101,7 @@ public class DbInitializer
                 Category = "NPDL",
                 Cluster = "Office",
                 Team = "Team 1",
-                StartQuarter = 2501,
-                LaunchQuarter = 2504,
+                TargetLaunchQuarter = 2504,
                 MilestoneID = 4,
             }
         };
