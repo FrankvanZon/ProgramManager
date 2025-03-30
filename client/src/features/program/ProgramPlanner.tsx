@@ -4,6 +4,7 @@ import { useProjects } from "../../lib/hooks/useProjects";
 
 import ProgramProjectPlan from "./projectPlan/ProgramProjectPlan";
 
+
 export default function ProgramPlanner() {
   const { projects, isLoading } = useProjects()
   
@@ -12,7 +13,6 @@ export default function ProgramPlanner() {
       return [...new Set(teams)];
     };
   
-    // Example usage:
   
   
   
@@ -23,7 +23,7 @@ export default function ProgramPlanner() {
   
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3}}>
-        {uniqueTeams.map(team => {
+        {uniqueTeams.sort().map(team => {
           const filteredProjects = projects.filter(project =>
             project.team === team
           ).sort((a, b) => {

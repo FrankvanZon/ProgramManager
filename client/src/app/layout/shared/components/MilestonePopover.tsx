@@ -3,12 +3,14 @@ import Popover from '@mui/material/Popover';
 import { Event } from "@mui/icons-material";
 import { IconButton } from '@mui/material';
 import MilestoneCard from '../../../../features/milestones/MilestoneCard';
+import { useNavigate } from 'react-router';
 
 type Props = {
     project: Project
 }
 
 export default function MilestonePopever({ project }: Props) {
+    const navigate = useNavigate();
     const colorFollow = project.isFollowing ? "secondary" : "primary";
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
@@ -27,10 +29,11 @@ export default function MilestonePopever({ project }: Props) {
             <IconButton
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
+                onClick={() => navigate(`/projects/${project.id}`)}
             >
             <Event
                 color={colorFollow}
-                sx={{ height: 40, width: 40 }} 
+                sx={{ height: 30, width: 30 }} 
             />
             </IconButton>
             <Popover

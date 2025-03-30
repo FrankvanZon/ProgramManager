@@ -14,6 +14,7 @@ import ProjectForm from "../../../features/projects/form/ProjectForm";
 import App from "../App";
 import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../../features/account/RegisterForm";
+import ProfilePage from "../../../features/profiles/ProfilePage";
 
 
 export const router = createBrowserRouter([
@@ -25,10 +26,12 @@ export const router = createBrowserRouter([
                 {path: 'projects', element: <ProjectDashboard />},
                 {path: 'projects/:id', element: <ProjectDetailsPage />},
                 {path: 'program', element: <ProgramBoard />},
+                {path: 'program/:id', element: <ProgramBoard />},
                 {path: 'milestones', element: <MilestoneBoard />},
                 {path: 'launchCalendar', element: <LaunchCalendar />},
                 {path: 'createProject', element: <ProjectForm key='create'/>},
                 {path: 'manage/:id', element: <ProjectForm />},
+                {path: 'profiles/:id', element: <ProfilePage />},
             ]},
             {path: '', element: <HomePage />},
             {path: 'counter', element: <Counter /> },

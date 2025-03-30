@@ -5,14 +5,14 @@ import { useStore } from "./useStore";
 import { useAccount } from "./useAccount";
 
 export const useProjects = (id?: string) => {
-    const { projectStore } = useStore();
+    const { projectStore, milestoneStore } = useStore();
     const { currentUser } = useAccount();
     const queryClient = useQueryClient();
     const location = useLocation();
     const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
 
     //project list
-    const { data: projects, isLoading } = useQuery({
+    const { data: projects, isLoading, refetch } = useQuery({
         queryKey: ['projects'],
         queryFn: async () => {
             const response = await agent.get<Project[]>('/projects');
@@ -25,7 +25,9 @@ export const useProjects = (id?: string) => {
                 return {
                     ...project,
                     isFollowing: project?.followers.some(x => x.id === currentUser?.id),
-                    isOwner: project?.ownerId === currentUser?.id
+                    isOwner: project?.ownerId === currentUser?.id,
+                    currentPhase: milestoneStore.Phase[project?.milestoneID],
+                    launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
                 }
             })
         }
@@ -43,7 +45,10 @@ export const useProjects = (id?: string) => {
             return {
                 ...data,
                 isFollowing: data?.followers.some(x => x.id === currentUser?.id),
-                isOwner: data?.ownerId === currentUser?.id
+                isOwner: data?.ownerId === currentUser?.id,
+                currentPhase: milestoneStore.Phase[data?.milestoneID],
+                launchQuarter: data?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
+                
             }
         }
     });
@@ -173,6 +178,7 @@ export const useProjects = (id?: string) => {
 
     return {
         projects,
+        refetch,
         isLoading,
         updateProject,
         createProject,

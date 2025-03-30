@@ -37,8 +37,9 @@ export default class YearStore{
         return this.Year % 100 *100+4
     }
 
+    //Shifted by 1 year, so slider scale goes from Y-1 , Y , Y+1
     Quarter(value:  number) {
-        const year = (this.Year %100 + Math.floor(value / 4))*100;
+        const year = ((this.Year-1) %100 + Math.floor(value / 4))*100;
         const quarter = this.quarters[value % 4];
         return year+quarter
     }
@@ -48,7 +49,7 @@ export default class YearStore{
         const yearIndex = (year - (this.Year-2000))*4
         const quarter = combined - year*100
         const quarterIndex = quarter -1
-        const value = yearIndex+quarterIndex;
+        const value = yearIndex+quarterIndex+4;
         return value;
       }
 

@@ -2,14 +2,14 @@ import { createContext } from "react";
 import CounterStore from "./counterStore";
 import YearStore from "./yearStore";
 import { UiStore } from "./uiStore";
-import MilestoeStore from "./milestoneStore";
+import MilestoneStore from "./milestoneStore";
 import ProjectStore from "./projectStore";
 
 interface Store{
     counterStore: CounterStore
     yearStore: YearStore
     uiStore : UiStore
-    milestoneStore : MilestoeStore
+    milestoneStore : MilestoneStore
     projectStore: ProjectStore
 }
 
@@ -17,7 +17,7 @@ export const store: Store = {
     counterStore: new CounterStore(),
     yearStore: new YearStore(),
     uiStore: new UiStore(),
-    milestoneStore: new MilestoeStore(),
+    milestoneStore: new MilestoneStore(),
     projectStore: new ProjectStore()
 }
 

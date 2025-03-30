@@ -25,7 +25,7 @@ const LaunchCalendar = observer(function LaunchCalendar() {
 
       <YearControlBar />
 
-      <Grid2 container gap={1.5} mt={2}>
+      <Grid2 container justifyContent="space-between" mt={2}>
         {[1, 2, 3, 4].map(index => (
           <Grid2 key={index} size={2.9}>
             <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>

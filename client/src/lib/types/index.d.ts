@@ -10,12 +10,14 @@ type Project = {
 
     milestoneID: number
     programStatus: string
+    currentPhase: string
 
     
     //To be removed
     releaseDate: date
-    targetlaunchQuarter: number
 
+    targetlaunchQuarter: number
+    launchQuarter : number | undefined
 
     isCancelled: boolean
     isOwner : boolean
@@ -36,6 +38,10 @@ type Profile = {
     imageUrl?: string
 }
 
+type Photo = {
+    id: string
+    url: string
+}
 
 type ProjectPhase = {
     id?: string

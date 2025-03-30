@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardHeader, CardMedia, Chip, Grid2, Typography } from "@mui/material"
-import { useNavigate } from "react-router";
 import { useStore } from "../../lib/hooks/useStore";
 import { formatDate } from "../../lib/util/util";
+import MilestonePopever from "../../app/layout/shared/components/MilestonePopover";
 
 
 type Props = {
@@ -9,7 +9,6 @@ type Props = {
 }
 
 export default function LaunchCalendarProjectCard({ project }: Props) {
-    const navigate = useNavigate();
     const {milestoneStore} = useStore();
     //const isCommitted = false;
     //const isProgrammed = false;
@@ -40,18 +39,14 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                     <Box display='flex' alignItems='top' justifyContent='space-between' >
                         
                         <CardHeader
+                            avatar={<MilestonePopever project={project}/>}
                             title={
                                 <Typography
                                     sx={{
                                         fontWeight: 'bold',
                                         fontSize: 18,
-                                        '&:hover': {
-                                            color: '#00E478',
-                                            textDecoration: 'underline',
-                                            cursor: 'pointer'
-                                        }
+                                        
                                     }}
-                                    onClick={() => navigate(`/projects/${project.id}`)}
                                 >
                                     {project.name}
                                 </Typography>

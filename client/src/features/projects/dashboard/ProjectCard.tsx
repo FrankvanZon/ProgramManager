@@ -59,7 +59,7 @@ export default function ProjectCard({project}: Props) {
                 <Typography sx={{ mr: 1, ml: 1 }} variant="subtitle1">{project.team}</Typography>
               </Box>
               <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle1">
-                 {milestoneStore.Phase[project.milestoneID]} : {milestoneStore.Milestone[project.milestoneID]}
+                 {project.currentPhase} : {milestoneStore.Milestone[project.milestoneID]}
               </Typography>
             </Box>
             <Divider />
