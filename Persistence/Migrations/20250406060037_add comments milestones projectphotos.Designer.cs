@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250406060037_add comments milestones projectphotos")]
+    partial class addcommentsmilestonesprojectphotos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -493,7 +496,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.ProjectPhoto", b =>
                 {
                     b.HasOne("Domain.Project", "Project")
-                        .WithMany()
+                        .WithMany("Photos")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -559,6 +562,8 @@ namespace Persistence.Migrations
                     b.Navigation("Followers");
 
                     b.Navigation("Phases");
+
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("Domain.ProjectPhase", b =>

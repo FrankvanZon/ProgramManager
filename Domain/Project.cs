@@ -1,6 +1,6 @@
 namespace Domain;
 //To update the domain entity in the APP + Database, from main folder
-//dotnet ef migrations add "add Photos with user" -p Persistence -s API
+//dotnet ef migrations add "remove photos from project" -p Persistence -s API
 //dotnet ef migrations remove -p Persistence -s API
 //dotnet ef database update -p Persistence -s API
 
@@ -33,5 +33,7 @@ public class Project
     //navigation properties
     public ICollection<ProjectPhase> Phases { get; set; } = [];
     public ICollection<ProjectFollowers> Followers { get; set; } = [];
-    public ICollection<Photo> Photos { get; set; } = [];
+    
+    //public ICollection<ProjectPhoto> Photos { get; set; } = [];
+    public ICollection<Comment> Comments { get; set; } = [];
 }

@@ -36,6 +36,15 @@ type Profile = {
     email?: string
     displayName: string
     imageUrl?: string
+    bio?: string
+}
+
+type Milestone = {
+    id: string
+    name: string
+    target : number
+    realized : number
+    onTime : number
 }
 
 type Photo = {
@@ -50,6 +59,17 @@ type ProjectPhase = {
     required: boolean
     startQuarter: number
     finishQuarter: number
+
+    milestones : Milestone[]
+}
+
+type ChatComment = {
+    id: string
+    createdAt : Date
+    body : string
+    userId : string
+    displayName : string
+    imageUrl? : string
 }
 
 type User = {

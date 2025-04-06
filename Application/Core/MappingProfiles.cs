@@ -12,6 +12,7 @@ public class MappingProfiles : Profile
     {
         CreateMap<Project, Project>();
         CreateMap<ProjectPhase, ProjectPhase>();
+        CreateMap<Milestone, Milestone>();
         CreateMap<CreateProjectDto, Project>();
         CreateMap<EditProjectDto, Project>();
         
@@ -32,5 +33,10 @@ public class MappingProfiles : Profile
             .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.User.ImageUrl));
 
         CreateMap<User, UserProfile>();
+
+        CreateMap<Comment, CommentDto>()
+            .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
+            .ForMember(d => d.UserId, o => o.MapFrom(s => s.User.Id))
+            .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.User.ImageUrl));
     }
 }

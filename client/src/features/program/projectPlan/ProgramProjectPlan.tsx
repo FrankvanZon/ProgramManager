@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import ProgramProjectPlanSlider from "./ProgramProjectPlanSlider";
 import { useLocation, useNavigate } from "react-router";
 import { useStore } from "../../../lib/hooks/useStore";
+import { observer } from "mobx-react-lite";
 
 
 type Props = {
     project: Project
 }
-
-export default function ProgramProjectPlan({ project }: Props) {
+const ProgramProjectPlan = observer(
+function ProgramProjectPlan({ project }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
     const { yearStore } = useStore();
@@ -132,4 +133,6 @@ export default function ProgramProjectPlan({ project }: Props) {
                 </Grid2>}
         </>
     )
-}
+})
+
+export default ProgramProjectPlan

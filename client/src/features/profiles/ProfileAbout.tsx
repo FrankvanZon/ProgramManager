@@ -18,7 +18,7 @@ export default function ProfileAbout() {
         <Divider sx={{my:2}} />
         <Box sx={{overflow: 'auto', maxHeight:350}} >
             <Typography variant="body1" sx={{whiteSpace: 'pre-wrap'}}>
-                No descriptio added yet
+                {profile?.bio ? profile.bio : "No description added yet"}
             </Typography>
         </Box>
     </Box>
