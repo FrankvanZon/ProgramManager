@@ -10,6 +10,7 @@ public class ProjectDto
     public required string Name { get; set; }
     public DateTime ReleaseDate { get; set; }
     public required string Description { get; set; }
+    public required string Program { get; set; }
     public required string Category { get; set; }
     public bool IsCancelled { get; set; }
  

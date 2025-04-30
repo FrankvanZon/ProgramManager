@@ -6,14 +6,26 @@ import MilestoneControlBar from "../common/controlBars/MilestoneControlBar";
 import MilestoneProjectCard from "./MilestoneProjectCard";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router";
 
 
 const MilestoneBoard = observer(function MilestoneBoard() {
   const queryClient = useQueryClient();
   const { milestoneStore } = useStore();
-  const { projects, isPending } = useProjects();
+  const { projects } = useProjects();
+    const location = useLocation();
 
   const [ msProjectStore, setMsProjectStore ] = useState<Project[]>(projects || []);
+
+  //milestoneStore.filterByMilestoneMin = 0;
+  //milestoneStore.filterByMilestoneMax = 11;
+
+  useEffect(() => {
+    if (location.pathname === "/milestones") {
+        milestoneStore.resetFilters();
+    }
+}, [location, milestoneStore]);
+
 
   useEffect(() => {
     if (projects) {
@@ -23,7 +35,7 @@ const MilestoneBoard = observer(function MilestoneBoard() {
   
   
 
-  if (!projects || isPending) return <Typography>Loading...</Typography>;
+  if (!projects) return <Typography>Loading...</Typography>;
 
   return (
     <Box>

@@ -3,6 +3,10 @@ import { makeAutoObservable } from 'mobx';
 export default class ProjectStore {
   projects: Project[] = [];
 
+  filterByCluster = 'all';
+  filterByProgram = 'all';
+
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -11,22 +15,16 @@ export default class ProjectStore {
     this.projects = projects;
   }
 
+  setFilterByCluster = (filter: string) => {
+    this.filterByCluster = filter
+  }
+
+  setFilterByProgram = (filter: string) => {
+    this.filterByProgram = filter
+    this.filterByCluster = 'all';
+  }
+
+
 }
 
-  // updateProject(updatedProject: Project) {
-  //   const index = this.projects.findIndex(project => project.id === updatedProject.id);
-  //   if (index !== -1) {
-  //     this.projects[index] = updatedProject;
-  //   }
-  // }
-  
-//   get groupedProjectByCluster() {
-//     return Object.entries(
-//         this.projects.reduce((projects, project) => {
-//             const cluster = project.cluster;
-//             projects[cluster] = projects[cluster] ? [...projects[cluster], project] : [project];
-//             return projects;
-//         }, {} as { [key: string]: Project[] })
-//     )
-// }
 

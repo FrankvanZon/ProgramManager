@@ -15,6 +15,8 @@ public class BaseProjectValidator<T, TDto> : AbstractValidator<T>
         
         RuleFor(x => selector(x).Description)
             .NotEmpty().WithMessage("Description is required");
+        RuleFor(x => selector(x).Program)
+            .NotEmpty().WithMessage("Program is required");  
         RuleFor(x => selector(x).Cluster)
             .NotEmpty().WithMessage("Cluster is required");        
         RuleFor(x => selector(x).Category)

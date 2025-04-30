@@ -1,3 +1,8 @@
+type PagedList<T, TCursor> = {
+    items: T[],
+    nextCursor: TCursor
+}
+
 type Project = {
     id: string
     
@@ -5,6 +10,7 @@ type Project = {
     description: string
     category: string
     
+    program: string
     cluster: string
     team: string
 
@@ -45,6 +51,7 @@ type Milestone = {
     target : number
     realized : number
     onTime : number
+    projectPhaseId : string
 }
 
 type Photo = {

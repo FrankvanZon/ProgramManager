@@ -1,3 +1,5 @@
+using Application.Core;
+using Application.Profiles.DTOs;
 using Application.Projects.Commands;
 using Application.Projects.DTOs;
 using Application.Projects.Queries;
@@ -12,8 +14,19 @@ namespace API.Controllers;
 public class ProjectsController : BaseApiController
 {
     [HttpGet]
-    public async Task<ActionResult<List<ProjectDto>>> GetProjects(){
-        return await Mediator.Send(new GetProjectList.Query());
+    public async Task<ActionResult<PagedList<ProjectDto, string?>>> GetProjects(
+            [FromQuery]ProjectParams projectParams){
+        return HandleResult(await Mediator.Send(new GetProjectList.Query{Params = projectParams}));
+    }
+
+    [HttpGet("all")]
+    public async Task<ActionResult<List<ProjectDto>>> GetAllProjects(string? cluster, string? program, int? milestoneMin, int? milestoneMax){
+        return HandleResult(await Mediator.Send(new GetAllProjectList.Query{
+            FilterByCluster = cluster,
+            FilterByProgram = program,
+            FilterByMilestoneMin = milestoneMin,
+            FilterByMilestoneMax = milestoneMax
+            }));
     }
 
     [HttpGet("{id}")]
@@ -60,6 +73,12 @@ public class ProjectsController : BaseApiController
     public async Task<ActionResult> SetProjectMilestone(MilestoneUpdateDTO milestoneUpdateDTO){
         return HandleResult(await Mediator.
         Send(new UpdateMilestone.Command{MilestoneUpdateDTO = milestoneUpdateDTO}));
+    }
+
+    [HttpPut("milestoneUpdate")]
+    public async Task<ActionResult> AddMilestoneData(MilestoneDTO[] milestones){
+        return HandleResult(await Mediator.
+        Send(new AddMilestoneData.Command { Milestones = milestones }));
     }
     
 }

@@ -1,4 +1,5 @@
 using System;
+using Application.Profiles.DTOs;
 using Application.Profilies.DTOs;
 using Application.Projects.DTOs;
 using AutoMapper;
@@ -13,6 +14,7 @@ public class MappingProfiles : Profile
         CreateMap<Project, Project>();
         CreateMap<ProjectPhase, ProjectPhase>();
         CreateMap<Milestone, Milestone>();
+        CreateMap<MilestoneDTO, Milestone>();
         CreateMap<CreateProjectDto, Project>();
         CreateMap<EditProjectDto, Project>();
         

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { projectSchema, ProjectSchema } from "../../../lib/schemas/projectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SelectInput from "../../../app/layout/shared/components/SelectInput";
-import { teamOptions } from "./teamOptions";
+import filteredTeamsOptions from "./filteredTeamsOptions";
 
 export default function ProjectForm() {
     const { reset, control, handleSubmit } = useForm<ProjectSchema>({
@@ -26,7 +26,6 @@ export default function ProjectForm() {
             if (project) {
                 updateProject.mutate({ ...project, ...data }, {
                     onSuccess: () => {
-                        navigate(`/program/`);
                         refetch(); 
                     }    
                 })
@@ -37,9 +36,12 @@ export default function ProjectForm() {
 
     }
 
+    
     if (isLoadingProject) return <Typography>Loading...</Typography>
 
     if (!project) return <></>
+
+    const optionsForTeam = filteredTeamsOptions(project?.cluster,project?.program);
 
     return (
         <Paper sx={{ borderRadius: 2, padding: 2, mb: 2  }}>
@@ -51,7 +53,7 @@ export default function ProjectForm() {
                 <SelectInput label='Team'
                     control={control}
                     name='team'
-                    items={teamOptions}
+                    items={optionsForTeam}
                 />
             
             <Box display="flex" justifyContent='end' gap={1}>

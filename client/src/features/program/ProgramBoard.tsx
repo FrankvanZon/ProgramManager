@@ -1,15 +1,23 @@
 import { Box, Grid2, Paper } from "@mui/material";
 import ProgramPlanner from "./ProgramPlanner";
-
 import YearControlBar from "../common/controlBars/YearControlBar";
 import { observer } from "mobx-react-lite";
 import ProjectTeamUpdate from "../projects/form/ProjectTeamUpdate";
-import FilterClusters from "../common/filters/FilterClusters";
+import { useEffect } from "react";
+import { useStore } from "../../lib/hooks/useStore";
+import { useLocation } from "react-router";
+
 
 
 const ProgramBoard = observer(function ProgramBoard() {
+  const { milestoneStore } = useStore()
+  const location = useLocation();
 
-
+  useEffect(() => {
+    if (location.pathname === "/program") {
+        milestoneStore.resetFilters();
+    }
+}, [location, milestoneStore]);
 
   return (
     <Box>
@@ -20,7 +28,6 @@ const ProgramBoard = observer(function ProgramBoard() {
     </Grid2>
     <Grid2 size={4} sx={{display: 'flex', flexDirection: 'column', gap:3, borderRadius:2}}>
         <Paper sx={{ borderRadius: 2, padding: 2 }}>
-        <FilterClusters />
         </Paper>
 
         <ProjectTeamUpdate />

@@ -4,21 +4,29 @@ import { useStore } from "../../lib/hooks/useStore";
 import LaunchCalendarProjectCard from "./LaunchCalendarProjectCard";
 import { useProjects } from "../../lib/hooks/useProjects";
 import YearControlBar from "../common/controlBars/YearControlBar";
+import { useLocation } from "react-router";
+import { useEffect } from "react";
 
 
 
 
 const LaunchCalendar = observer(function LaunchCalendar() {
-  const { yearStore } = useStore()
+  const { yearStore,milestoneStore } = useStore()
   const { projects, isLoading } = useProjects()
+  const location = useLocation();
   //const FilterCommitted = true;
-  const FilterMinMilestoneID = 6;
+
+  //milestoneStore.filterByMilestoneMin = 6;
+  //milestoneStore.filterByMilestoneMax = 11;
+
+  useEffect(() => {
+    if (location.pathname === "/launchCalendar") {
+        milestoneStore.resetFilters();
+    }
+}, [location, milestoneStore]);
 
   if (!projects || isLoading) return
   <Typography>Loading...</Typography>
-
-
- 
 
   return (
     <Box>
@@ -38,7 +46,7 @@ const LaunchCalendar = observer(function LaunchCalendar() {
               {["Trunking", "Industry", "Office", "Retail"].map(cluster => {
                 const filteredProjects = projects.filter(project =>
                   project.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter === yearStore.YearQuarter(index) &&
-                  project.milestoneID >= FilterMinMilestoneID &&
+                  project.milestoneID >= 6 &&
                   project.cluster === cluster
                 );
 

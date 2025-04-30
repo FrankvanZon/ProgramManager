@@ -1,5 +1,5 @@
 export const teamOptions =[
-    {text: 'Not Assigned', value:'Not Assigned'},
+    
     {text: 'Team Industry 1', value:'Team Industry 1'},
     {text: 'Team Industry 2', value:'Team Industry 2'},
     {text: 'Team Office 1', value:'Team Office 1'},
@@ -7,7 +7,15 @@ export const teamOptions =[
     {text: 'Team Retail 1', value:'Team Retail 1'},
     {text: 'Team Trunking 1', value:'Team Trunking 1'},
     {text: 'Team Trunking 2', value:'Team Trunking 2'},
+    {text: 'Team Road & Street 1', value:'Team Road & Street 1'},
+    {text: 'Team Solar 1', value:'Team Solar 1'},
+    {text: 'Team Sport & Area 1', value:'Team Sport & Area 1'},
+    {text: 'Team Tunnel 1', value:'Team Tunnel 1'},
+    {text: 'Team Urban 1', value:'Team Urban 1'},
     {text: 'Team BFR 1', value:'Team BFR 1'},
+    {text: 'FTDC Indoor', value:'FTDC Indoor'},
+    {text: 'FTDC Outdoor', value:'FTDC Outdoor'},
     {text: 'GOO', value:'GOO'},
-    {text: 'Factory Dev', value:'Factory Dev'}
+    {text: 'Factory Dev', value:'Factory Dev'},
+    {text: 'Not Assigned', value:'Not Assigned'},
 ]

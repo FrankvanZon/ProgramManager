@@ -1,21 +1,66 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
 import { useStore } from "./useStore";
 import { useAccount } from "./useAccount";
 
 export const useProjects = (id?: string) => {
-    const { projectStore, milestoneStore } = useStore();
+    const { milestoneStore, projectStore,
+        milestoneStore: { filterByMilestoneMin, filterByMilestoneMax }, projectStore: { filterByCluster, filterByProgram } } = useStore();
     const { currentUser } = useAccount();
     const queryClient = useQueryClient();
     const location = useLocation();
     const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
 
-    //project list
-    const { data: projects, isLoading, refetch } = useQuery({
-        queryKey: ['projects'],
+    //project list paged
+    const { data: projectsGroup, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery<PagedList<Project, string>>({
+        queryKey: ['projects', filterByCluster, filterByProgram, filterByMilestoneMin, filterByMilestoneMax],
+        queryFn: async ({ pageParam = null }) => {
+            //console.log('Fetching page with cursor:', pageParam);
+            const response = await agent.get<PagedList<Project, string>>('/projects', {
+                params: {
+                    cursor: pageParam,
+                    pageSize: 5,
+                    filterByCluster,
+                    filterByProgram,
+                    filterByMilestoneMin,
+                    filterByMilestoneMax
+                }
+            });
+            //console.log('Fetched data:', response.data);
+            return response.data;
+        },
+        initialPageParam: null,
+
+        getNextPageParam: (lastPage) => {
+            //console.log('Next cursor:', lastPage.nextCursor);
+            return lastPage.nextCursor;
+        },
+
+        enabled: !id && paths.includes(location.pathname) && !!currentUser,
+        select: data => ({
+            ...data,
+            pages: data.pages.map((page) => ({
+                ...page,
+                items: page.items.map(project => {
+                    return {
+                        ...project,
+                        isFollowing: project?.followers.some(x => x.id === currentUser?.id),
+                        isOwner: project?.ownerId === currentUser?.id,
+                        currentPhase: milestoneStore.Phase[project?.milestoneID],
+                        launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
+                    }
+                })
+            }))
+        })
+    });
+
+    //project list all
+    const { data: projects, refetch } = useQuery({
+        queryKey: ['projects/all', filterByCluster],
         queryFn: async () => {
-            const response = await agent.get<Project[]>('/projects');
+            const response = await agent.get<Project[]>
+                (`/projects/all?cluster=${filterByCluster}&program=${filterByProgram}&milestoneMin=${filterByMilestoneMin}&milestoneMax=${filterByMilestoneMax}`);
             projectStore.setProjects(response.data);
             return response.data;
         },
@@ -33,6 +78,7 @@ export const useProjects = (id?: string) => {
         }
     });
 
+
     //indiviual project
     const { data: project, isLoading: isLoadingProject } = useQuery({
         queryKey: ['projects', id],
@@ -48,7 +94,7 @@ export const useProjects = (id?: string) => {
                 isOwner: data?.ownerId === currentUser?.id,
                 currentPhase: milestoneStore.Phase[data?.milestoneID],
                 launchQuarter: data?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
-                
+
             }
         }
     });
@@ -134,50 +180,55 @@ export const useProjects = (id?: string) => {
 
     //set following of project
     const updateFollowing = useMutation({
-        mutationFn: async (id:string) =>{
+        mutationFn: async (id: string) => {
             await agent.post(`/projects/${id}/follow`)
         },
         onMutate: async (projectId: string) => {
             await queryClient.cancelQueries({
-                queryKey: ['projects', projectId]});
-            
-            const prevProject = queryClient.getQueryData<Project>(['projects',projectId])
+                queryKey: ['projects', projectId]
+            });
 
-            queryClient.setQueryData<Project>(['projects',projectId], oldProject =>{
-                if (!oldProject || !currentUser){
+            const prevProject = queryClient.getQueryData<Project>(['projects', projectId])
+
+            queryClient.setQueryData<Project>(['projects', projectId], oldProject => {
+                if (!oldProject || !currentUser) {
                     return oldProject
                 }
 
                 const isFollowing = oldProject.followers.some(x => x.id === currentUser.id);
 
-                return{
+                return {
                     ...oldProject,
-                    followers: 
+                    followers:
                         isFollowing
-                        ? oldProject.followers.filter(x => x.id !== currentUser.id )
-                        : [...oldProject.followers,{
-                            id: currentUser.id,
-                            displayName: currentUser.displayName,
-                            imageUrl: currentUser.imageUrl 
-                        }]
-            
+                            ? oldProject.followers.filter(x => x.id !== currentUser.id)
+                            : [...oldProject.followers, {
+                                id: currentUser.id,
+                                displayName: currentUser.displayName,
+                                imageUrl: currentUser.imageUrl
+                            }]
+
                 }
             });
-            
-            return {prevProject};
-            },
-            onError: (error,projectId, context) =>{
-                console.log(error)
-                if(context?.prevProject) {
-                    queryClient.setQueryData(['projects',projectId], context.prevProject)
-                }
+
+            return { prevProject };
+        },
+        onError: (error, projectId, context) => {
+            console.log(error)
+            if (context?.prevProject) {
+                queryClient.setQueryData(['projects', projectId], context.prevProject)
             }
-        })
-    
-    
+        }
+    })
+
+
 
     return {
         projects,
+        projectsGroup,
+        isFetchingNextPage,
+        fetchNextPage,
+        hasNextPage,
         refetch,
         isLoading,
         updateProject,

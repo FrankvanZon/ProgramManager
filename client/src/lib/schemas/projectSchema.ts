@@ -6,6 +6,7 @@ import { requiredString } from '../util/util'
 export const projectSchema = z.object({
     name: requiredString('name'),
     description: requiredString('description'),
+    program: requiredString('program'),
     cluster: requiredString('cluster'),
     category: requiredString('category'),
     team: requiredString('team'),

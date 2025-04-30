@@ -14,7 +14,7 @@ type Props = {
 const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, filterUpdate }: Props) {
     //const {projectStore} = useStore()
     const { id } = useParams();
-    const { updateProjectMilestone } = useProjects(id);
+    const { updateProjectMilestone, refetch } = useProjects(id);
 
 
     const incrementMilestoneID = () => {
@@ -23,7 +23,11 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
             milestoneIncrease: 1
         };
 
-        updateProjectMilestone.mutateAsync(data);
+        updateProjectMilestone.mutateAsync(data, {
+            onSuccess: () => {
+                refetch(); 
+            }    
+        });
         filterUpdate();
     };
 
@@ -33,7 +37,11 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
             milestoneIncrease: -1
         };
 
-        updateProjectMilestone.mutateAsync(data);
+        updateProjectMilestone.mutateAsync(data, {
+            onSuccess: () => {
+                refetch(); 
+            }    
+        });
         filterUpdate();
     };
 

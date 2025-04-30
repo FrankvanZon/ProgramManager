@@ -39,7 +39,7 @@ export default function ProjectCard({project}: Props) {
               }}
               subheader={
                 <>
-                  {project.cluster}
+                  {project.program} | {project.cluster}
                 </>
               } />
 
