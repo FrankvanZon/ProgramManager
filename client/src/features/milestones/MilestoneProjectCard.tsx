@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useProjects } from "../../lib/hooks/useProjects";
 import { useParams } from "react-router";
 import MilestonePopover from "../../app/layout/shared/components/MilestonePopover";
+import { useStore } from "../../lib/hooks/useStore";
 // import { useStore } from "../../lib/hooks/useStore";
 
 type Props = {
@@ -15,6 +16,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     //const {projectStore} = useStore()
     const { id } = useParams();
     const { updateProjectMilestone, refetch } = useProjects(id);
+    const{milestoneStore} = useStore()
 
 
     const incrementMilestoneID = () => {
@@ -51,7 +53,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
         <Card elevation={2} sx={{ borderRadius: 2, gap: 1 }}>
             <Box display='flex' justifyContent={'space-between'} alignItems={'center'} mb={1} mt={1} mr={1} ml={1}>
                 <Button
-                    disabled={project.milestoneID === 0}
+                    disabled={project.milestoneID === milestoneStore.filterByMilestoneMin+1}
                     onClick={decrementMilestoneID}
                 ><ArrowBack /></Button>
 
@@ -63,7 +65,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
 
 
                 <Button
-                    disabled={project.milestoneID === 11}
+                    disabled={project.milestoneID === milestoneStore.filterByMilestoneMax-4}
                     onClick={incrementMilestoneID}
                 ><ArrowForward /></Button>
             </Box>

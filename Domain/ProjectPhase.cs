@@ -10,5 +10,7 @@ public class ProjectPhase
     public required bool Required { get; set; }
     public double StartQuarter { get; set; }
     public double FinishQuarter { get; set; }
+
+    
     public ICollection<Milestone> Milestones { get; set; } = [];
 }

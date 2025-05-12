@@ -11,12 +11,12 @@ const{milestoneStore} = useStore()
         <Card elevation={2} sx={{ borderRadius: 2, gap: 1 }}>
             <Box display='flex' alignItems='center' justifyContent='space-between' mb={1} mt={1} mr={1} ml={1}>
                 <Button 
-                    disabled = {milestoneStore.id === 0}
-                    onClick={() => milestoneStore.decrement(2)}><ArrowBack /></Button>
-                {milestoneStore.Phase[milestoneStore.id]}
+                    disabled = {milestoneStore.id === milestoneStore.filterByMilestoneMin+1}
+                    onClick={() => milestoneStore.decrement(1)}><ArrowBack /></Button>
+                {milestoneStore.Milestones.find(m => m.phaseId === milestoneStore.id)?.phase}
                 <Button 
-                    disabled = {milestoneStore.id === 8}
-                    onClick={() => milestoneStore.increment(2)}><ArrowForward /></Button>
+                    disabled = {milestoneStore.id === milestoneStore.filterByMilestoneMax-4}
+                    onClick={() => milestoneStore.increment(1)}><ArrowForward /></Button>
             </Box>
         </Card>
     )

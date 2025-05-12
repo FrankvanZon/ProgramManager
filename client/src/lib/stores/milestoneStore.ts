@@ -2,15 +2,16 @@ import { makeAutoObservable } from 'mobx';
 
 export default class MilestoneStore {
     id = 0;
-    filterByMilestoneMin = -1;
-    filterByMilestoneMax = 12;
+    filterByMilestoneMin = -2;
+    filterByMilestoneMax = 13;
     filterByMilestonePhase = "all";
 
     Phase = ['APC', 'APC', 'APC', 'APC', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL'];
     MilestoneColor = ['primary', 'primary', 'primary', 'primary', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success'];
-    Milestone = ['PI', 'PS', 'PC', 'PR', '<PI', 'PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR'];
+    Milestone = ['PI', 'PS', 'PC', 'PR', '<PI', 'PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR','CIB'];
 
     Milestones = [
+        { phaseId: -1, phase: 'VPC', milestoneColor: 'warning', milestone: 'VPC' },
         { phaseId: 0, phase: 'APC', milestoneColor: 'primary', milestone: 'PI' },
         { phaseId: 1, phase: 'APC', milestoneColor: 'primary', milestone: 'PS' },
         { phaseId: 2, phase: 'APC', milestoneColor: 'primary', milestone: 'PC' },
@@ -22,7 +23,8 @@ export default class MilestoneStore {
         { phaseId: 8, phase: 'NPDL', milestoneColor: 'success', milestone: 'PPC' },
         { phaseId: 9, phase: 'NPDL', milestoneColor: 'success', milestone: 'PV' },
         { phaseId: 10, phase: 'NPDL', milestoneColor: 'success', milestone: 'SR' },
-        { phaseId: 11, phase: 'NPDL', milestoneColor: 'success', milestone: 'CR' }
+        { phaseId: 11, phase: 'NPDL', milestoneColor: 'success', milestone: 'CR' },
+        { phaseId: 12, phase: 'CIB', milestoneColor: 'secondary', milestone: 'CIB' },
     ]
 
     constructor() {
@@ -93,8 +95,8 @@ export default class MilestoneStore {
     }
 
     resetFilters = () => {
-        this.filterByMilestoneMin=-1
-        this.filterByMilestoneMax=12
+        this.filterByMilestoneMin=-2
+        this.filterByMilestoneMax=13
         //console.log(this.filterByMilestoneMin);
         //console.log(this.filterByMilestoneMax);
     }

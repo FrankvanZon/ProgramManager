@@ -1,9 +1,9 @@
 import { CalendarMonth } from "@mui/icons-material";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Divider, Grid2, Typography } from "@mui/material"
 import { useNavigate } from "react-router";
-import { formatDate } from "../../../lib/util/util";
 import { useStore } from "../../../lib/hooks/useStore";
 import MilestonePopever from "../../../app/layout/shared/components/MilestonePopover";
+import getMilestoneTarget from "./geMilestoneTarget";
 type Props = {
     project: Project
 }
@@ -65,7 +65,7 @@ export default function ProjectCard({project}: Props) {
             <Divider />
             <Box display={"flex"} gap={2} alignContent={"center"} mb={1} px={2} sx={{ backgroundColor: 'grey.200' }}>
               <CalendarMonth sx={{ mr: 1 }} />
-              <Typography>{formatDate(project.releaseDate)}</Typography>
+              <Typography>{getMilestoneTarget(project, 'NPDL', 'CR')}</Typography>
               
               
             </Box>
@@ -79,7 +79,6 @@ export default function ProjectCard({project}: Props) {
             <Box display='flex' gap={1} sx={{ mr: 1, ml: 1, mb: 1 }}>
               <Button onClick={() => navigate(`/projects/${project.id}`)} size="small" variant="contained">View</Button>
               <Button onClick={() => navigate(`/manage/${project.id}`)} size="small" variant="contained">Edit</Button>
-              <Button size="small" variant="contained">Team</Button>
             </Box>
           </CardActions>
         </Grid2>

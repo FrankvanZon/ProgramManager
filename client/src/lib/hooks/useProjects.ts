@@ -3,6 +3,7 @@ import agent from "../api/agent";
 import { useLocation } from "react-router";
 import { useStore } from "./useStore";
 import { useAccount } from "./useAccount";
+import { quarterToIndex } from "../util/util";
 
 export const useProjects = (id?: string) => {
     const { milestoneStore, projectStore,
@@ -10,7 +11,7 @@ export const useProjects = (id?: string) => {
     const { currentUser } = useAccount();
     const queryClient = useQueryClient();
     const location = useLocation();
-    const paths = ['/projects', '/program', '/launchCalendar', '/milestones'];
+    const paths = ['/projects', '/program', '/launchCalendar', '/milestones','/roadmap'];
 
     //project list paged
     const { data: projectsGroup, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery<PagedList<Project, string>>({
@@ -56,7 +57,7 @@ export const useProjects = (id?: string) => {
     });
 
     //project list all
-    const { data: projects, refetch } = useQuery({
+    const { data: projects, refetch, isLoading: isLoadingAllProject } = useQuery({
         queryKey: ['projects/all', filterByCluster],
         queryFn: async () => {
             const response = await agent.get<Project[]>
@@ -67,12 +68,28 @@ export const useProjects = (id?: string) => {
         enabled: !id && paths.includes(location.pathname) && !!currentUser,
         select: data => {
             return data.map(project => {
+                const requiredPhases = project.phases.filter(p => p.required);
+
+                const startQuarter = requiredPhases.length > 0
+                    ? Math.min(...requiredPhases.map(p => p.startQuarter))
+                    : undefined;
+
+                const endQuarter = requiredPhases.length > 0
+                    ? Math.max(...requiredPhases.map(p => p.finishQuarter))
+                    : undefined;
+
+                const totalDuration = (startQuarter !== undefined && endQuarter !== undefined)
+                    ? quarterToIndex(endQuarter) - quarterToIndex(startQuarter) + 1
+                    : undefined;
+
                 return {
                     ...project,
                     isFollowing: project?.followers.some(x => x.id === currentUser?.id),
                     isOwner: project?.ownerId === currentUser?.id,
                     currentPhase: milestoneStore.Phase[project?.milestoneID],
-                    launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
+                    launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter,
+                    startQuarter,
+                    totalDuration
                 }
             })
         }
@@ -117,6 +134,19 @@ export const useProjects = (id?: string) => {
     const updateProjectMilestone = useMutation({
         mutationFn: async (milestoneUpdate: ProjectMilestoneUpdate) => {
             const response = await agent.put(`/projects/${milestoneUpdate.id}/milestone`, milestoneUpdate)
+            return response.data;
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['projects'],
+            })
+        }
+    })
+
+    //edit milestone plan
+    const updateProjectMilestonePlan = useMutation({
+        mutationFn: async (milestoneUpdates: Milestone[]) => {
+            const response = await agent.put(`/projects/milestoneUpdate`, milestoneUpdates)
             return response.data;
         },
         onSuccess: async () => {
@@ -225,6 +255,7 @@ export const useProjects = (id?: string) => {
 
     return {
         projects,
+        isLoadingAllProject,
         projectsGroup,
         isFetchingNextPage,
         fetchNextPage,
@@ -240,5 +271,6 @@ export const useProjects = (id?: string) => {
         project,
         isLoadingProject,
         updateFollowing,
+        updateProjectMilestonePlan,
     }
 }

@@ -53,9 +53,10 @@ const MilestoneBoard = observer(function MilestoneBoard() {
                   <Typography 
                     variant="subtitle1"
                     sx={{ fontWeight: 'bold' }}
-                    color={milestoneStore.MilestoneColor[milestoneStore.id + index] || 'primary'}
+                    color={milestoneStore.Milestones.find(m => m.phaseId === milestoneStore.id + index)?.milestoneColor || 'primary'}
+
                     >
-                  {milestoneStore.Milestone[milestoneStore.id + index]}
+                  {milestoneStore.Milestones.find(m => m.phaseId === milestoneStore.id + index)?.milestone}
                   </Typography>
                 </Box>
               </Card>

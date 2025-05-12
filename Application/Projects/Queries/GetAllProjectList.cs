@@ -26,6 +26,8 @@ public class GetAllProjectList
         public async Task<Result<List<ProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = context.Projects
+                .Include(p => p.Phases)
+                .ThenInclude(pp => pp.Milestones)
                 .Where(x => x.IsCancelled == false)
                 .OrderByDescending(x => x.MilestoneID)  // First, order by MilestoneID in descending order
                 .ThenBy(x => x.Name)                    // Then, order by Name in ascending order

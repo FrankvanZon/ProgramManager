@@ -24,6 +24,8 @@ public class GetProjectList
         public async Task<Result<PagedList<ProjectDto, string?>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = context.Projects
+                .Include(p => p.Phases)
+                .ThenInclude(pp => pp.Milestones)            
                 .OrderBy(x => x.Id)
                 .AsQueryable();
 

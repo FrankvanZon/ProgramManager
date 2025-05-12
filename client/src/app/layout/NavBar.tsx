@@ -52,6 +52,7 @@ export default function NavBar() {
                   Program
                 </MenuItemLink>
 
+
               </MenuList>
 
               <MenuList>
@@ -66,6 +67,15 @@ export default function NavBar() {
 
               </MenuList>
 
+              <MenuList>
+
+              <MenuItemLink to='/roadmap' >
+                  Roadmap
+                </MenuItemLink>
+
+
+
+              </MenuList>
 
 
 

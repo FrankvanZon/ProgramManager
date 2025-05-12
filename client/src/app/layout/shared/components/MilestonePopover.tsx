@@ -11,7 +11,7 @@ type Props = {
 
 export default function MilestonePopever({ project }: Props) {
     const navigate = useNavigate();
-    const colorFollow = project.isFollowing ? "secondary" : "primary";
+    const colorFollow = project.isFollowing ? "primary" : "primary";
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {

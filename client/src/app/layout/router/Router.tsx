@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import LoginForm from "../../../features/account/LoginForm";
-import Counter from "../../../features/counter/counter";
 import NotFound from "../../../features/errors/NotFound";
 import ServerErrors from "../../../features/errors/ServerErrors";
 import TestErrors from "../../../features/errors/TestErrors";
@@ -15,6 +14,7 @@ import App from "../App";
 import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../../features/account/RegisterForm";
 import ProfilePage from "../../../features/profiles/ProfilePage";
+import ProjectRoadmap from "../../../features/roadmap/ProjectRoadmap";
 
 
 export const router = createBrowserRouter([
@@ -26,6 +26,7 @@ export const router = createBrowserRouter([
                 {path: 'projects', element: <ProjectDashboard />},
                 {path: 'projects/:id', element: <ProjectDetailsPage />},
                 {path: 'program', element: <ProgramBoard />},
+                {path: 'roadmap', element: <ProjectRoadmap />},
                 {path: 'program/:id', element: <ProgramBoard />},
                 {path: 'milestones', element: <MilestoneBoard />},
                 {path: 'launchCalendar', element: <LaunchCalendar />},
@@ -34,7 +35,6 @@ export const router = createBrowserRouter([
                 {path: 'profiles/:id', element: <ProfilePage />},
             ]},
             {path: '', element: <HomePage />},
-            {path: 'counter', element: <Counter /> },
             {path: 'errors', element: <TestErrors /> },
             {path: 'not-found', element: <NotFound /> },
             {path: 'server-error', element: <ServerErrors /> },

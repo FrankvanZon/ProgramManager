@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace Domain;
 
@@ -12,5 +13,7 @@ public class Milestone
 
     //nav
     public required string ProjectPhaseId { get; set; }
-    public required ProjectPhase ProjectPhase { get; set; }
+
+    [JsonIgnore]
+    public ProjectPhase ProjectPhase { get; set; } = null!;
 }

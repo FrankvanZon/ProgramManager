@@ -22,6 +22,8 @@ public class GetProjectDetails
         public async Task<Result<ProjectDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var project = await context.Projects
+                .Include(p => p.Phases)
+                .ThenInclude(pp => pp.Milestones)
                 .ProjectTo<ProjectDto>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => request.Id == x.Id, cancellationToken);
             

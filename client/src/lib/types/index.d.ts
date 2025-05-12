@@ -22,8 +22,10 @@ type Project = {
     //To be removed
     releaseDate: date
 
-    targetlaunchQuarter: number
+    targetlaunchQuarter: number | undefined
+    startQuarter : number | undefined
     launchQuarter : number | undefined
+    totalDuration : number | undefined
 
     isCancelled: boolean
     isOwner : boolean
