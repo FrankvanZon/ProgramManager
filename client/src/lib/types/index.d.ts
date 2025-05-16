@@ -49,6 +49,7 @@ type Profile = {
 
 type Milestone = {
     id: string
+    milestoneId? : number
     name: string
     target : number
     realized : number
@@ -90,5 +91,5 @@ type User = {
 
 type ProjectMilestoneUpdate = {
     id: string
-    milestoneIncrease: number
+    newMilestoneId: number
 }

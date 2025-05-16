@@ -7,6 +7,7 @@ public class Milestone
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public required string Name { get; set; }
+    public required double MilestoneRefId { get; set; }
     public double Target { get; set; }
     public double Realized { get; set; }
     public double OnTime { get; set; }

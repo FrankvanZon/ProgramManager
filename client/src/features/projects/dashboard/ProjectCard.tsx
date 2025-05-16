@@ -11,10 +11,6 @@ type Props = {
 export default function ProjectCard({project}: Props) {
   const {milestoneStore} = useStore();
   const navigate = useNavigate();
-  const isCommitted = false;
-  const isProgrammed = false;
-  const color = isCommitted ? 'secondary' : 'default';
-  const label = isCommitted ? 'Commmited' : isProgrammed? 'Programmed' : 'Proposed';
 
   return (
     <Card elevation={3} sx={{ borderRadius: 2 }}>
@@ -39,13 +35,13 @@ export default function ProjectCard({project}: Props) {
               }}
               subheader={
                 <>
-                  {project.program} | {project.cluster}
+                  {project.program} | {project.cluster} | {project.category}
                 </>
               } />
 
             <Box display='flex' flexDirection='column' gap={0} mr={2} >
               {(project.isCancelled) && <Chip label='Cancelled' color="error" sx={{ borderRadius: 2 }} />}
-              {(!project.isCancelled) && <Chip label={label} color={color} />}
+              {(!project.isCancelled) && <Chip label={project.programStatus} color={'default'} />}
             </Box>
           </Box>
 
@@ -59,7 +55,7 @@ export default function ProjectCard({project}: Props) {
                 <Typography sx={{ mr: 1, ml: 1 }} variant="subtitle1">{project.team}</Typography>
               </Box>
               <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle1">
-                 {project.currentPhase} : {milestoneStore.Milestone[project.milestoneID]}
+                 {project.currentPhase} : {milestoneStore.currentMilestone(project.milestoneID)}
               </Typography>
             </Box>
             <Divider />

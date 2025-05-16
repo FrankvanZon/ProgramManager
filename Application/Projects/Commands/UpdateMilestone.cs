@@ -24,7 +24,12 @@ public class UpdateMilestone
             
             if(project == null) return Result<Unit>.Failure("Project not found", 404);
 
-            project.MilestoneID += request.MilestoneUpdateDTO.MilestoneIncrease;
+            project.MilestoneID = request.MilestoneUpdateDTO.NewMilestoneId;
+
+            if (project.MilestoneID <= 5 ) project.ProgramStatus = "Proposed";
+            if (project.MilestoneID >= 6 && project.MilestoneID <= 10) project.ProgramStatus = "Committed";
+            if (project.MilestoneID == 11) project.ProgramStatus = "Released";
+            if (project.MilestoneID >= 12) project.ProgramStatus = "Proposed";
 
             var result = await context.SaveChangesAsync(cancellationToken) > 0;
 

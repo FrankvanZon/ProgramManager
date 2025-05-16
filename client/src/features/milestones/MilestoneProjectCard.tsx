@@ -22,7 +22,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     const incrementMilestoneID = () => {
         const data: ProjectMilestoneUpdate = {
             id: project.id,
-            milestoneIncrease: 1
+            newMilestoneId: project.milestoneID+1
         };
 
         updateProjectMilestone.mutateAsync(data, {
@@ -36,7 +36,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     const decrementMilestoneID = () => {
         const data: ProjectMilestoneUpdate = {
             id: project.id,
-            milestoneIncrease: -1
+            newMilestoneId: project.milestoneID-1
         };
 
         updateProjectMilestone.mutateAsync(data, {
@@ -46,8 +46,6 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
         });
         filterUpdate();
     };
-
-
 
     return (
         <Card elevation={2} sx={{ borderRadius: 2, gap: 1 }}>
@@ -65,7 +63,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
 
 
                 <Button
-                    disabled={project.milestoneID === milestoneStore.filterByMilestoneMax-4}
+                    disabled={project.milestoneID === milestoneStore.filterByMilestoneMax-1}
                     onClick={incrementMilestoneID}
                 ><ArrowForward /></Button>
             </Box>

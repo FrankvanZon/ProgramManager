@@ -8,10 +8,11 @@ import { useProjects } from '../../lib/hooks/useProjects';
 
 type Props = {
     Milestones: string[];
+    MilestoneIds: number[];
     PhaseFilter: string;
 };
 
-const MilestoneDetails = ({Milestones, PhaseFilter} : Props) => {
+const MilestoneDetails = ({Milestones, PhaseFilter, MilestoneIds} : Props) => {
     const { id } = useParams();
     const { project, refetch, updateProjectMilestonePlan } = useProjects(id);
 
@@ -21,24 +22,25 @@ const MilestoneDetails = ({Milestones, PhaseFilter} : Props) => {
 
     useEffect(() => {
         if (project) {
-            const apcPhase = project.phases.find((phase) => phase.phase === PhaseFilter);
+            const phase = project.phases.find((phase) => phase.phase === PhaseFilter);
 
-            if (apcPhase && apcPhase.required) {
-                const existingMilestones = apcPhase.milestones.filter((m: Milestone) =>
+            if (phase && phase.required) {
+                const existingMilestones = phase.milestones.filter((m: Milestone) =>
                     Milestones.includes(m.name)
                 );
 
                 // If some or all milestones are missing, initialize them
                 if (existingMilestones.length < Milestones.length) {
-                    const filledMilestones: Milestone[] = Milestones.map((name) => {
+                    const filledMilestones: Milestone[] = Milestones.map((name, idx) => {
                         const existing = existingMilestones.find((m) => m.name === name);
                         return existing || {
                             id: '', // will be assigned by backend
+                            milestoneId: MilestoneIds[idx], // Assign ID here
                             name,
                             target: 0,
                             realized: 0,
                             onTime: 0,
-                            projectPhaseId: apcPhase.id || ''
+                            projectPhaseId: phase.id || ''
                         };
                     });
 
@@ -56,7 +58,7 @@ const MilestoneDetails = ({Milestones, PhaseFilter} : Props) => {
                 }
             }
         }
-    }, [project, Milestones, PhaseFilter]);
+    }, [project, Milestones, MilestoneIds, PhaseFilter]);
 
     const handleChange = (index: number, field: 'target' | 'realized', value: string) => {
         const updated = [...data];

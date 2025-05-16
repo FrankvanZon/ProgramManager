@@ -3,13 +3,10 @@ import { Box, Divider, Grid2, Paper, Tab, Tabs, Typography } from "@mui/material
 import ProjectTeamUpdate from "../form/ProjectTeamUpdate";
 import MilestoneDetails from "../../milestones/MilestoneDetails";
 import { SyntheticEvent, useState } from "react";
-// import { formatDate } from "../../../lib/util/util";
 
 type Props = {
     project: Project
 }
-
-
 
 export default function ProjectDetailsInfo({ project }: Props) {
     const [value, setValue] = useState(1);
@@ -18,10 +15,11 @@ export default function ProjectDetailsInfo({ project }: Props) {
         setValue(newValue);
     }
 
-
     const tabContent = [
-        { label: 'APC', content: <MilestoneDetails Milestones={['PI', 'PS', 'PC', 'PR']} PhaseFilter="APC" /> },
-        { label: 'NPDL', content: <MilestoneDetails Milestones={['PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR']} PhaseFilter="NPDL" /> },
+        { label: 'VPC', content: <MilestoneDetails MilestoneIds={[-2,-1]} Milestones={['Start','Finish']} PhaseFilter="VPC" /> },
+        { label: 'APC', content: <MilestoneDetails MilestoneIds={[0,1,2,3]} Milestones={['PI', 'PS', 'PC', 'PR']} PhaseFilter="APC" /> },
+        { label: 'NPDL', content: <MilestoneDetails MilestoneIds={[4,5,6,7,8,9,10,11]} Milestones={['PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR']} PhaseFilter="NPDL" /> },
+        { label: 'CIB', content: <MilestoneDetails MilestoneIds={[12,13,14,15]} Milestones={['CI','CRA','IPA','RP']} PhaseFilter="CIB" /> },
     ]
 
 
@@ -34,7 +32,7 @@ export default function ProjectDetailsInfo({ project }: Props) {
                         <Info color="info" fontSize="large" />
                     </Grid2>
                     <Grid2 size={11}>
-                        <Typography>{project.description}</Typography>
+                        <Typography>{project.program} | {project.cluster} | {project.category}</Typography>
                     </Grid2>
                 </Grid2>
                 <Divider />
@@ -43,7 +41,7 @@ export default function ProjectDetailsInfo({ project }: Props) {
                         <CalendarMonth color="info" fontSize="large" />
                     </Grid2>
                     <Grid2 size={11}>
-                        <Typography>{project.launchQuarter}</Typography>
+                        <Typography>Target Launch Quarter {project.launchQuarter}</Typography>
                     </Grid2>
                 </Grid2>
                 <Divider />
@@ -53,7 +51,7 @@ export default function ProjectDetailsInfo({ project }: Props) {
                         <Place color="info" fontSize="large" />
                     </Grid2>
                     <Grid2 size={11}>
-
+                        <Typography>Next milestone {project.programStatus}</Typography>
                     </Grid2>
                 </Grid2>
             </Paper>

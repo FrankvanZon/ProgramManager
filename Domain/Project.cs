@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain;
 //To update the domain entity in the APP + Database, from main folder
-//dotnet ef migrations add "program field" -p Persistence -s API
+//dotnet ef migrations add "milestoneId to milestoneRefid" -p Persistence -s API
 //dotnet ef migrations remove -p Persistence -s API
 //dotnet ef database update -p Persistence -s API
 

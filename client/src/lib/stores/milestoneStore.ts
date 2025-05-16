@@ -2,16 +2,18 @@ import { makeAutoObservable } from 'mobx';
 
 export default class MilestoneStore {
     id = 0;
-    filterByMilestoneMin = -2;
-    filterByMilestoneMax = 13;
+    filterByMilestoneMin = -3;
+    filterByMilestoneMax = 16;
     filterByMilestonePhase = "all";
 
-    Phase = ['APC', 'APC', 'APC', 'APC', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL'];
-    MilestoneColor = ['primary', 'primary', 'primary', 'primary', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success'];
-    Milestone = ['PI', 'PS', 'PC', 'PR', '<PI', 'PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR','CIB'];
+    //Phase = ['APC', 'APC', 'APC', 'APC', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL', 'NPDL'];
+    //MilestoneColor = ['primary', 'primary', 'primary', 'primary', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success'];
+    //Milestone = ['PI', 'PS', 'PC', 'PR', '<PI', 'PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR','CIB'];
 
     Milestones = [
-        { phaseId: -1, phase: 'VPC', milestoneColor: 'warning', milestone: 'VPC' },
+        { phaseId: -99, phase: 'Cancelled', milestoneColor: 'error', milestone: 'Cancelled' },
+        { phaseId: -2, phase: 'VPC', milestoneColor: 'warning', milestone: 'Start' },
+        { phaseId: -1, phase: 'VPC', milestoneColor: 'warning', milestone: 'Finish' },
         { phaseId: 0, phase: 'APC', milestoneColor: 'primary', milestone: 'PI' },
         { phaseId: 1, phase: 'APC', milestoneColor: 'primary', milestone: 'PS' },
         { phaseId: 2, phase: 'APC', milestoneColor: 'primary', milestone: 'PC' },
@@ -24,7 +26,10 @@ export default class MilestoneStore {
         { phaseId: 9, phase: 'NPDL', milestoneColor: 'success', milestone: 'PV' },
         { phaseId: 10, phase: 'NPDL', milestoneColor: 'success', milestone: 'SR' },
         { phaseId: 11, phase: 'NPDL', milestoneColor: 'success', milestone: 'CR' },
-        { phaseId: 12, phase: 'CIB', milestoneColor: 'secondary', milestone: 'CIB' },
+        { phaseId: 12, phase: 'CIB', milestoneColor: 'secondary', milestone: 'CI' },
+        { phaseId: 13, phase: 'CIB', milestoneColor: 'secondary', milestone: 'CRA' },
+        { phaseId: 14, phase: 'CIB', milestoneColor: 'secondary', milestone: 'IPA' },
+        { phaseId: 15, phase: 'CIB', milestoneColor: 'secondary', milestone: 'RP' },
     ]
 
     constructor() {
@@ -100,4 +105,14 @@ export default class MilestoneStore {
         //console.log(this.filterByMilestoneMin);
         //console.log(this.filterByMilestoneMax);
     }
+
+    currentMilestone = (id: number):string  => {
+    return this.Milestones.find(m => m.phaseId === id)?.milestone || 'new';
+    }
+
+    currentPhase = (id: number): string => {
+    return this.Milestones.find(m => m.phaseId === id)?.phase || 'new';
+    }
+
+
 }

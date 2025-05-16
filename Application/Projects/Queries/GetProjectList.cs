@@ -25,7 +25,8 @@ public class GetProjectList
         {
             var query = context.Projects
                 .Include(p => p.Phases)
-                .ThenInclude(pp => pp.Milestones)            
+                .ThenInclude(pp => pp.Milestones)
+                .Where(x => !x.IsCancelled) 
                 .OrderBy(x => x.Id)
                 .AsQueryable();
 
@@ -52,8 +53,14 @@ public class GetProjectList
             }
 
 
+            if (request.Params.FilterByMilestoneMin.HasValue)
             {
-                query = query.Where(x => x.MilestoneID >= request.Params.FilterByMilestoneMin && x.MilestoneID <= request.Params.FilterByMilestoneMax);
+                query = query.Where(x => x.MilestoneID >= request.Params.FilterByMilestoneMin.Value);
+            }
+
+            if (request.Params.FilterByMilestoneMax.HasValue)
+            {
+                query = query.Where(x => x.MilestoneID <= request.Params.FilterByMilestoneMax.Value);
             }
 
             var projectedProjects = query.ProjectTo<ProjectDto>(mapper.ConfigurationProvider);

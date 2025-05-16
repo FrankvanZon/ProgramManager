@@ -1,8 +1,7 @@
 import { Box, Card, CardContent, CardHeader, CardMedia, Chip, Grid2, Typography } from "@mui/material"
 import { useStore } from "../../lib/hooks/useStore";
-import { formatDate } from "../../lib/util/util";
 import MilestonePopever from "../../app/layout/shared/components/MilestonePopover";
-
+import getMilestoneTarget from "../projects/dashboard/geMilestoneTarget";
 
 type Props = {
     project: Project
@@ -74,10 +73,10 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                     <CardContent sx={{ p: 0 }}>
                         <Box display='flex' alignItems='center' justifyContent='space-between'>
                             <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
-                                {formatDate(project.releaseDate)}
+                                {getMilestoneTarget(project, 'NPDL', 'CR')}
                             </Typography>
                             <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
-                                {milestoneStore.Milestone[project.milestoneID]}
+                                {milestoneStore.currentMilestone(project.milestoneID)}
                             </Typography>
                         </Box>
                     </CardContent>

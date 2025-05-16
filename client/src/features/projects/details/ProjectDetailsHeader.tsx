@@ -1,8 +1,7 @@
 import { Card, CardMedia, Box, Typography, Chip } from "@mui/material";
 import { Link } from "react-router";
-import { formatDate } from "../../../lib/util/util";
-import { useProjects } from "../../../lib/hooks/useProjects";
 import StyledButton from "../../../app/layout/shared/components/StyledButton";
+import { useStore } from "../../../lib/hooks/useStore";
 
 type Props = {
     project: Project
@@ -10,15 +9,15 @@ type Props = {
 
 
 export default function ProjectDetailsHeader({ project }: Props) {
-    const { updateFollowing } = useProjects(project.id);
+    const { milestoneStore } = useStore();
 
     return (
         <Card sx={{ position: 'relative', mb: 2, backgroundColor: 'transparent', overflow: 'hidden' }}>
             {!project.isCancelled && (
                 <Chip
-                    sx={{ position: 'absolute', left: 20, top: 20, borderRadius:2, zIndex: 1000 }}
+                    sx={{ position: 'absolute', left: 20, top: 20, borderRadius: 2, zIndex: 1000 }}
                     color="primary"
-                    label="Proposed"
+                    label={project.programStatus}
                 />
             )}
             <CardMedia
@@ -43,37 +42,20 @@ export default function ProjectDetailsHeader({ project }: Props) {
                 {/* Text Section */}
                 <Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{project.name}</Typography>
-                    <Typography variant="subtitle1">{formatDate(project.releaseDate)}</Typography>
-                    <Typography variant="subtitle2">
-                        Managed by <Link to={`/profiles/${project.ownerId}`} style={{ color: 'white', fontWeight: 'bold' }}>{project.ownerDisplayName}</Link>
-                    </Typography>
+                    <Typography variant="subtitle1">{milestoneStore.currentMilestone(project.milestoneID)}</Typography>
                 </Box>
 
                 {/* Buttons aligned to the right */}
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                    {/*To be updated after role implementation*/}
-                    {project.isOwner ? (
-                        <>
-                            <StyledButton
-                                variant="contained"
-                                color="primary"
-                                component={Link}
-                                to={`/manage/${project.id}`}
-                                disabled={project.isCancelled}
-                            >
-                                Manage
-                            </StyledButton>
-                        </>
-                    ) : (
-                        <StyledButton
-                            variant="contained"
-                            color={project.isFollowing ? 'error' : 'success'}
-                            onClick={() => updateFollowing.mutate(project.id)}
-                            disabled={updateFollowing.isPending || project.isCancelled}
-                        >
-                            {project.isFollowing ? 'Unfolow' : 'Follow'}
-                        </StyledButton>
-                    )}
+                    <StyledButton
+                        variant="contained"
+                        color="primary"
+                        component={Link}
+                        to={`/manage/${project.id}`}
+                        disabled={project.isCancelled}
+                    >
+                        Manage
+                    </StyledButton>
                 </Box>
             </Box>
         </Card>

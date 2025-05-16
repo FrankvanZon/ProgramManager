@@ -48,7 +48,7 @@ export const useProjects = (id?: string) => {
                         ...project,
                         isFollowing: project?.followers.some(x => x.id === currentUser?.id),
                         isOwner: project?.ownerId === currentUser?.id,
-                        currentPhase: milestoneStore.Phase[project?.milestoneID],
+                        currentPhase: milestoneStore.currentPhase(project?.milestoneID),
                         launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
                     }
                 })
@@ -86,7 +86,7 @@ export const useProjects = (id?: string) => {
                     ...project,
                     isFollowing: project?.followers.some(x => x.id === currentUser?.id),
                     isOwner: project?.ownerId === currentUser?.id,
-                    currentPhase: milestoneStore.Phase[project?.milestoneID],
+                    currentPhase: milestoneStore.currentPhase(project?.milestoneID),
                     launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter,
                     startQuarter,
                     totalDuration
@@ -109,7 +109,7 @@ export const useProjects = (id?: string) => {
                 ...data,
                 isFollowing: data?.followers.some(x => x.id === currentUser?.id),
                 isOwner: data?.ownerId === currentUser?.id,
-                currentPhase: milestoneStore.Phase[data?.milestoneID],
+                currentPhase: milestoneStore.currentPhase(data?.milestoneID),
                 launchQuarter: data?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
 
             }

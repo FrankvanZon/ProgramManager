@@ -25,3 +25,4 @@ export const indexToQuarter = (index: number): string => {
   const quarter = (index % 4) + 1;
   return `20${year.toString().padStart(2, "0")} Q${quarter}`;
 };
+
