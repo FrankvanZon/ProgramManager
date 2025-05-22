@@ -9,22 +9,20 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "react-router";
 
 
+
 const MilestoneBoard = observer(function MilestoneBoard() {
   const queryClient = useQueryClient();
   const { milestoneStore } = useStore();
   const { projects } = useProjects();
-    const location = useLocation();
+  const location = useLocation();
 
-  const [ msProjectStore, setMsProjectStore ] = useState<Project[]>(projects || []);
-
-  //milestoneStore.filterByMilestoneMin = 0;
-  //milestoneStore.filterByMilestoneMax = 11;
+  const [msProjectStore, setMsProjectStore] = useState<Project[]>(projects || []);
 
   useEffect(() => {
     if (location.pathname === "/milestones") {
-        milestoneStore.resetFilters();
+      milestoneStore.resetFilters();
     }
-}, [location, milestoneStore]);
+  }, [location, milestoneStore]);
 
 
   useEffect(() => {
@@ -32,8 +30,8 @@ const MilestoneBoard = observer(function MilestoneBoard() {
       setMsProjectStore(projects);
     }
   }, [projects]);
-  
-  
+
+
 
   if (!projects) return <Typography>Loading...</Typography>;
 
@@ -42,31 +40,35 @@ const MilestoneBoard = observer(function MilestoneBoard() {
       <MilestoneControlBar />
       <Grid2 container spacing={1} mt={2} >
         {[0, 1, 2, 3].map(index => {
-          const milestoneFilter = msProjectStore.filter(
-            (project: Project) => project.milestoneID === (milestoneStore.id + index)
+          const group = milestoneStore.MilestonesGrouped[milestoneStore.id + index];
+          if (!group) return null;
+
+          const milestoneFilter = msProjectStore.filter(project =>
+            group.phaseIds.includes(project.milestoneID)
           );
 
           return (
-            <Grid2 size={{ xs: 3 }} key={index}>
+            <Grid2 size={{ xs: 3 }} key={group.milestone + group.phase}>
               <Card elevation={2} sx={{ borderRadius: 2, gap: 1, mb: 2 }}>
                 <Box mb={1} mt={1} display="flex" justifyContent="center">
-                  <Typography 
+                  <Typography
                     variant="subtitle1"
                     sx={{ fontWeight: 'bold' }}
-                    color={milestoneStore.Milestones.find(m => m.phaseId === milestoneStore.id + index)?.milestoneColor || 'primary'}
-
-                    >
-                  {milestoneStore.Milestones.find(m => m.phaseId === milestoneStore.id + index)?.milestone}
+                    color={group.milestoneColor}
+                  >
+                    {group.phase} | {group.milestone}
                   </Typography>
                 </Box>
               </Card>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 {milestoneFilter.map(project => (
-                  <MilestoneProjectCard 
-                    key={project.id} 
+                  <MilestoneProjectCard
+                    key={project.id}
                     project={project}
-                    filterUpdate={() => queryClient.invalidateQueries({ queryKey: ['projects'] })}
-                    />
+                    filterUpdate={() =>
+                      queryClient.invalidateQueries({ queryKey: ['projects'] })
+                    }
+                  />
                 ))}
               </Box>
             </Grid2>

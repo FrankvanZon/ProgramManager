@@ -3,6 +3,7 @@ import { Box, Divider, Grid2, Paper, Tab, Tabs, Typography } from "@mui/material
 import ProjectTeamUpdate from "../form/ProjectTeamUpdate";
 import MilestoneDetails from "../../milestones/MilestoneDetails";
 import { SyntheticEvent, useState } from "react";
+import MilestoneSelector from "../../milestones/MilestoneSelector";
 
 type Props = {
     project: Project
@@ -16,10 +17,10 @@ export default function ProjectDetailsInfo({ project }: Props) {
     }
 
     const tabContent = [
-        { label: 'VPC', content: <MilestoneDetails MilestoneIds={[-2,-1]} Milestones={['Start','Finish']} PhaseFilter="VPC" /> },
-        { label: 'APC', content: <MilestoneDetails MilestoneIds={[0,1,2,3]} Milestones={['PI', 'PS', 'PC', 'PR']} PhaseFilter="APC" /> },
-        { label: 'NPDL', content: <MilestoneDetails MilestoneIds={[4,5,6,7,8,9,10,11]} Milestones={['PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR']} PhaseFilter="NPDL" /> },
-        { label: 'CIB', content: <MilestoneDetails MilestoneIds={[12,13,14,15]} Milestones={['CI','CRA','IPA','RP']} PhaseFilter="CIB" /> },
+        { label: 'VPC', content: <MilestoneDetails MilestoneIds={[-2, -1]} Milestones={['Start', 'Finish']} PhaseFilter="VPC" /> },
+        { label: 'APC', content: <MilestoneDetails MilestoneIds={[0, 1, 2, 3]} Milestones={['PI', 'PS', 'PC', 'PR']} PhaseFilter="APC" /> },
+        { label: 'NPDL', content: <MilestoneDetails MilestoneIds={[4, 5, 6, 7, 8, 9, 10, 11]} Milestones={['PI', 'PS', 'AA', 'PPC', 'PV', 'SR', 'CR']} PhaseFilter="NPDL" /> },
+        { label: 'CIB', content: <MilestoneDetails MilestoneIds={[12, 13, 14, 15]} Milestones={['CI', 'CRA', 'IPA', 'RP']} PhaseFilter="CIB" /> },
     ]
 
 
@@ -58,19 +59,23 @@ export default function ProjectDetailsInfo({ project }: Props) {
             <ProjectTeamUpdate />
 
             <Paper>
-            <Tabs
-                orientation="horizontal"
-                value={value}
-                onChange={HandleChange}
-                sx={{ borderRight: 1 }}
-            >
-                {tabContent.map((tab, index) => (
-                    <Tab key={index} label={tab.label} sx={{ mr: 3 }} />
-                ))}
-            </Tabs>
-            <Box sx={{ flexGrow: 1, p: 3, pt: 0 }}>
-                {tabContent[value].content}
-            </Box>
+                <Box sx={{ padding: 2 }}>
+                    <MilestoneSelector project={project} />
+                </Box>
+
+                <Tabs
+                    orientation="horizontal"
+                    value={value}
+                    onChange={HandleChange}
+                    sx={{ borderRight: 1 }}
+                >
+                    {tabContent.map((tab, index) => (
+                        <Tab key={index} label={tab.label} sx={{ mr: 3 }} />
+                    ))}
+                </Tabs>
+                <Box sx={{ flexGrow: 1, p: 3, pt: 0 }}>
+                    {tabContent[value].content}
+                </Box>
             </Paper>
 
         </>

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-    TextField, Button, Box
+    TextField, Button, Box,
 } from '@mui/material';
 import { useParams } from 'react-router';
 import { useProjects } from '../../lib/hooks/useProjects';
+
 
 type Props = {
     Milestones: string[];
@@ -12,7 +13,7 @@ type Props = {
     PhaseFilter: string;
 };
 
-const MilestoneDetails = ({Milestones, PhaseFilter, MilestoneIds} : Props) => {
+const MilestoneDetails = ({ Milestones, PhaseFilter, MilestoneIds }: Props) => {
     const { id } = useParams();
     const { project, refetch, updateProjectMilestonePlan } = useProjects(id);
 
@@ -74,10 +75,10 @@ const MilestoneDetails = ({Milestones, PhaseFilter, MilestoneIds} : Props) => {
             if (data) {
                 updateProjectMilestonePlan.mutate(data, {
                     onSuccess: () => {
-                        refetch(); 
-                    }    
+                        refetch();
+                    }
                 })
-            } 
+            }
         } catch (error) {
             console.log(error)
         }
@@ -90,49 +91,53 @@ const MilestoneDetails = ({Milestones, PhaseFilter, MilestoneIds} : Props) => {
     }
 
     return (
-        <TableContainer sx={{ padding: 0, mb: 1 }}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Milestone</TableCell>
-                        <TableCell>Plan</TableCell>
-                        <TableCell>Actual</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((row, index) => (
-                        <TableRow key={row.name}>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>
-                                <TextField
-                                    type="number"
-                                    value={row.target}
-                                    onChange={(e) => handleChange(index, 'target', e.target.value)}
-                                    variant="outlined"
-                                    size="small"
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <TextField
-                                    type="number"
-                                    value={row.realized}
-                                    onChange={(e) => handleChange(index, 'realized', e.target.value)}
-                                    variant="outlined"
-                                    size="small"
-                                />
-                            </TableCell>
+        <Box sx={{ padding: 0 }}>
+            <TableContainer sx={{ padding: 0, mb: 1 }}>
+
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Milestone</TableCell>
+                            <TableCell>Plan</TableCell>
+                            <TableCell>Actual</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <Box display="flex" justifyContent="flex-end" padding={2}>
-                <Button onClick={handleSave} color="success" variant="contained"
-                disabled={!isDataChanged}
-                >
-                    {isCreating ? 'Save' : 'Update'}
-                </Button>
-            </Box>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row, index) => (
+                            <TableRow key={row.name}>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell>
+                                    <TextField
+                                        type="number"
+                                        value={row.target}
+                                        onChange={(e) => handleChange(index, 'target', e.target.value)}
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <TextField
+                                        type="number"
+                                        value={row.realized}
+                                        onChange={(e) => handleChange(index, 'realized', e.target.value)}
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                <Box display="flex" justifyContent="flex-end" padding={2}>
+                    <Button onClick={handleSave} color="success" variant="contained"
+                        disabled={!isDataChanged}
+                    >
+                        {isCreating ? 'Save' : 'Update'}
+                    </Button>
+                </Box>
+
+            </TableContainer>
+        </Box>
     );
 };
 

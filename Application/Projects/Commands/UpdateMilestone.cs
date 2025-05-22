@@ -26,10 +26,14 @@ public class UpdateMilestone
 
             project.MilestoneID = request.MilestoneUpdateDTO.NewMilestoneId;
 
-            if (project.MilestoneID <= 5 ) project.ProgramStatus = "Proposed";
-            if (project.MilestoneID >= 6 && project.MilestoneID <= 10) project.ProgramStatus = "Committed";
-            if (project.MilestoneID == 11) project.ProgramStatus = "Released";
-            if (project.MilestoneID >= 12) project.ProgramStatus = "Proposed";
+            if (project.MilestoneID == 0 ) project.ProgramStatus = "New";
+            if (project.MilestoneID % 2 != 0 && project.MilestoneID >= 1 && project.MilestoneID <= 19) {
+                project.ProgramStatus = "Proposed";}
+            if (project.MilestoneID % 2 == 0 && project.MilestoneID >= 1 && project.MilestoneID <= 19) {
+                project.ProgramStatus = "Programmed";}
+            if (project.MilestoneID >= 20 && project.MilestoneID <= 24) project.ProgramStatus = "Committed";
+            if (project.MilestoneID == 30) project.ProgramStatus = "Released";
+            if (project.MilestoneID == -99) project.ProgramStatus = "Cancelled";
 
             var result = await context.SaveChangesAsync(cancellationToken) > 0;
 

@@ -5,7 +5,6 @@ import { useProjects } from "../../lib/hooks/useProjects";
 import { useParams } from "react-router";
 import MilestonePopover from "../../app/layout/shared/components/MilestonePopover";
 import { useStore } from "../../lib/hooks/useStore";
-// import { useStore } from "../../lib/hooks/useStore";
 
 type Props = {
     project: Project;
@@ -22,7 +21,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     const incrementMilestoneID = () => {
         const data: ProjectMilestoneUpdate = {
             id: project.id,
-            newMilestoneId: project.milestoneID+1
+            newMilestoneId: milestoneStore.getNextOrPreviousPhase(project.milestoneID,"Next")
         };
 
         updateProjectMilestone.mutateAsync(data, {
@@ -36,7 +35,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     const decrementMilestoneID = () => {
         const data: ProjectMilestoneUpdate = {
             id: project.id,
-            newMilestoneId: project.milestoneID-1
+            newMilestoneId: milestoneStore.getNextOrPreviousPhase(project.milestoneID,"Previous")
         };
 
         updateProjectMilestone.mutateAsync(data, {

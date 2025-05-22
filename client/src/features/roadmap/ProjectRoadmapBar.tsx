@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { quarterToIndex } from '../../lib/util/util';
+import { useNavigate } from 'react-router';
 
 interface Props {
   project: Project;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const ProjectRoadmapBar: React.FC<Props> = ({ project, minQuarter, scaleFactor }) => {
+  const navigate = useNavigate(); 
+
   const activityColors: { [key: string]: string } = {
     NPDL: '#4caf50',
     APC: '#2196f3',
@@ -18,19 +21,17 @@ const ProjectRoadmapBar: React.FC<Props> = ({ project, minQuarter, scaleFactor }
 
   const requiredPhases = project.phases
     .filter(phase => phase.required)
-    .sort((a, b) => a.startQuarter - b.startQuarter); // Ensure order
+    .sort((a, b) => a.startQuarter - b.startQuarter);
 
   const leftMostQuarter = requiredPhases.length > 0 ? requiredPhases[0].startQuarter : undefined;
-
-  // Determine the height of each phase based on the number of phases
-  const phaseHeight = 25; // Divide height evenly for multiple phases
+  const phaseHeight = 25;
 
   return (
     <Box
       sx={{
         position: 'relative',
         display: 'flex',
-        flexDirection: 'column', // Stack phases vertically
+        flexDirection: 'column',
         width: '100%',
       }}
     >
@@ -45,7 +46,7 @@ const ProjectRoadmapBar: React.FC<Props> = ({ project, minQuarter, scaleFactor }
               position: 'relative',
               left: `${start}%`,
               width: `${width}%`,
-              height: `${phaseHeight}px`, // Height of each phase
+              height: `${phaseHeight}px`,
               backgroundColor: activityColors[phase.phase] || '#9e9e9e',
               borderRadius: '4px',
               padding: '0 8px',
@@ -54,11 +55,12 @@ const ProjectRoadmapBar: React.FC<Props> = ({ project, minQuarter, scaleFactor }
               alignItems: 'center',
               color: '#fff',
               fontSize: '0.875rem',
-              overflow: 'hidden', // Prevent overflow inside the box
-              marginBottom: '0px', // No spacing between phases
+              overflow: 'hidden',
+              marginBottom: '0px',
+              cursor: 'pointer', // ✅ makes it look clickable
             }}
+            onClick={() => navigate(`/projects/${project.id}`)} // ✅ add navigation
           >
-            {/* Only show name on the leftmost phase */}
             {phase.startQuarter === leftMostQuarter ? (
               <Tooltip title={project.name} arrow>
                 <Typography
@@ -68,7 +70,7 @@ const ProjectRoadmapBar: React.FC<Props> = ({ project, minQuarter, scaleFactor }
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {project.name}
+                  {project.programStatus} | {project.name}
                 </Typography>
               </Tooltip>
             ) : (

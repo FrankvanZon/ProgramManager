@@ -23,7 +23,7 @@ public class ProjectDto
     public double TargetLaunchQuarter { get; set; }
     public string ProgramStatus { get; set; } ="New";
     public string UpdatedBy { get; set; } = "";
-    public required double MilestoneID { get; set; } = 4;
+    public required double MilestoneID { get; set; } = 0;
 
     //navigation properties
     public ICollection<ProjectPhase> Phases { get; set; } = [];
