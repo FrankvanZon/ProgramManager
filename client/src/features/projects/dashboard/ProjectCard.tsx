@@ -19,7 +19,9 @@ export default function ProjectCard({project}: Props) {
         <CardMedia
             component="img"
             height="300"
-            image={`/images/clusterImages/${project.cluster}.jpg`}
+            image={project.imageUrl?.trim()
+                    ? project.imageUrl
+                    : `/images/clusterImages/${project.cluster}.jpg`}
             alt={'office image'}
         />
         </Grid2>
@@ -40,8 +42,8 @@ export default function ProjectCard({project}: Props) {
               } />
 
             <Box display='flex' flexDirection='column' gap={0} mr={2} >
-              {(project.isCancelled) && <Chip label='Cancelled' color="error" sx={{ borderRadius: 2 }} />}
-              {(!project.isCancelled) && <Chip label={project.programStatus} color={'default'} />}
+              {(project.programStatus=="Cancelled") && <Chip label={project.programStatus} color="error" sx={{ borderRadius: 2 }} />}
+              {(project.programStatus!="Cancelled") && <Chip label={project.programStatus} color={'default'} />}
             </Box>
           </Box>
 

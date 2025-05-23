@@ -1,5 +1,7 @@
 using Application.Core;
+using Application.Profiles.Commands;
 using Application.Profiles.DTOs;
+using Application.Profiles.Queries;
 using Application.Projects.Commands;
 using Application.Projects.DTOs;
 using Application.Projects.Queries;
@@ -15,70 +17,107 @@ public class ProjectsController : BaseApiController
 {
     [HttpGet]
     public async Task<ActionResult<PagedList<ProjectDto, string?>>> GetProjects(
-            [FromQuery]ProjectParams projectParams){
-        return HandleResult(await Mediator.Send(new GetProjectList.Query{Params = projectParams}));
+            [FromQuery] ProjectParams projectParams)
+    {
+        return HandleResult(await Mediator.Send(new GetProjectList.Query { Params = projectParams }));
     }
 
     [HttpGet("all")]
-    public async Task<ActionResult<List<ProjectDto>>> GetAllProjects(string? cluster, string? program, int? milestoneMin, int? milestoneMax){
-        return HandleResult(await Mediator.Send(new GetAllProjectList.Query{
+    public async Task<ActionResult<List<ProjectDto>>> GetAllProjects(string? cluster, string? program, int? milestoneMin, int? milestoneMax)
+    {
+        return HandleResult(await Mediator.Send(new GetAllProjectList.Query
+        {
             FilterByCluster = cluster,
             FilterByProgram = program,
             FilterByMilestoneMin = milestoneMin,
             FilterByMilestoneMax = milestoneMax
-            }));
+        }));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProjectDto>> GetProjectDetails(string id){
-        return HandleResult(await Mediator.Send(new GetProjectDetails.Query{Id = id}));
+    public async Task<ActionResult<ProjectDto>> GetProjectDetails(string id)
+    {
+        return HandleResult(await Mediator.Send(new GetProjectDetails.Query { Id = id }));
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> CreateProject(CreateProjectDto projectDto){
-        return HandleResult(await Mediator.Send(new CreateProject.Command{ProjectDto = projectDto}));
+    public async Task<ActionResult<string>> CreateProject(CreateProjectDto projectDto)
+    {
+        return HandleResult(await Mediator.Send(new CreateProject.Command { ProjectDto = projectDto }));
     }
 
     [HttpPut("{id}")]
     // [Authorize(Policy = "IsProjectOwner")]
-    public async Task<ActionResult> EditProject(string id, EditProjectDto project){
+    public async Task<ActionResult> EditProject(string id, EditProjectDto project)
+    {
         project.Id = id;
-        return HandleResult(await Mediator.Send(new EditProject.Command{ProjectDto = project}));
+        return HandleResult(await Mediator.Send(new EditProject.Command { ProjectDto = project }));
     }
 
     [HttpDelete("{id}")]
     //[Authorize(Policy = "IsProjectOwner")]
-    public async Task<ActionResult> DeleteProject(string id){
-        return HandleResult(await Mediator.Send(new DeleteProject.Command{Id = id}));
+    public async Task<ActionResult> DeleteProject(string id)
+    {
+        return HandleResult(await Mediator.Send(new DeleteProject.Command { Id = id }));
     }
 
     [HttpPost("{id}/follow")]
-    public async Task<ActionResult> Follow(string id){
-        return HandleResult(await Mediator.Send(new UpdateFollowing.Command{Id = id}));
+    public async Task<ActionResult> Follow(string id)
+    {
+        return HandleResult(await Mediator.Send(new UpdateFollowing.Command { Id = id }));
     }
 
     [HttpPost("{id}/projectphase")]
-    public async Task<ActionResult> SetProjectPhase(ProjectPhase projectPhase){
+    public async Task<ActionResult> SetProjectPhase(ProjectPhase projectPhase)
+    {
         return HandleResult(await Mediator.
-        Send(new EnableProjectPhase.Command{NewProjectPhase = projectPhase}));
+        Send(new EnableProjectPhase.Command { NewProjectPhase = projectPhase }));
     }
 
     [HttpPut("{id}/projectphase")]
-    public async Task<ActionResult> UpdateProjectPhase(ProjectPhase projectPhase){
+    public async Task<ActionResult> UpdateProjectPhase(ProjectPhase projectPhase)
+    {
         return HandleResult(await Mediator.
-        Send(new UpdateProjectPhase.Command{ProjectPhase = projectPhase}));
+        Send(new UpdateProjectPhase.Command { ProjectPhase = projectPhase }));
     }
 
     [HttpPut("{id}/milestone")]
-    public async Task<ActionResult> SetProjectMilestone(MilestoneUpdateDTO milestoneUpdateDTO){
+    public async Task<ActionResult> SetProjectMilestone(MilestoneUpdateDTO milestoneUpdateDTO)
+    {
         return HandleResult(await Mediator.
-        Send(new UpdateMilestone.Command{MilestoneUpdateDTO = milestoneUpdateDTO}));
+        Send(new UpdateMilestone.Command { MilestoneUpdateDTO = milestoneUpdateDTO }));
     }
 
     [HttpPut("milestoneUpdate")]
-    public async Task<ActionResult> AddMilestoneData(MilestoneDTO[] milestones){
+    public async Task<ActionResult> AddMilestoneData(MilestoneDTO[] milestones)
+    {
         return HandleResult(await Mediator.
         Send(new AddMilestoneData.Command { Milestones = milestones }));
+    }
+    
+
+    [HttpPost("{id}/add-projectphoto")]
+    public async Task<ActionResult<Photo>> AddProjectPhoto(string id, IFormFile file)
+    {
+        return HandleResult(await Mediator.Send(new AddProjectPhoto.Command{ProjectId=id ,File=file}));
+    }
+
+    [HttpGet("{id}/projectphotos")]
+    public async Task<ActionResult<List<Photo>>> GetPhotosForUser(string id)
+    {
+        return HandleResult(await Mediator.Send(new GetProjectPhotos.Query{ProjectId = id}));
+    }
+
+    [HttpDelete("{id}/projectphotos")]
+    public async Task<ActionResult> DeleteProjectPhoto(string id, ProjectPhotoDTO photo)
+    {
+        return HandleResult(await Mediator.Send(new DeleteProjectPhoto.Command{ProjectId=id, PhotoId = photo.Id}));
+    }
+
+    [HttpPut("{id}/setMainProjectPhoto")]
+    public async Task<ActionResult> SetMainPhoto(string id, ProjectPhotoDTO photo)
+    {
+        return HandleResult(await Mediator.Send(new SetMainProjectPhoto.Command{ProjectId=id, PhotoId = photo.Id}));
     }
     
 }

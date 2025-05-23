@@ -26,7 +26,7 @@ public class GetProjectList
             var query = context.Projects
                 .Include(p => p.Phases)
                 .ThenInclude(pp => pp.Milestones)
-                .Where(x => !x.IsCancelled) 
+                .Where(x => x.ProgramStatus != "Cancelled") 
                 .OrderBy(x => x.Id)
                 .AsQueryable();
 

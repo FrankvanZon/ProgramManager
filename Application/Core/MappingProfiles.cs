@@ -18,17 +18,9 @@ public class MappingProfiles : Profile
         CreateMap<MilestoneDTO, Milestone>();
         CreateMap<CreateProjectDto, Project>();
         CreateMap<EditProjectDto, Project>();
-        
-        CreateMap<Project, ProjectDto>()
-            .ForMember(d => d.OwnerDisplayName, 
-                o => o.MapFrom(
-                s => s.Followers.FirstOrDefault(
-                x=>x.IsOwner)!.User.DisplayName))
-            .ForMember(d => d.OwnerId, 
-                o => o.MapFrom(
-                s => s.Followers.FirstOrDefault(
-                x=>x.IsOwner)!.User.Id));
-        
+
+        CreateMap<Project, ProjectDto>();
+            
         CreateMap<ProjectFollowers, UserProfile>()
             .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
             .ForMember(d => d.Id, o => o.MapFrom(s => s.User.Id))

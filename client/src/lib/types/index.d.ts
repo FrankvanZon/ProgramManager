@@ -20,21 +20,18 @@ type Project = {
 
     
     //To be removed
-    releaseDate: date
-
-    targetlaunchQuarter: number | undefined
+ 
     startQuarter : number | undefined
     launchQuarter : number | undefined
     totalDuration : number | undefined
 
-    isCancelled: boolean
-    isOwner : boolean
-    updatedBy : string
-    ownerId : string
-    ownerDisplayName : string
+
+
+    imageUrl: string
     
     phases: ProjectPhase[]
     followers : Profile[]
+    photos: Photo[]
 
     isFollowing : boolean
 }

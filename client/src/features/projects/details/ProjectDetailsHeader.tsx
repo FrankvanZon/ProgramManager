@@ -59,7 +59,7 @@ export default function ProjectDetailsHeader({ project }: Props) {
 
     return (
         <Card sx={{ position: 'relative', mb: 2, backgroundColor: 'transparent', overflow: 'hidden' }}>
-            {!project.isCancelled && (
+            {project.programStatus != "Cancelled" && (
                 <Chip
                     sx={{ position: 'absolute', left: 20, top: 20, borderRadius: 2, zIndex: 1000 }}
                     color={project.programStatus === "Cancelled" ? "error" : "primary"}
@@ -69,7 +69,9 @@ export default function ProjectDetailsHeader({ project }: Props) {
             <CardMedia
                 component="img"
                 height="300"
-                image={`/images/clusterImages/${project.cluster}.jpg`}
+                image={project.imageUrl?.trim()
+                    ? project.imageUrl
+                    : `/images/clusterImages/${project.cluster}.jpg`}
                 alt={'office image'}
             />
             <Box sx={{
@@ -94,15 +96,15 @@ export default function ProjectDetailsHeader({ project }: Props) {
                 {/* Buttons aligned to the right */}
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     {project.programStatus != "Cancelled" &&
-                    <StyledButton
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to={`/manage/${project.id}`}
-                        
-                    >
-                        Edit
-                    </StyledButton>}
+                        <StyledButton
+                            variant="contained"
+                            color="primary"
+                            component={Link}
+                            to={`/manage/${project.id}`}
+
+                        >
+                            Edit
+                        </StyledButton>}
 
                     {milestoneStore.currentProgramStatus(project.milestoneID) == 'Proposed' &&
                         <StyledButton
@@ -110,7 +112,7 @@ export default function ProjectDetailsHeader({ project }: Props) {
                             color="success"
                             component={Link}
                             onClick={setMilestoneIDtoProgram}
-                            
+
                         >
                             Program
                         </StyledButton>}
@@ -121,7 +123,7 @@ export default function ProjectDetailsHeader({ project }: Props) {
                             color="error"
                             component={Link}
                             onClick={setMilestoneIDtoCancelled}
-                            
+
                         >
                             Cancel
                         </StyledButton>}
@@ -132,7 +134,7 @@ export default function ProjectDetailsHeader({ project }: Props) {
                             color="primary"
                             component={Link}
                             onClick={setMilestoneIDtoNew}
-                            
+
                         >
                             Restart
                         </StyledButton>}

@@ -21,7 +21,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     const incrementMilestoneID = () => {
         const data: ProjectMilestoneUpdate = {
             id: project.id,
-            newMilestoneId: milestoneStore.getNextOrPreviousPhase(project.milestoneID,"Next")
+            newMilestoneId: milestoneStore.getNextOrPreviousPhase(project.milestoneID,"next")
         };
 
         updateProjectMilestone.mutateAsync(data, {
@@ -35,7 +35,7 @@ const MilestoneProjectCard = observer(function MilestoneProjectCard({ project, f
     const decrementMilestoneID = () => {
         const data: ProjectMilestoneUpdate = {
             id: project.id,
-            newMilestoneId: milestoneStore.getNextOrPreviousPhase(project.milestoneID,"Previous")
+            newMilestoneId: milestoneStore.getNextOrPreviousPhase(project.milestoneID,"previous")
         };
 
         updateProjectMilestone.mutateAsync(data, {

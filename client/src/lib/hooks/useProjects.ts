@@ -47,7 +47,6 @@ export const useProjects = (id?: string) => {
                     return {
                         ...project,
                         isFollowing: project?.followers.some(x => x.id === currentUser?.id),
-                        isOwner: project?.ownerId === currentUser?.id,
                         currentPhase: milestoneStore.currentPhase(project?.milestoneID),
                         launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
                     }
@@ -85,7 +84,6 @@ export const useProjects = (id?: string) => {
                 return {
                     ...project,
                     isFollowing: project?.followers.some(x => x.id === currentUser?.id),
-                    isOwner: project?.ownerId === currentUser?.id,
                     currentPhase: milestoneStore.currentPhase(project?.milestoneID),
                     launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter,
                     startQuarter,
@@ -108,7 +106,6 @@ export const useProjects = (id?: string) => {
             return {
                 ...data,
                 isFollowing: data?.followers.some(x => x.id === currentUser?.id),
-                isOwner: data?.ownerId === currentUser?.id,
                 currentPhase: milestoneStore.currentPhase(data?.milestoneID),
                 launchQuarter: data?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
 
@@ -252,6 +249,54 @@ export const useProjects = (id?: string) => {
     })
 
 
+    const {data: photos, isLoading: loadingPhotos} = useQuery<Photo[]>({
+        queryKey: ['projectphotos', id],
+        queryFn: async () => {
+            const response = await agent.get<Photo[]>(`/projects/${id}/projectphotos`);
+            return response.data;
+        },
+        enabled: !!id
+    });
+
+    const uploadPhoto = useMutation({
+        mutationFn: async (file:Blob) =>{
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await agent.post(`/projects/${id}/add-projectphoto`, formData,{
+                headers: {'Content-Type': 'multipart/form-data'}
+            });
+            return response.data;
+        },
+        onSuccess: async () =>{
+            await queryClient.invalidateQueries({
+                queryKey: ['projectphotos', id]
+            });
+        }
+    })
+
+    const setMainPhoto = useMutation({
+        mutationFn: async (photo: Photo) =>{
+            await agent.put(`/projects/${id}/setMainProjectPhoto`, photo)
+        },
+        onSuccess: async () =>{
+            await queryClient.invalidateQueries({
+                queryKey: ['projects', id]
+            });
+        }
+    })
+
+    const deletePhoto = useMutation({
+        mutationFn: async (photo: Photo) => {
+            await agent.delete(`/projects/${id}/projectphotos`,{ data: photo });
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['projectphotos', id]
+            });
+        }
+    })
+
+
 
     return {
         projects,
@@ -272,5 +317,11 @@ export const useProjects = (id?: string) => {
         isLoadingProject,
         updateFollowing,
         updateProjectMilestonePlan,
+
+        photos,
+        loadingPhotos,
+        uploadPhoto,
+        setMainPhoto,
+        deletePhoto
     }
 }

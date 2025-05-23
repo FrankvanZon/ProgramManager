@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default function LaunchCalendarProjectCard({ project }: Props) {
-    const {milestoneStore} = useStore();
+    const { milestoneStore } = useStore();
     //const isCommitted = false;
     //const isProgrammed = false;
     //const isCancelled = false;
@@ -16,7 +16,7 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
     //const label = isCommitted ? 'Commmited' : isProgrammed? 'Programmed' : 'Proposed';
 
     const isNPDL = project.phases.find(p => p.phase === "NPDL" && p.required)?.required ?? false;
-        
+
     return (
         <Card elevation={3} sx={{ borderRadius: 2, mb: 1 }}>
             <Grid2 container>
@@ -29,22 +29,24 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                             aspectRatio: '1 / 1', // Ensures equal width and height
                             objectFit: 'fill'  // Ensures the media covers the box
                         }}
-                        image={`/images/clusterImages/${project.cluster}.jpg`}
+                        image={project.imageUrl?.trim()
+                            ? project.imageUrl
+                            : `/images/clusterImages/${project.cluster}.jpg`}
                         alt={'office image'}
                     />
                 </Grid2>
 
                 <Grid2 size={9} sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Box display='flex' alignItems='top' justifyContent='space-between' >
-                        
+
                         <CardHeader
-                            avatar={<MilestonePopever project={project}/>}
+                            avatar={<MilestonePopever project={project} />}
                             title={
                                 <Typography
                                     sx={{
                                         fontWeight: 'bold',
                                         fontSize: 18,
-                                        
+
                                     }}
                                 >
                                     {project.name}
@@ -52,15 +54,15 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                             }
                         />
 
-                        {(isNPDL) && <Chip label="NPDL" 
-                        sx={{
-                            position: 'relative',
-                            backgroundColor: 'lightgreen',
-                            top: 0,
-                            right: 0,
-                            mr: 1,
-                            mt: 2
-                        }} />}
+                        {(isNPDL) && <Chip label="NPDL"
+                            sx={{
+                                position: 'relative',
+                                backgroundColor: 'lightgreen',
+                                top: 0,
+                                right: 0,
+                                mr: 1,
+                                mt: 2
+                            }} />}
                         {(!isNPDL) && <Chip label="CIB" sx={{
                             position: 'relative',
                             backgroundColor: '#D1C4E9',

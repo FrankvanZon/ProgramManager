@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function ProjectDetailsInfo({ project }: Props) {
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState(2);
 
     const HandleChange = (_: SyntheticEvent, newValue: number) => {
         setValue(newValue);
