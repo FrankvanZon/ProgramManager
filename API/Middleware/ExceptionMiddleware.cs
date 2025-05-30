@@ -67,7 +67,7 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         {
             Status = StatusCodes.Status400BadRequest,
             Type = "ValidationFailure",
-            Title = "Validation erro",
+            Title = "Validation error",
             Detail = "One or more validation errors has occurred"
         };
 

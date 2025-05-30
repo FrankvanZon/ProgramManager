@@ -1,38 +1,44 @@
 import { CloudUpload } from "@mui/icons-material";
 import { Box, Button, Grid2, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {useDropzone} from 'react-dropzone'
+import { useDropzone } from 'react-dropzone'
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 type Props = {
-    uploadPhoto : (file:Blob) => void
+    uploadPhoto: (file: File) => void
     loading: boolean
 }
 
-export default function PhotoUploadWidget({uploadPhoto, loading}: Props) {
+export default function PhotoUploadWidget({ uploadPhoto, loading }: Props) {
     const [files, setFiles] = useState<object & { preview: string; }[]>([]);
     const cropperRef = useRef<ReactCropperElement>(null);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         return () => {
             files.forEach(file => URL.revokeObjectURL(file.preview))
         }
-    },[files])
-    
+    }, [files])
+
     const onDrop = useCallback((acceptedFiles: File[]) => {
-        setFiles(acceptedFiles.map(file => Object.assign(file,{
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file as Blob)
         })))
     }, [])
 
-    const onCrop = useCallback(()=>{
+    const onCrop = useCallback(() => {
         const cropper = cropperRef.current?.cropper;
         cropper?.getCroppedCanvas().toBlob(blob => {
-            uploadPhoto(blob as Blob)
-        })
-    },[uploadPhoto])
+            if (!blob) return;
+
+            // Default to PNG. You can also infer from original file's type if needed.
+            const file = new File([blob], 'cropped.png', { type: 'image/png' });
+            console.log(file.name);
+            uploadPhoto(file);
+        }, 'image/png'); // this determines the blob's encoding format
+    }, [uploadPhoto]);
+
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
@@ -44,31 +50,31 @@ export default function PhotoUploadWidget({uploadPhoto, loading}: Props) {
                     sx={{
                         border: 'dashed 3px #eee',
                         borderColor: isDragActive ? 'green' : '#eee',
-                        borderRadius : '5px',
+                        borderRadius: '5px',
                         paddingTop: '30px',
                         textAlign: 'center',
                         height: '280px'
                     }}
                 >
                     <input {...getInputProps()} />
-                    <CloudUpload sx={{fontSize:80}}/>
+                    <CloudUpload sx={{ fontSize: 80 }} />
                     <Typography variant="h5">Drop image here</Typography>
                 </Box>
             </Grid2>
             <Grid2 size={4}>
                 <Typography variant='overline' color='secondary'>Step 2 - Resize image </Typography>
                 {files[0]?.preview &&
-                <Cropper
-                    src={files[0]?.preview}
-                    style={{height:300, width:'90%'}}
-                    initialAspectRatio={1}
-                    aspectRatio={1}
-                    preview='.img-preview'
-                    guides={false}
-                    viewMode={1}
-                    background={false}
-                    ref={cropperRef}
-                />}
+                    <Cropper
+                        src={files[0]?.preview}
+                        style={{ height: 300, width: '90%' }}
+                        initialAspectRatio={1}
+                        aspectRatio={1}
+                        preview='.img-preview'
+                        guides={false}
+                        viewMode={1}
+                        background={false}
+                        ref={cropperRef}
+                    />}
 
 
             </Grid2>
@@ -78,10 +84,10 @@ export default function PhotoUploadWidget({uploadPhoto, loading}: Props) {
                         <Typography variant='overline' color='secondary'>Step 3 - Preview upload </Typography>
                         <div
                             className="img-preview"
-                            style={{width:300, height:300, overflow:'hidden'}}
+                            style={{ width: 300, height: 300, overflow: 'hidden' }}
                         />
                         <Button
-                            sx={{my:1, width: 300}}
+                            sx={{ my: 1, width: 300 }}
                             onClick={onCrop}
                             variant="contained"
                             color="secondary"
@@ -91,7 +97,7 @@ export default function PhotoUploadWidget({uploadPhoto, loading}: Props) {
                         </Button>
                     </>
                 )}
-                
+
             </Grid2>
         </Grid2>
     )

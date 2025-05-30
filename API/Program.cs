@@ -37,7 +37,7 @@ builder.Services.AddMediatR(x =>{
 });
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
-builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<IPhotoService, PhotoServiceAzure>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
@@ -54,8 +54,12 @@ builder.Services.AddAuthorization(opt =>
     });
 });
 builder.Services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler>();
+builder.Services.Configure<AzureBlobSettings>(builder.Configuration
+    .GetSection("AzureBlobSettings"));
+
 builder.Services.Configure<CloudinarySettings>(builder.Configuration
     .GetSection("CloudinarySettings"));
+
 
 var app = builder.Build();
 
@@ -83,8 +87,9 @@ try
 {
     var context = services.GetRequiredService<AppDbContext>();
     var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     await context.Database.MigrateAsync();
-    await DbInitializer.SeedData(context, userManager);
+    await DbInitializer.SeedData(context, userManager, roleManager);
 }
 catch (Exception ex)
 {
