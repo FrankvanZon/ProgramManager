@@ -21,8 +21,5 @@ public class BaseProjectValidator<T, TDto> : AbstractValidator<T>
             .NotEmpty().WithMessage("Cluster is required");        
         RuleFor(x => selector(x).Category)
             .NotEmpty().WithMessage("Category is required");
-
-        RuleFor(x => selector(x).MilestoneID)
-            .NotEmpty().WithMessage("Milestone is required");
     }
 }

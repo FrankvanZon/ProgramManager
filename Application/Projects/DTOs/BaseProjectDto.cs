@@ -11,8 +11,8 @@ public class BaseProjectDto
     public string Category { get; set; } ="";
     public string Cluster { get; set; } ="";
     public string Team { get; set; } = "";
-    public double MilestoneID { get; set; } = 4;
-    public double TargetLaunchQuarter { get; set; } =0;
+    public double MilestoneID { get; set; } = 0;
+    
 
     // project details
 

@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardHeader, CardMedia, Chip, Grid2, Typography } from "@mui/material"
 import { useStore } from "../../lib/hooks/useStore";
-import MilestonePopever from "../../app/layout/shared/components/MilestonePopover";
 import getMilestoneTarget from "../projects/dashboard/geMilestoneTarget";
+import PresentationLinkButton from "../common/linkButton/PresentationLinkButton";
 
 type Props = {
     project: Project
@@ -40,7 +40,6 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                     <Box display='flex' alignItems='top' justifyContent='space-between' >
 
                         <CardHeader
-                            avatar={<MilestonePopever project={project} />}
                             title={
                                 <Typography
                                     sx={{
@@ -71,15 +70,23 @@ export default function LaunchCalendarProjectCard({ project }: Props) {
                             mr: 1,
                             mt: 2
                         }} />}
+
                     </Box>
                     <CardContent sx={{ p: 0 }}>
                         <Box display='flex' alignItems='center' justifyContent='space-between'>
+                            
                             <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
                                 {getMilestoneTarget(project, 'NPDL', 'CR')}
                             </Typography>
+
+                            {project.commercialPresentationUrl && <Box sx={{p:1}}>
+                            <PresentationLinkButton url={project.commercialPresentationUrl} />
+                            </Box>}
+
                             <Typography sx={{ alignContent: 'flex-end', mr: 2, ml: 2 }} variant="subtitle2">
                                 {milestoneStore.currentMilestone(project.milestoneID)}
                             </Typography>
+                            
                         </Box>
                     </CardContent>
                 </Grid2>

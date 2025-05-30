@@ -28,7 +28,6 @@ public class GetAllProjectList
             var query = context.Projects
                 .Include(p => p.Phases)
                 .ThenInclude(pp => pp.Milestones)
-                .Where(x => x.ProgramStatus != "Cancelled")
                 .OrderByDescending(x => x.MilestoneID)  // First, order by MilestoneID in descending order
                 .ThenBy(x => x.Name)                    // Then, order by Name in ascending order
                 .AsQueryable();

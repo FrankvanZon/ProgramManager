@@ -46,7 +46,6 @@ export const useProjects = (id?: string) => {
                 items: page.items.map(project => {
                     return {
                         ...project,
-                        isFollowing: project?.followers.some(x => x.id === currentUser?.id),
                         currentPhase: milestoneStore.currentPhase(project?.milestoneID),
                         launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
                     }
@@ -83,7 +82,6 @@ export const useProjects = (id?: string) => {
 
                 return {
                     ...project,
-                    isFollowing: project?.followers.some(x => x.id === currentUser?.id),
                     currentPhase: milestoneStore.currentPhase(project?.milestoneID),
                     launchQuarter: project?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter,
                     startQuarter,
@@ -105,7 +103,6 @@ export const useProjects = (id?: string) => {
         select: data => {
             return {
                 ...data,
-                isFollowing: data?.followers.some(x => x.id === currentUser?.id),
                 currentPhase: milestoneStore.currentPhase(data?.milestoneID),
                 launchQuarter: data?.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter
 
@@ -131,6 +128,19 @@ export const useProjects = (id?: string) => {
     const updateProjectMilestone = useMutation({
         mutationFn: async (milestoneUpdate: ProjectMilestoneUpdate) => {
             const response = await agent.put(`/projects/${milestoneUpdate.id}/milestone`, milestoneUpdate)
+            return response.data;
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['projects'],
+            })
+        }
+    })
+
+    //update commercial presentation milestone
+    const updateCommercialPresentation = useMutation({
+        mutationFn: async (presentationUpdate: CommercialPresentionUpdate) => {
+            const response = await agent.put(`/projects/${presentationUpdate.id}/commercialPresentation`, presentationUpdate)
             return response.data;
         },
         onSuccess: async () => {
@@ -205,50 +215,6 @@ export const useProjects = (id?: string) => {
         }
     })
 
-    //set following of project
-    const updateFollowing = useMutation({
-        mutationFn: async (id: string) => {
-            await agent.post(`/projects/${id}/follow`)
-        },
-        onMutate: async (projectId: string) => {
-            await queryClient.cancelQueries({
-                queryKey: ['projects', projectId]
-            });
-
-            const prevProject = queryClient.getQueryData<Project>(['projects', projectId])
-
-            queryClient.setQueryData<Project>(['projects', projectId], oldProject => {
-                if (!oldProject || !currentUser) {
-                    return oldProject
-                }
-
-                const isFollowing = oldProject.followers.some(x => x.id === currentUser.id);
-
-                return {
-                    ...oldProject,
-                    followers:
-                        isFollowing
-                            ? oldProject.followers.filter(x => x.id !== currentUser.id)
-                            : [...oldProject.followers, {
-                                id: currentUser.id,
-                                displayName: currentUser.displayName,
-                                imageUrl: currentUser.imageUrl
-                            }]
-
-                }
-            });
-
-            return { prevProject };
-        },
-        onError: (error, projectId, context) => {
-            console.log(error)
-            if (context?.prevProject) {
-                queryClient.setQueryData(['projects', projectId], context.prevProject)
-            }
-        }
-    })
-
-
     const {data: photos, isLoading: loadingPhotos} = useQuery<Photo[]>({
         queryKey: ['projectphotos', id],
         queryFn: async () => {
@@ -315,9 +281,8 @@ export const useProjects = (id?: string) => {
         editProjectPhase,
         project,
         isLoadingProject,
-        updateFollowing,
         updateProjectMilestonePlan,
-
+        updateCommercialPresentation,
         photos,
         loadingPhotos,
         uploadPhoto,

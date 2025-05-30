@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Differencing;
+using Persistence.Migrations;
 
 namespace API.Controllers;
 
@@ -95,6 +96,12 @@ public class ProjectsController : BaseApiController
         Send(new AddMilestoneData.Command { Milestones = milestones }));
     }
     
+    [HttpPut("{id}/commercialPresentation")]
+    public async Task<ActionResult> UpdateCommercialPresentationUrl(ProjectCommercialPresentationDTO commercialPresentationUrl)
+    {
+        return HandleResult(await Mediator.
+        Send(new UpdateCommercialPresentationUrl.Command { CommercialPresentationUrl = commercialPresentationUrl }));
+    }
 
     [HttpPost("{id}/add-projectphoto")]
     public async Task<ActionResult<Photo>> AddProjectPhoto(string id, IFormFile file)

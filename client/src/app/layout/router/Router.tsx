@@ -15,6 +15,8 @@ import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../../features/account/RegisterForm";
 import ProfilePage from "../../../features/profiles/ProfilePage";
 import ProjectRoadmap from "../../../features/roadmap/ProjectRoadmap";
+import UserManagement from "../../../features/account/UserManagement";
+import ChangePasswordForm from "../../../features/account/ChangePassword";
 
 
 export const router = createBrowserRouter([
@@ -33,13 +35,16 @@ export const router = createBrowserRouter([
                 {path: 'createProject', element: <ProjectForm key='create'/>},
                 {path: 'manage/:id', element: <ProjectForm />},
                 {path: 'profiles/:id', element: <ProfilePage />},
+                {path: 'register', element: <RegisterForm /> },
+                {path: 'userManagement', element: <UserManagement /> },
+                {path: 'changePassword', element: <ChangePasswordForm /> },
             ]},
             {path: '', element: <HomePage />},
             {path: 'errors', element: <TestErrors /> },
             {path: 'not-found', element: <NotFound /> },
             {path: 'server-error', element: <ServerErrors /> },
             {path: 'login', element: <LoginForm /> },
-            {path: 'register', element: <RegisterForm /> },
+            
             {path: '*', element: <Navigate replace to='/not-found' /> },
 
         ]

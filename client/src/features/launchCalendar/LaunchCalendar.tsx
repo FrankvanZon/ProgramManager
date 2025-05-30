@@ -46,7 +46,7 @@ const LaunchCalendar = observer(function LaunchCalendar() {
               {["Trunking", "Industry", "Office", "Retail"].map(cluster => {
                 const filteredProjects = projects.filter(project =>
                   project.phases.find(p => (p.phase === "NPDL" && p.required) || (p.phase === "CIB" && p.required))?.finishQuarter === yearStore.YearQuarter(index) &&
-                  project.milestoneID >= 6 &&
+                  project.milestoneID >= 20 &&
                   project.cluster === cluster
                 );
 

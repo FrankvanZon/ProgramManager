@@ -4,7 +4,7 @@ import { useStore } from "../../../lib/hooks/useStore";
 import { observer } from "mobx-react-lite";
 
 const FilterMilestones = observer(function FilterClusters() {
-    const {milestoneStore} = useStore();
+    const { milestoneStore } = useStore();
 
     return (
         <Box sx={{ width: '100%' }} >
@@ -18,7 +18,7 @@ const FilterMilestones = observer(function FilterClusters() {
                     selected={milestoneStore.filterByMilestonePhase === "all"}
                     onClick={() => {
                         milestoneStore.setFilterForMilestoneId("all")
-                        }}>
+                    }}>
                     <ListItemText primary='All' />
                 </MenuItem>
 
@@ -39,83 +39,121 @@ const FilterMilestones = observer(function FilterClusters() {
                     onClick={() => milestoneStore.setFilterForMilestoneId("CIB")}>
                     <ListItemText primary='CIB' />
                 </MenuItem>
+
+                <MenuItem
+                    selected={milestoneStore.filterByMilestonePhase === "Cancelled"}
+                    onClick={() => {
+                        milestoneStore.setFilterForMilestoneId("Cancelled");
+                        milestoneStore.setFilterForMilestoneId("Cancelled", "Cancelled");
+                    }}
+                >
+                    <ListItemText primary="Cancelled" />
+                </MenuItem>
+
             </MenuList>
 
-            
+
 
             {milestoneStore.filterByMilestonePhase === "APC" && (
-            <>
-            <Divider/>
-            <MenuList>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 0 && milestoneStore.filterByMilestoneMax === 0}
-                    onClick={() => milestoneStore.setFilterForMilestoneId('APC','PI')}>
-                    <ListItemText primary='PI' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 1 && milestoneStore.filterByMilestoneMax === 1}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("APC","PS")}>
-                    <ListItemText primary='PS' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 2 && milestoneStore.filterByMilestoneMax === 2}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("APC","PC")}>
-                    <ListItemText primary='PC' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 3 && milestoneStore.filterByMilestoneMax === 3}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("APC","PR")}>
-                    <ListItemText primary='PR' />
-                </MenuItem>
-            </MenuList>
-            </>)}
+                <>
+                    <Divider />
+                    <MenuList>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 1 && milestoneStore.filterByMilestoneMax === 2}
+                            onClick={() => milestoneStore.setFilterForMilestoneId('APC', 'PI')}>
+                            <ListItemText primary='PI' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 3 && milestoneStore.filterByMilestoneMax === 4}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("APC", "PS")}>
+                            <ListItemText primary='PS' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 5 && milestoneStore.filterByMilestoneMax === 6}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("APC", "PC")}>
+                            <ListItemText primary='PC' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 7 && milestoneStore.filterByMilestoneMax === 8}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("APC", "PR")}>
+                            <ListItemText primary='PR' />
+                        </MenuItem>
+                    </MenuList>
+                </>)}
 
             {milestoneStore.filterByMilestonePhase === "NPDL" && (
-            <>
-            <Divider/>
-            <MenuList>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 4 && milestoneStore.filterByMilestoneMax === 4}
-                    onClick={() => milestoneStore.setFilterForMilestoneId('NPDL','<PI')}>
-                    <ListItemText primary='<PI' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 5 && milestoneStore.filterByMilestoneMax === 5}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","PI")}>
-                    <ListItemText primary='PI' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 6 && milestoneStore.filterByMilestoneMax === 6}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","PS")}>
-                    <ListItemText primary='PS' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 7 && milestoneStore.filterByMilestoneMax === 7}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","AA")}>
-                    <ListItemText primary='AA' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 8 && milestoneStore.filterByMilestoneMax === 8}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","PPC")}>
-                    <ListItemText primary='PPC' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 9 && milestoneStore.filterByMilestoneMax === 9}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","PV")}>
-                    <ListItemText primary='PV' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 10 && milestoneStore.filterByMilestoneMax === 10}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","SR")}>
-                    <ListItemText primary='SR' />
-                </MenuItem>
-                <MenuItem
-                    selected={milestoneStore.filterByMilestoneMin === 11 && milestoneStore.filterByMilestoneMax === 11}
-                    onClick={() => milestoneStore.setFilterForMilestoneId("NPDL","CR")}>
-                    <ListItemText primary='CR' />
-                </MenuItem>
-            </MenuList>
-            </>)}
+                <>
+                    <Divider />
+                    <MenuList>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 9 && milestoneStore.filterByMilestoneMax === 10}
+                            onClick={() => milestoneStore.setFilterForMilestoneId('NPDL', '<PI')}>
+                            <ListItemText primary='<PI' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 11 && milestoneStore.filterByMilestoneMax === 12}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "PI")}>
+                            <ListItemText primary='PI' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 20 && milestoneStore.filterByMilestoneMax === 20}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "PS")}>
+                            <ListItemText primary='PS' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 21 && milestoneStore.filterByMilestoneMax === 21}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "AA")}>
+                            <ListItemText primary='AA' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 22 && milestoneStore.filterByMilestoneMax === 22}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "PPC")}>
+                            <ListItemText primary='PPC' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 23 && milestoneStore.filterByMilestoneMax === 23}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "PV")}>
+                            <ListItemText primary='PV' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 24 && milestoneStore.filterByMilestoneMax === 24}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "SR")}>
+                            <ListItemText primary='SR' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 30 && milestoneStore.filterByMilestoneMax === 30}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("NPDL", "CR")}>
+                            <ListItemText primary='CR' />
+                        </MenuItem>
+                    </MenuList>
+                </>)}
+
+                {milestoneStore.filterByMilestonePhase === "CIB" && (
+                <>
+                    <Divider />
+                    <MenuList>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 40 && milestoneStore.filterByMilestoneMax === 40}
+                            onClick={() => milestoneStore.setFilterForMilestoneId('CIB', 'CI')}>
+                            <ListItemText primary='CI' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 41 && milestoneStore.filterByMilestoneMax === 41}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("CIB", "CRA")}>
+                            <ListItemText primary='CRA' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 42 && milestoneStore.filterByMilestoneMax === 42}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("CIB", "IPA")}>
+                            <ListItemText primary='IPA' />
+                        </MenuItem>
+                        <MenuItem
+                            selected={milestoneStore.filterByMilestoneMin === 43 && milestoneStore.filterByMilestoneMax === 43}
+                            onClick={() => milestoneStore.setFilterForMilestoneId("CIB", "RP")}>
+                            <ListItemText primary='RP' />
+                        </MenuItem>
+                    </MenuList>
+                </>)}
 
         </Box>
     )

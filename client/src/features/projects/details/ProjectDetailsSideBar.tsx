@@ -2,6 +2,9 @@ import { Box, Paper, Tab, Tabs } from "@mui/material";
 import ProjectDetailsProjectPlan from "./ProjectDetailsProjectPlan";
 import { SyntheticEvent, useState } from "react";
 import ProjectDetailsPhotos from "./ProjectDetailsPhotos";
+import ProjectDetailsOnePager from "./ProjectDetailsOnePager";
+import ProjectDetailsBusinessCase from "./ProjectDetailsBusinessCase";
+import ProjectDetailsCommercialPresentation from "./ProjectDetailsCommercialPresentation";
 
 type Props = {
     project: Project
@@ -17,7 +20,10 @@ const [value, setValue] = useState(0);
 
     const tabContent = [
         { label: 'Plan', content: <ProjectDetailsProjectPlan project={project} /> },
+        { label: 'One Pager', content: <ProjectDetailsOnePager project={project}/> },
+        { label: 'Business Case', content: <ProjectDetailsBusinessCase project={project}/> },
         { label: 'Photo', content: <ProjectDetailsPhotos project={project}/> },
+        { label: 'Presentation', content: <ProjectDetailsCommercialPresentation project={project}/> },
 
     ]
 

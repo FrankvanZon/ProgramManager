@@ -119,6 +119,7 @@ export default class MilestoneStore {
                 ? Math.max(...filteredItems.map(item => item.phaseId))
                 : 44;
         }
+        
     }
 
     resetFilters = () => {

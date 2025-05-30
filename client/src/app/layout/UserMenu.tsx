@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Avatar, Box, ListItemIcon, ListItemText } from '@mui/material';
 import { useAccount } from '../../lib/hooks/useAccount';
 import { Link } from 'react-router';
-import { Add, Logout, Person } from '@mui/icons-material';
+import { Add, Group, Logout, Password } from '@mui/icons-material';
 
 export default function UserMenu() {
   const {currentUser, logoutUser} = useAccount();
@@ -56,12 +56,22 @@ export default function UserMenu() {
         </MenuItem>
         
         <MenuItem onClick={handleClose}
-            component={Link} to={`/profiles/${currentUser?.id}`}>
+            component={Link} to={`/changePassword`}>
                 <ListItemIcon>
-                    <Person/>
+                    <Password/>
                 </ListItemIcon>
                 <ListItemText>
-                    My profile
+                    Change Password
+                </ListItemText>
+        </MenuItem>
+
+        <MenuItem onClick={handleClose}
+            component={Link} to={`/userManagement`}>
+                <ListItemIcon>
+                    <Group/>
+                </ListItemIcon>
+                <ListItemText>
+                    User Management
                 </ListItemText>
         </MenuItem>
         

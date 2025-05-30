@@ -23,6 +23,7 @@ public class ProjectDto
     public string InnovationType { get; set; } = "";
     public string LaunchClassification { get; set; } = "C";
     public string Factory { get; set; } = "";
+    public string CommercialPresentationUrl { get; set; } = "";
 
     //navigation properties
     public ICollection<ProjectPhase> Phases { get; set; } = [];

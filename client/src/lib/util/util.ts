@@ -26,3 +26,11 @@ export const indexToQuarter = (index: number): string => {
   return `20${year.toString().padStart(2, "0")} Q${quarter}`;
 };
 
+export function isValidUrl(url: string): boolean {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}

@@ -17,23 +17,19 @@ type Project = {
     milestoneID: number
     programStatus: string
     currentPhase: string
-
-    
-    //To be removed
  
     startQuarter : number | undefined
     launchQuarter : number | undefined
     totalDuration : number | undefined
 
 
-
+    commercialPresentationUrl: string
     imageUrl: string
     
     phases: ProjectPhase[]
-    followers : Profile[]
     photos: Photo[]
 
-    isFollowing : boolean
+
 }
 
 type Profile = {
@@ -84,9 +80,20 @@ type User = {
     email: string
     displayName: string
     imageUrl?: string
+    roles: string[];
+}
+
+type ChangePasswordData = {
+  currentPassword: string;
+  newPassword: string;
 }
 
 type ProjectMilestoneUpdate = {
     id: string
     newMilestoneId: number
+}
+
+type CommercialPresentionUpdate = {
+    id: string
+    url: string
 }
