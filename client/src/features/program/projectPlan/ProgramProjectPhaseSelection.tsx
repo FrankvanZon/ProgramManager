@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Box, Button, ButtonGroup } from '@mui/material';
 import { useProjects } from '../../../lib/hooks/useProjects';
 import { useParams } from 'react-router';
@@ -36,7 +35,8 @@ export default function ProgramProjectSelection({
             phase: phaseName,
             required: false, 
             startQuarter: 0, 
-            finishQuarter: 0
+            finishQuarter: 0,
+            milestones: []
         };
     }
 };

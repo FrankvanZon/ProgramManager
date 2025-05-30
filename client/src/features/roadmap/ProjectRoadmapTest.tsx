@@ -13,7 +13,7 @@ const ProjectRoadmapTest = observer(() => {
 
   const filteredProjects = projects.filter(
     (project) =>
-      !project.isCancelled &&
+      //!project.isCancelled &&
       project.startQuarter !== undefined &&
       project.totalDuration !== undefined
   );

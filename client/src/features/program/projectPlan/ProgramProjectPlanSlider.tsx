@@ -26,13 +26,13 @@ const ProgramProjectPlanSlider = observer(function ProgramProjectPlanSlider({ ex
 
   const projectPhase: ProjectPhase = getProjectPhase(phase) as ProjectPhase;
 
-  const handleChange = (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
+  const handleChange = (_event: React.SyntheticEvent | Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       setValue(newValue);
     }
   };
 
-  const handleCommit = (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
+  const handleCommit = (_event: React.SyntheticEvent | Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       setValue(newValue);
 
